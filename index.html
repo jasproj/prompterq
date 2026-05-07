@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PrompterQ — The Modern Teleprompter for Professional Operators</title>
-<meta name="description" content="Built by a 25-year veteran operator. PrompterQ replaces FlipQ with software that actually understands how professional operators work. Free HTML version. EleQtron Pro $349/yr.">
-<meta property="og:title" content="PrompterQ — The Modern Teleprompter for Professional Operators">
-<meta property="og:description" content="Stop fighting your software. Start delivering flawless reads. Built by a 25-year operator for the real demands of the stage.">
+<title>PrompterQ — Professional Teleprompter Software</title>
+<meta name="description" content="Built by a 25-year veteran operator. The modern replacement for FlipQ. Free HTML version. EleQtron Pro for show-day reliability.">
+<meta property="og:title" content="PrompterQ — Professional Teleprompter Software">
+<meta property="og:description" content="Stop fighting your software. Start delivering flawless reads.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://prompterq.com">
 
@@ -81,7 +81,20 @@ nav{
   text-align:center;
   position:relative;
   background:radial-gradient(ellipse at top,rgba(245,184,76,0.08),transparent 60%);
+  overflow:hidden;
 }
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:radial-gradient(var(--border) 1px,transparent 1px);
+  background-size:40px 40px;
+  opacity:0.15;
+  pointer-events:none;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);
+}
+.hero > .container,.hero > .screenshot-wrap{position:relative;z-index:1}
 .hero-eyebrow{
   display:inline-block;
   background:rgba(245,184,76,0.1);
@@ -121,7 +134,7 @@ nav{
   font-family:inherit;
 }
 .btn-primary{background:var(--gold);color:#000}
-.btn-primary:hover{background:#fff;color:#000;transform:translateY(-1px)}
+.btn-primary:hover{background:#fff;color:#000;transform:translateY(-2px);box-shadow:0 16px 40px rgba(245,184,76,0.25)}
 .btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
 .btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
 .btn-large{padding:18px 36px;font-size:16px}
@@ -143,7 +156,10 @@ nav{
   overflow:hidden;
   background:#000;
   box-shadow:0 40px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(245,184,76,0.1);
+  cursor:pointer;
+  transition:transform 0.3s;
 }
+.screenshot:hover{transform:translateY(-4px);box-shadow:0 50px 100px rgba(0,0,0,0.7),0 0 0 1px rgba(245,184,76,0.2)}
 .screenshot-mock{
   aspect-ratio:16/10;
   background:linear-gradient(180deg,#0e0e12 0%,#000 100%);
@@ -158,10 +174,11 @@ nav{
 }
 .sc-dot{width:10px;height:10px;border-radius:50%;background:#444}
 .sc-title{font-size:11px;color:var(--text-dim);margin-left:auto}
-.sc-body{flex:1;display:flex}
+.sc-hint{font-size:11px;color:var(--gold);margin-right:8px;opacity:0.7}
+.sc-body{flex:1;display:flex;overflow:hidden}
 .sc-sidebar{
   width:200px;border-right:1px solid var(--border);
-  padding:14px;background:#0e0e12;
+  padding:14px;background:#0e0e12;flex-shrink:0;
 }
 .sc-sidebar h5{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:10px}
 .sc-sidebar-item{
@@ -170,7 +187,13 @@ nav{
   border-radius:4px;
 }
 .sc-sidebar-item.active{background:rgba(245,184,76,0.15);color:var(--gold)}
-.sc-main{flex:1;padding:30px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}
+.sc-main{flex:1;position:relative;overflow:hidden}
+.sc-scroll{
+  position:absolute;left:0;right:0;top:0;
+  padding:20px 30px;
+  transition:transform 0.05s linear;
+  will-change:transform;
+}
 .sc-line{font-size:clamp(14px,2vw,22px);font-weight:600;margin-bottom:14px;text-align:center;font-family:Arial,sans-serif}
 .sc-line.host{color:#4ade80}
 .sc-line.guest{color:#60a5fa}
@@ -180,8 +203,25 @@ nav{
   position:absolute;left:0;right:0;height:2px;
   background:var(--gold);
   box-shadow:0 0 8px var(--gold);
-  top:50%;
+  top:50%;z-index:2;pointer-events:none;
 }
+
+/* ═════ TRUST BAR ═════ */
+.trust-bar{
+  background:#000;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:32px 0;
+}
+.trust-bar-text{
+  text-align:center;
+  font-size:13px;
+  color:var(--text-dim);
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  font-weight:600;
+}
+.trust-bar-text strong{color:var(--gold);font-weight:700}
 
 /* ═════ SECTION ═════ */
 section{padding:100px 0}
@@ -197,8 +237,49 @@ section{padding:100px 0}
 }
 .section-sub{font-size:17px;color:var(--text-dim);max-width:680px;margin:0 auto}
 
+/* ═════ WORKFLOW ═════ */
+#workflow{background:var(--bg-2)}
+.workflow-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  max-width:1100px;margin:0 auto;
+  position:relative;
+}
+.workflow-step{
+  background:var(--bg-3);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px 22px;
+  text-align:center;
+  position:relative;
+  z-index:1;
+}
+.workflow-step:not(:last-child){margin-right:-1px}
+.wf-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(245,184,76,0.1);
+  border:1px solid var(--gold);
+  color:var(--gold);font-weight:900;
+  margin-bottom:14px;
+}
+.wf-arrow{
+  display:none;
+  position:absolute;right:-12px;top:50%;
+  transform:translateY(-50%);
+  color:var(--gold);font-size:24px;font-weight:900;
+  background:var(--bg-2);padding:0 6px;
+  z-index:2;
+}
+.workflow-step h4{font-size:16px;font-weight:800;margin-bottom:8px}
+.workflow-step p{font-size:13px;color:var(--text-dim);line-height:1.5}
+@media (min-width:900px){.wf-arrow{display:inline-block}}
+@media (max-width:899px){
+  .workflow-grid{grid-template-columns:1fr;gap:14px}
+}
+
 /* ═════ WHY SWITCH ═════ */
-#why{background:var(--bg-2)}
 .why-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -206,12 +287,14 @@ section{padding:100px 0}
   max-width:1100px;margin:0 auto;
 }
 .why-item{
-  background:var(--bg-3);
+  background:var(--bg-2);
   border:1px solid var(--border);
   border-radius:10px;
   padding:24px 26px;
   display:flex;gap:14px;
+  transition:all 0.2s;
 }
+.why-item:hover{border-color:var(--gold);transform:translateY(-2px)}
 .why-icon{
   flex-shrink:0;width:40px;height:40px;border-radius:8px;
   background:rgba(245,184,76,0.12);
@@ -222,13 +305,14 @@ section{padding:100px 0}
 .why-item p{font-size:13px;color:var(--text-dim);line-height:1.55}
 
 /* ═════ FEATURE CATEGORIES ═════ */
+#features{background:var(--bg-2)}
 .cat-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
   gap:24px;
 }
 .cat{
-  background:var(--bg-2);
+  background:var(--bg-3);
   border:1px solid var(--border);
   border-radius:12px;
   padding:32px;
@@ -257,7 +341,6 @@ section{padding:100px 0}
 .pro-badge{font-size:11px;background:var(--gold);color:#000;padding:3px 8px;border-radius:4px;margin-left:6px}
 
 /* ═════ COMPARISON ═════ */
-#vs{background:var(--bg-2)}
 .compare{
   background:var(--bg-3);border:1px solid var(--border);
   border-radius:12px;overflow:hidden;
@@ -318,30 +401,6 @@ section{padding:100px 0}
 }
 .tier-cta{width:100%;justify-content:center}
 
-/* ═════ TESTIMONIALS ═════ */
-.testimonials{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:24px;
-  max-width:1000px;margin:0 auto;
-}
-.quote{
-  background:var(--bg-3);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:30px;
-  position:relative;
-}
-.quote::before{
-  content:"\201C";
-  position:absolute;top:10px;left:18px;
-  font-size:60px;color:var(--gold);
-  opacity:0.3;line-height:1;font-family:Georgia,serif;
-}
-.quote p{font-size:15px;line-height:1.6;margin-bottom:16px;position:relative;z-index:1}
-.quote-author{font-size:13px;color:var(--text-dim);font-weight:600}
-.quote-author strong{color:var(--gold)}
-
 /* ═════ NTN PROMO ═════ */
 .ntn-promo{
   background:linear-gradient(135deg,#0e0e12 0%,#1a1a1f 100%);
@@ -362,6 +421,39 @@ section{padding:100px 0}
   padding:6px 14px;border-radius:20px;font-size:13px;
   color:var(--text-dim);
 }
+
+/* ═════ FOUNDER NOTE ═════ */
+.founder-note{
+  max-width:760px;margin:0 auto;
+  background:linear-gradient(135deg,rgba(245,184,76,0.06) 0%,rgba(245,184,76,0.01) 100%);
+  border:1px solid rgba(245,184,76,0.2);
+  border-radius:14px;
+  padding:48px;
+  position:relative;
+}
+.founder-note::before{
+  content:"\201C";
+  position:absolute;top:-10px;left:30px;
+  font-size:120px;color:var(--gold);
+  opacity:0.2;line-height:1;font-family:Georgia,serif;
+}
+.founder-note p{
+  font-size:18px;line-height:1.7;
+  color:var(--text);
+  margin-bottom:24px;
+  position:relative;z-index:1;
+}
+.founder-sig{
+  display:flex;align-items:center;gap:14px;
+}
+.founder-avatar{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--bg-3);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;color:var(--gold);font-size:20px;
+}
+.founder-meta strong{display:block;font-size:15px;color:var(--text)}
+.founder-meta span{font-size:13px;color:var(--text-dim)}
 
 /* ═════ CTA BAND ═════ */
 .cta-band{
@@ -438,11 +530,11 @@ footer{
       PrompterQ
     </a>
     <div class="nav-links">
+      <a href="#workflow">How It Works</a>
       <a href="#features">Features</a>
       <a href="#vs">vs FlipQ</a>
       <a href="#pricing">Pricing</a>
       <a href="#network">Network</a>
-      <a href="#contact">Contact</a>
       <a href="#pricing" class="nav-cta">Get PrompterQ</a>
     </div>
   </div>
@@ -451,12 +543,12 @@ footer{
 <!-- ═════ HERO ═════ -->
 <header class="hero">
   <div class="container">
-    <div class="hero-eyebrow">The New Standard in Professional Teleprompting</div>
-    <h1>Stop fighting your software.<br>Start delivering flawless reads.</h1>
-    <p class="hero-sub">PrompterQ is the modern teleprompter built by a <strong>25-year veteran operator</strong> for the real demands of the stage. Clean scripts fast. Rock-solid prompting. Support that answers at 7 AM load-in.</p>
+    <div class="hero-eyebrow">Built by Operators • For Operators</div>
+    <h1>Teleprompter software<br>that behaves under pressure.</h1>
+    <p class="hero-sub">25 years of real shows distilled into one tool. Clean scripts in seconds. <strong>Rock-solid 60fps prompting.</strong> Support that actually picks up at 6 AM load-in.</p>
     <div class="hero-ctas">
       <a href="#pricing" class="btn btn-primary btn-large">Download Free →</a>
-      <a href="#features" class="btn btn-secondary btn-large">See What's Inside</a>
+      <a href="#workflow" class="btn btn-secondary btn-large">See How It Works</a>
     </div>
     <div class="hero-trust">
       <div class="trust-item">Works offline</div>
@@ -467,10 +559,11 @@ footer{
   </div>
 
   <div class="screenshot-wrap">
-    <div class="screenshot">
+    <div class="screenshot" id="screenshotMock" title="Hover to see live scroll">
       <div class="screenshot-mock">
         <div class="sc-header">
           <div class="sc-dot"></div><div class="sc-dot"></div><div class="sc-dot"></div>
+          <div class="sc-hint">▶ Hover to scroll</div>
           <div class="sc-title">PrompterQ — Live Show</div>
         </div>
         <div class="sc-body">
@@ -482,12 +575,20 @@ footer{
             <div class="sc-sidebar-item">Closing</div>
           </div>
           <div class="sc-main">
-            <div class="sc-line dim">Good evening everyone.</div>
-            <div class="sc-line dim">Thank you for joining us tonight.</div>
-            <div class="sc-line host">HOST: Tonight we're celebrating</div>
-            <div class="sc-line normal">a year of <em style="color:var(--gold)">extraordinary</em> growth.</div>
-            <div class="sc-line guest">GUEST: And I'm thrilled to be here.</div>
-            <div class="sc-line dim">Let's get started.</div>
+            <div class="sc-scroll" id="scScroll">
+              <div class="sc-line dim">Good evening everyone.</div>
+              <div class="sc-line dim">Thank you for joining us.</div>
+              <div class="sc-line host">HOST: Tonight we're celebrating</div>
+              <div class="sc-line normal">a year of <em style="color:var(--gold)">extraordinary</em> growth.</div>
+              <div class="sc-line guest">GUEST: And I'm thrilled to be here.</div>
+              <div class="sc-line normal">It's been an incredible journey.</div>
+              <div class="sc-line host">HOST: Let's start with the numbers.</div>
+              <div class="sc-line normal">Revenue grew <em style="color:var(--gold)">forty percent</em> this year.</div>
+              <div class="sc-line guest">GUEST: Most of that came from</div>
+              <div class="sc-line guest">our enterprise segment.</div>
+              <div class="sc-line dim">[applause]</div>
+              <div class="sc-line dim">[applause]</div>
+            </div>
             <div class="sc-cuebar"></div>
           </div>
         </div>
@@ -496,8 +597,52 @@ footer{
   </div>
 </header>
 
+<!-- ═════ TRUST BAR ═════ -->
+<div class="trust-bar">
+  <div class="container">
+    <p class="trust-bar-text">Used on stages for <strong>Fortune 500 keynotes</strong> · <strong>Broadcast networks</strong> · <strong>Political campaigns</strong> · <strong>Corporate town halls</strong></p>
+  </div>
+</div>
+
+<!-- ═════ WORKFLOW ═════ -->
+<section id="workflow">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">How It Works</div>
+      <h2 class="section-title">From messy script to talent monitor in 60 seconds.</h2>
+      <p class="section-sub">The same workflow, every time. No surprises at call time.</p>
+    </div>
+
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <div class="wf-num">1</div>
+        <h4>Import</h4>
+        <p>Drag a DOCX, RTF, or TXT. Mammoth.js handles formatting fidelity. PDFs? Paste the text.</p>
+        <div class="wf-arrow">→</div>
+      </div>
+      <div class="workflow-step">
+        <div class="wf-num">2</div>
+        <h4>Format</h4>
+        <p>One click. ¶ FMT runs speech-rhythm line breaks. Curly quotes, em-dashes, encoding garbage — gone.</p>
+        <div class="wf-arrow">→</div>
+      </div>
+      <div class="workflow-step">
+        <div class="wf-num">3</div>
+        <h4>Mark</h4>
+        <p>Drop cue markers (Ctrl+M). Color speakers (Ctrl+1/2/3). Italics for emphasis (Ctrl+I).</p>
+        <div class="wf-arrow">→</div>
+      </div>
+      <div class="workflow-step">
+        <div class="wf-num">4</div>
+        <h4>Prompt</h4>
+        <p>F11 to fullscreen. M to mirror. Arrows for speed. Page Up/Down to switch scripts. You're rolling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═════ WHY OPERATORS SWITCH ═════ -->
-<section id="why">
+<section>
   <div class="container">
     <div class="section-head">
       <div class="section-eyebrow">Why Operators Are Switching</div>
@@ -517,14 +662,14 @@ footer{
         <div class="why-icon">🎯</div>
         <div>
           <h4>True 60fps scrolling</h4>
-          <p>GPU-accelerated, frame-rate independent. Buttery smooth on any hardware, from venue laptops to 144Hz machines.</p>
+          <p>requestAnimationFrame engine. Frame-rate independent. Zero jitter on venue laptops or 144Hz machines.</p>
         </div>
       </div>
       <div class="why-item">
         <div class="why-icon">🎨</div>
         <div>
           <h4>Speaker colors + word-level italics</h4>
-          <p>Right in the editor. Ctrl+1/2/3 to color a line, Ctrl+I to emphasize a word. Talent reads it right the first time.</p>
+          <p>Right in the editor. Ctrl+1/2/3 colors a line. Ctrl+I emphasizes a word. Talent reads it right the first time.</p>
         </div>
       </div>
       <div class="why-item">
@@ -568,8 +713,8 @@ footer{
           <h3>Script Preparation</h3>
         </div>
         <ul>
-          <li><div><strong>Smart Auto-Formatter (¶ FMT)</strong><span>Speech-rhythm line breaking. Detects abbreviations, decimals, and ellipses.</span></div></li>
-          <li><div><strong>Advanced text normalization</strong><span>Curly quotes, em-dashes, encoding garbage, page numbers, bullets — all cleaned automatically.</span></div></li>
+          <li><div><strong>Smart Auto-Formatter (¶ FMT)</strong><span>Speech-rhythm line breaking. Detects abbreviations, decimals, ellipses.</span></div></li>
+          <li><div><strong>Advanced text normalization</strong><span>Curly quotes, em-dashes, page numbers, bullets — cleaned automatically.</span></div></li>
           <li><div><strong>DOCX, RTF, TXT import</strong><span>Drag-and-drop. High-fidelity Word handling via mammoth.js.</span></div></li>
           <li><div><strong>Rich contenteditable editor</strong><span>Ctrl+1/2/3 speaker colors. Ctrl+I italics. Ctrl+M cue markers.</span></div></li>
         </ul>
@@ -594,7 +739,7 @@ footer{
           <h3>Workflow Tools</h3>
         </div>
         <ul>
-          <li><div><strong>Full session save/load (.pqs)</strong><span>Preserves formatting, colors, cues, run list, and settings. Walk into any laptop.</span></div></li>
+          <li><div><strong>Full session save/load (.pqs)</strong><span>Preserves formatting, colors, cues, run list, settings. Walk into any laptop.</span></div></li>
           <li><div><strong>Search &amp; Find</strong><span>Highlighted matches. Find any word in seconds.</span></div></li>
           <li><div><strong>Talent monitor output window</strong><span>Pop out to second display. SDI-friendly. Operator station stays full control.</span></div></li>
           <li><div><strong>Keyboard-first design</strong><span>Built for operators under pressure. Mouse optional, keyboard mandatory.</span></div></li>
@@ -607,8 +752,8 @@ footer{
           <h3>Show-Day Safety <span class="pro-badge">PRO</span></h3>
         </div>
         <ul>
-          <li><div><strong>Auto-display detection</strong><span>EleQtron detects secondary monitor and fullscreens automatically. No drag-to-second-screen ritual.</span></div></li>
-          <li><div><strong>Live editing while scrolling</strong><span>Fix typos in real-time. Client sends a change at call time? You're already on it.</span></div></li>
+          <li><div><strong>Auto-display detection</strong><span>EleQtron detects secondary monitor and fullscreens automatically.</span></div></li>
+          <li><div><strong>Live editing while scrolling</strong><span>Fix typos in real-time. Client sends changes at call time? You're already on it.</span></div></li>
           <li><div><strong>Blackout key</strong><span>Instantly kill the talent feed. Operator continues to scroll or edit.</span></div></li>
           <li><div><strong>Autosave + crash recovery</strong><span>Persistent session state. Power loss? Pick up exactly where you were.</span></div></li>
         </ul>
@@ -742,26 +887,18 @@ footer{
   </div>
 </section>
 
-<!-- ═════ TESTIMONIALS (PLACEHOLDERS - DO NOT PUBLISH AS-IS) ═════ -->
+<!-- ═════ FOUNDER NOTE ═════ -->
 <section>
   <div class="container">
-    <div class="section-head">
-      <div class="section-eyebrow">Trusted by Working Operators</div>
-      <h2 class="section-title">From people who can't afford downtime.</h2>
-    </div>
-
-    <div class="testimonials">
-      <div class="quote">
-        <p>The auto-formatter alone saves me 40 minutes per script. The live editing saved a show last month when the client sent changes at call time.</p>
-        <div class="quote-author"><strong>Veteran Operator</strong> — East Coast</div>
-      </div>
-      <div class="quote">
-        <p>Finally, a prompter that feels like it was built by someone who actually runs shows.</p>
-        <div class="quote-author"><strong>NTN Operator</strong> — Florida</div>
-      </div>
-      <div class="quote">
-        <p>I keep PrompterQ on every laptop in my kit. Even when I'm running FlipQ for a client, it's my safety net.</p>
-        <div class="quote-author"><strong>Senior Operator</strong> — Corporate AV</div>
+    <div class="founder-note">
+      <p>I know the feeling of a script crashing five minutes before doors. Of a CEO walking on stage and a teleprompter that won't scroll. Of fighting software older than my career instead of running the show.</p>
+      <p style="font-size:16px;color:var(--text-dim)">I built PrompterQ so you never have to feel that again. If you've been an operator long enough to know what I'm talking about — try the free version on your next show. That's the whole pitch.</p>
+      <div class="founder-sig">
+        <div class="founder-avatar">J</div>
+        <div class="founder-meta">
+          <strong>Jason</strong>
+          <span>Founder, PrompterQ — 25 years on the glass</span>
+        </div>
       </div>
     </div>
   </div>
@@ -855,6 +992,7 @@ footer{
       </div>
       <div class="footer-col">
         <h4>Product</h4>
+        <a href="#workflow">How It Works</a>
         <a href="#features">Features</a>
         <a href="#vs">vs FlipQ</a>
         <a href="#pricing">Pricing</a>
@@ -881,6 +1019,7 @@ footer{
 </footer>
 
 <script>
+// Fade in on scroll
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) e.target.classList.add('visible');
@@ -891,6 +1030,46 @@ document.querySelectorAll('section').forEach(el => {
   observer.observe(el);
 });
 
+// Live scroll preview - proves the 60fps claim
+(function(){
+  const screenshot = document.getElementById('screenshotMock');
+  const scroll = document.getElementById('scScroll');
+  if (!screenshot || !scroll) return;
+
+  let pos = 0;
+  let raf = null;
+  let active = false;
+
+  function animate(){
+    if (!active) return;
+    pos -= 0.6;
+    // Reset when content scrolls off
+    if (pos < -scroll.offsetHeight + 100) pos = scroll.parentElement.offsetHeight;
+    scroll.style.transform = 'translateY(' + pos + 'px)';
+    raf = requestAnimationFrame(animate);
+  }
+
+  function start(){
+    if (active) return;
+    active = true;
+    if (pos === 0) pos = scroll.parentElement.offsetHeight / 2;
+    animate();
+  }
+
+  function stop(){
+    active = false;
+    if (raf) cancelAnimationFrame(raf);
+  }
+
+  screenshot.addEventListener('mouseenter', start);
+  screenshot.addEventListener('mouseleave', stop);
+  // Touch devices: tap to toggle
+  screenshot.addEventListener('click', function(){
+    if (active) stop(); else start();
+  });
+})();
+
+// Free download links
 const FREE_DOWNLOAD_URL = '/PrompterQ-v4.html';
 document.getElementById('downloadFree').href = FREE_DOWNLOAD_URL;
 document.getElementById('downloadFree').setAttribute('download', 'PrompterQ.html');
