@@ -1,0 +1,2375 @@
+<!DOCTYPE html>
+<!-- PrompterQ v4.2 | Build: 2026-05-07 | Claduta Corp -->
+<!-- v4.0: contenteditable editor, speaker colors, search -->
+<!-- v4.1: full formatter pipeline, DOM-anchored cues, translateY scroll, blackout key -->
+<!-- v4.2: clipboard share button -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrompterQ — Professional Teleprompter</title>
+<style>
+:root {
+  --bg: #d4d0c8;
+  --surface: #ece9d8;
+  --surface2: #f0ede4;
+  --border: #999;
+  --border-light: #bbb;
+  --gold: #F5B84C;
+  --text: #000;
+  --text-dim: #555;
+  --green: #2d8f2d;
+  --red: #c00;
+  --blue: #0066cc;
+  --font-ui: 'Segoe UI', Tahoma, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+  font-size: 12px;
+}
+
+/* ═══════════ MAIN LAYOUT ═══════════ */
+#editorMode {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ═══════════ MENU BAR ═══════════ */
+.menubar {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+  padding: 1px 4px;
+  gap: 0;
+  height: 22px;
+  font-size: 12px;
+}
+
+.menu-item {
+  padding: 2px 8px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.menu-item:hover { background: #316ac5; color: #fff; }
+
+/* ═══════════ TOOLBAR ═══════════ */
+.toolbar {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+  padding: 2px 4px;
+  gap: 2px;
+  height: 34px;
+  flex-shrink: 0;
+}
+
+.tb-btn {
+  background: none;
+  border: 1px solid transparent;
+  padding: 3px 4px;
+  cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  color: var(--text);
+}
+
+.tb-btn:hover { border-color: #fff #666 #666 #fff; background: var(--surface2); }
+.tb-btn:active { border-color: #666 #fff #fff #666; }
+.tb-btn.active { border-color: #666 #fff #fff #666; background: #ddd; }
+
+.tb-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tb-btn.filled svg { fill: currentColor; stroke: none; }
+
+.tb-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--border-light);
+  margin: 0 3px;
+}
+
+.tb-btn-go {
+  background: linear-gradient(to bottom, #fff4d0, #f0c030);
+  border: 1px solid #c0960a;
+  padding: 3px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  font-family: var(--font-ui);
+}
+
+.tb-btn-go:hover { background: linear-gradient(to bottom, #fffae0, #f5d050); }
+.tb-btn-go:active { background: linear-gradient(to bottom, #e0b020, #d0a010); }
+
+.tb-btn-go svg { width: 14px; height: 14px; fill: #333; stroke: none; }
+
+.toolbar-spacer { flex: 1; }
+
+.toolbar-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-left: 6px;
+  margin-right: 2px;
+}
+
+.toolbar-input {
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 2px 4px;
+  font-size: 11px;
+  font-family: var(--font-ui);
+  border-radius: 1px;
+}
+
+.toolbar-input:focus { outline: 1px solid #316ac5; }
+
+select.toolbar-input { padding-right: 16px; cursor: pointer; }
+input[type="number"].toolbar-input { width: 44px; text-align: center; }
+input[type="color"].toolbar-input { width: 24px; height: 20px; padding: 0; cursor: pointer; border: 1px solid var(--border); }
+
+/* ═══════════ EDITOR (MAIN AREA) ═══════════ */
+.editor-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 2px inset #bbb;
+  margin: 2px 4px;
+}
+
+#scriptEditor {
+  flex: 1;
+  width: 100%;
+  background: #000;
+  color: #fff;
+  border: none;
+  resize: none;
+  padding: 16px 20px;
+  font-size: 120px;
+  line-height: 1.15;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+  outline: none;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  cursor: text;
+}
+
+#scriptEditor:empty::before {
+  content: 'Paste or type your script here...\A\ADrag and drop TXT, RTF, or DOCX files onto this window.\APress F8 or click Go to start prompting.\A\AKeyboard: ↑↓ speed | Space pause | ESC exit\ACtrl+I = italic | Ctrl+1/2/3 = speaker colors';
+  color: #333;
+  font-size: 24px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  pointer-events: none;
+}
+
+#scriptEditor::-webkit-scrollbar { width: 16px; }
+#scriptEditor::-webkit-scrollbar-track { background: #2a2a2a; }
+
+/* Invisible cue anchors in editor */
+.cue-anchor { display: inline; width: 0; height: 0; font-size: 0; line-height: 0; overflow: hidden; }
+#scriptEditor::-webkit-scrollbar-thumb { background: #555; border: 2px solid #2a2a2a; }
+#scriptEditor::-webkit-scrollbar-thumb:hover { background: #777; }
+
+/* ═══════════ BOTTOM PANEL — 3 TABS ═══════════ */
+.bottom-panel {
+  flex-shrink: 0;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  border: 2px inset #bbb;
+  margin: 0 4px 2px;
+  background: var(--surface);
+}
+
+.tab-bar {
+  display: flex;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0 4px;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.tab-btn {
+  padding: 4px 16px;
+  font-size: 11px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: var(--bg);
+  color: var(--text-dim);
+  margin-top: 3px;
+  border-radius: 3px 3px 0 0;
+  font-family: var(--font-ui);
+}
+
+.tab-btn:hover { color: var(--text); }
+
+.tab-btn.active {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-light);
+  border-bottom: 1px solid var(--surface);
+  margin-bottom: -1px;
+  font-weight: 600;
+}
+
+.tab-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.tab-page {
+  display: none;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.tab-page.active { display: block; }
+
+/* ═══ SETTINGS TAB ═══ */
+.settings-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr 240px;
+  gap: 0;
+  height: 100%;
+}
+
+.settings-col {
+  padding: 8px 12px;
+}
+
+.settings-col + .settings-col { border-left: 1px solid var(--border-light); }
+
+.settings-group-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 3px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.setting-label {
+  font-size: 11px;
+  min-width: 70px;
+  color: var(--text);
+}
+
+.setting-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  min-width: 30px;
+  text-align: right;
+  color: var(--text);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  flex: 1;
+  height: 4px;
+  background: #aaa;
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #555;
+  border: 1px solid #333;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover { background: #333; }
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.check-row input { accent-color: #316ac5; }
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.radio-group label { display: flex; align-items: center; gap: 3px; cursor: pointer; }
+.radio-group input { accent-color: #316ac5; }
+
+/* ═══ SHORTCUT LIST TAB ═══ */
+.list-header {
+  display: flex;
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-bottom: none;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.list-header div {
+  padding: 3px 8px;
+  border-right: 1px solid var(--border-light);
+}
+
+.list-body {
+  border: 1px solid var(--border-light);
+  background: #fff;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 80px;
+}
+
+.list-row {
+  display: flex;
+  font-size: 11px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.list-row:hover { background: #e8f0fe; }
+.list-row.active { background: #316ac5; color: #fff; }
+
+.list-row div {
+  padding: 3px 8px;
+  border-right: 1px solid #eee;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.list-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.list-btn {
+  background: var(--surface);
+  border: 1px outset #ccc;
+  padding: 3px 12px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  border-radius: 2px;
+}
+
+.list-btn:hover { background: var(--surface2); }
+.list-btn:active { border-style: inset; }
+
+/* ═══════════ STATUS BAR ═══════════ */
+.statusbar {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border-top: 1px solid #fff;
+  padding: 1px 8px;
+  height: 22px;
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  gap: 0;
+}
+
+.status-cell {
+  padding: 0 10px;
+  border-right: 1px solid var(--border-light);
+}
+
+.status-cell:last-child { border-right: none; }
+.status-cell.right { margin-left: auto; }
+
+.status-green { color: var(--green); font-weight: 600; }
+.status-gold { color: #a08020; font-weight: 600; }
+
+/* ═══════════════ PROMPTER MODE ═══════════════ */
+#prompterMode {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+#prompterCanvas {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#prompterText {
+  position: absolute;
+  top: 0;
+  transform: translateY(100vh);
+  left: 0;
+  right: 0;
+  padding: 5% 8%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.cue-marker {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gold);
+  opacity: 0.7;
+  z-index: 1001;
+  pointer-events: none;
+  box-shadow: 0 0 6px var(--gold);
+}
+
+.mirrored { transform: scaleX(-1); }
+.flipped { transform: scaleY(-1); }
+.mirrored-flipped { transform: scale(-1, -1); }
+
+/* HUD */
+#prompterHUD {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 30px 16px 8px;
+  z-index: 1002;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+#prompterMode:hover #prompterHUD { opacity: 1; pointer-events: auto; }
+
+.hud-stat { text-align: center; margin: 0 8px; }
+.hud-stat .val { font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: var(--gold); }
+.hud-stat .lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+
+.hud-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: var(--font-ui);
+}
+
+.hud-btn:hover { background: rgba(255,255,255,0.2); }
+.hud-btn.exit { border-color: #c00; color: #f66; }
+
+#speedIndicator {
+  position: fixed;
+  top: 10px; right: 10px;
+  z-index: 1003;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--gold);
+  opacity: 0;
+  transition: opacity 0.5s;
+  background: rgba(0,0,0,0.7);
+  padding: 3px 8px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+#speedIndicator.show { opacity: 1; transition: opacity 0.1s; }
+
+#scrollStatus {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1003;
+  font-size: 42px;
+  font-weight: 700;
+  color: rgba(245,184,76,0.35);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  letter-spacing: 3px;
+}
+
+#scrollStatus.show { opacity: 1; transition: opacity 0.1s; }
+
+#progressBar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--gold);
+  z-index: 1003;
+  box-shadow: 0 0 4px var(--gold);
+}
+
+/* ═══════════ MODAL ═══════════ */
+.modal-bg {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-bg.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 2px outset #ddd;
+  padding: 16px;
+  min-width: 420px;
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.3);
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal .list-btn { margin-top: 12px; }
+
+/* Shortcuts reference in modal */
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shortcut-row kbd {
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  min-width: 22px;
+  text-align: center;
+  box-shadow: 0 1px 0 #999;
+}
+</style>
+</head>
+<body>
+
+<div id="editorMode">
+
+  <!-- Menu Bar -->
+  <div class="menubar">
+    <span class="menu-item" onclick="openFile()">File</span>
+    <span class="menu-item" onclick="document.getElementById('scriptEditor').focus()">Edit</span>
+    <span class="menu-item" onclick="showFontPicker()">Font</span>
+    <span class="menu-item">Language</span>
+    <span class="menu-item" onclick="showHelp()">Help</span>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <!-- File operations -->
+    <button class="tb-btn" onclick="clearEditor()" title="New">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="openFile()" title="Open (Ctrl+O)">
+      <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+    </button>
+    <button class="tb-btn" onclick="saveFile()" title="Save (Ctrl+S)">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="saveSession()" title="Save Session (.pqs)">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/><circle cx="16" cy="4" r="3" fill="#F5B84C" stroke="none"/></svg>
+    </button>
+    <button class="tb-btn" onclick="loadSession()" title="Load Session (.pqs)">
+      <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><circle cx="16" cy="4" r="3" fill="#F5B84C" stroke="none"/></svg>
+    </button>
+    <button class="tb-btn" title="Print" onclick="window.print()">
+      <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+
+    <div class="tb-sep"></div>
+
+    <!-- Edit operations -->
+    <button class="tb-btn" onclick="document.execCommand('undo')" title="Undo">
+      <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+    </button>
+
+    <div class="tb-sep"></div>
+
+    <!-- Font controls inline -->
+    <button class="tb-btn" onclick="applyColor('#00ff00')" title="Green (Speaker 1) — Ctrl+1" style="font-size:14px;font-weight:700;min-width:28px;color:#00ff00">A</button>
+    <button class="tb-btn" onclick="applyColor('#00bfff')" title="Blue (Speaker 2) — Ctrl+2" style="font-size:14px;font-weight:700;min-width:28px;color:#00bfff">A</button>
+    <button class="tb-btn" onclick="applyColor('#ffff00')" title="Yellow (Speaker 3) — Ctrl+3" style="font-size:14px;font-weight:700;min-width:28px;color:#ffff00">A</button>
+    <button class="tb-btn" onclick="applyColor('#ffffff')" title="White (Reset)" style="font-size:14px;font-weight:700;min-width:28px;color:#ffffff">A</button>
+    <button class="tb-btn" id="btnItalic" onclick="toggleItalic()" title="Italic (Ctrl+I)" style="font-style:italic;font-size:14px;min-width:28px;font-family:serif">I</button>
+
+    <div class="tb-sep"></div>
+
+    <!-- Alignment -->
+    <button class="tb-btn" onclick="setAlign('left')" title="Left Align">
+      <svg viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="17" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+    </button>
+    <button class="tb-btn" onclick="setAlign('center')" title="Center">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="18" y1="14" x2="6" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+    </button>
+    <button class="tb-btn" onclick="setAlign('right')" title="Right Align">
+      <svg viewBox="0 0 24 24"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="7" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+    </button>
+    <button class="tb-btn" onclick="showMarginDialog()" title="Margins & Line Spacing">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+    </button>
+
+    <div class="tb-sep"></div>
+
+    <!-- Background color -->
+    <button class="tb-btn" onclick="toggleBgColor()" title="Background Color" style="position:relative">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="#000" stroke="#666"/><text x="12" y="16" text-anchor="middle" fill="#fff" font-size="10" font-family="Arial" font-weight="700">BG</text></svg>
+    </button>
+
+    <div class="tb-sep"></div>
+
+    <!-- Auto-format -->
+    <button class="tb-btn" onclick="autoFormatScript()" title="Auto-Format: Line break after each sentence" style="font-size:10px;padding:3px 8px;font-weight:600;min-width:auto">
+      ¶ FMT
+    </button>
+
+    <div class="tb-sep"></div>
+
+    <!-- Search -->
+    <input type="text" id="searchField" placeholder="Find..." onkeydown="if(event.key==='Enter'){event.preventDefault();findNext()}" style="width:120px;height:24px;font-size:12px;padding:2px 6px;border:1px solid #999;border-radius:2px;background:#fff">
+    <button class="tb-btn" onclick="findNext()" title="Find Next (Enter)" style="font-size:10px;padding:3px 6px;min-width:auto">Find</button>
+    <button class="tb-btn" onclick="copyScriptToClipboard()" title="Copy script to clipboard for sharing" style="font-size:10px;padding:3px 6px;min-width:auto">📋 Share</button>
+
+    <div class="tb-sep"></div>
+    <button class="tb-btn" onclick="loadDemo()" title="Load Demo Script">
+      <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+    </button>
+
+    <div class="toolbar-spacer"></div>
+
+    <!-- Font/Size quick access -->
+    <span class="toolbar-label">FONT</span>
+    <select class="toolbar-input" id="fontFamily" onchange="applyFont()" style="width:110px">
+      <option value="Arial, Helvetica, sans-serif" selected>Arial</option>
+      <option value="'Courier New', monospace">Courier New</option>
+      <option value="'Times New Roman', serif">Times New Roman</option>
+      <option value="Verdana, sans-serif">Verdana</option>
+      <option value="Tahoma, sans-serif">Tahoma</option>
+      <option value="Georgia, serif">Georgia</option>
+    </select>
+
+    <span class="toolbar-label">SIZE</span>
+    <input type="number" class="toolbar-input" id="fontSize" value="120" min="12" max="200" onchange="applyFont()">
+
+    <div class="tb-sep"></div>
+
+    <button class="tb-btn-go" onclick="launchOutputWindow()" title="Launch Output on Second Monitor" style="background:linear-gradient(to bottom,#d0e0ff,#6090d0);border-color:#4060a0;color:#fff;margin-right:4px">
+      &#9634; Output
+    </button>
+
+    <button class="tb-btn-go" onclick="startPrompter()" title="Start Prompter (F8)">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Go
+    </button>
+  </div>
+
+  <!-- Script Editor -->
+  <div class="editor-wrap">
+    <div id="scriptEditor" contenteditable="true"></div>
+  </div>
+
+  <!-- Bottom 3-Tab Panel -->
+  <div class="bottom-panel">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab('shortcuts')">Shortcut List</div>
+      <div class="tab-btn" onclick="switchTab('runlist')">Run List</div>
+      <div class="tab-btn" onclick="switchTab('settings')">General Settings</div>
+    </div>
+    <div class="tab-content">
+
+      <!-- TAB: Shortcut List -->
+      <div class="tab-page active" id="tabShortcuts">
+        <div class="list-header">
+          <div style="width:120px">Shortcut Name</div>
+          <div style="width:70px">Key</div>
+          <div style="width:60px">Position</div>
+          <div style="flex:1">Preview Text</div>
+        </div>
+        <div class="list-body" id="shortcutListBody"></div>
+        <div class="list-actions">
+          <button class="list-btn" onclick="addShortcut()">Add</button>
+          <button class="list-btn" onclick="editShortcut()">Edit</button>
+          <button class="list-btn" onclick="deleteShortcut()">Delete</button>
+        </div>
+      </div>
+
+      <!-- TAB: Run List -->
+      <div class="tab-page" id="tabRunList">
+        <div class="list-header">
+          <div style="width:200px">File Name</div>
+          <div style="flex:1">Path / Location</div>
+        </div>
+        <div class="list-body" id="runListBody"></div>
+        <div class="list-actions">
+          <button class="list-btn" onclick="addToRunList()">Add</button>
+          <button class="list-btn" onclick="editRunListItem()">Edit</button>
+          <button class="list-btn" onclick="deleteRunListItem()">Delete</button>
+        </div>
+      </div>
+
+      <!-- TAB: General Settings -->
+      <div class="tab-page" id="tabSettings">
+        <div class="settings-grid">
+
+          <!-- Column 1: General -->
+          <div class="settings-col">
+            <div class="settings-group-title">General</div>
+
+            <div class="setting-row">
+              <span class="setting-label">Speed :</span>
+              <input type="range" id="speedSlider" min="1" max="20" value="3" step="0.5" oninput="document.getElementById('speedVal').textContent=this.value">
+              <span class="setting-value" id="speedVal">3</span>
+            </div>
+
+            <div class="setting-row">
+              <span class="setting-label">Sensitivity :</span>
+              <input type="range" id="sensSlider" min="1" max="10" value="5" oninput="document.getElementById('sensVal').textContent=this.value">
+              <span class="setting-value" id="sensVal">5</span>
+            </div>
+
+            <div class="setting-row">
+              <span class="setting-label">Cue Position :</span>
+              <input type="range" id="cueSlider" min="10" max="80" value="33" oninput="document.getElementById('cueVal').textContent=this.value+'%'">
+              <span class="setting-value" id="cueVal">33%</span>
+            </div>
+
+            <label class="check-row"><input type="checkbox" id="chkCueMarker"> Show Cue Marker</label>
+            <label class="check-row"><input type="checkbox" id="chkFromCursor"> Run From Selected Cursor</label>
+            <label class="check-row"><input type="checkbox" id="chkTimer" checked> Show Timer</label>
+
+            <div class="setting-row" style="margin-top:4px">
+              <span class="setting-label" style="font-size:10px">Mouse Left Click :</span>
+              <div class="radio-group">
+                <label><input type="radio" name="mouseClick" value="toggle" checked> Toggle Start Stop Scroll</label>
+                <label><input type="radio" name="mouseClick" value="shortcut"> Cycle Shortcut</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Display -->
+          <div class="settings-col" style="flex:1">
+            <div class="settings-group-title">Display</div>
+
+            <div style="margin-bottom:8px">
+              <div style="font-size:11px;font-weight:600;margin-bottom:4px">Primary Display (Current Monitor) Settings</div>
+              <div class="radio-group">
+                <label><input type="radio" name="primaryDisplay" value="normal" checked> Normal</label>
+                <label><input type="radio" name="primaryDisplay" value="mirrored"> Mirrored</label>
+                <label><input type="radio" name="primaryDisplay" value="flipped"> Flipped</label>
+                <label><input type="radio" name="primaryDisplay" value="both"> Both</label>
+              </div>
+              <label class="check-row"><input type="checkbox" id="chkQuarter"> Use Quarter-Size Window in Primary Display</label>
+            </div>
+
+            <div style="margin-bottom:8px">
+              <label class="check-row"><input type="checkbox" id="chkSmallWindow"> Small Window Output Settings</label>
+              <div class="radio-group" style="margin-left:20px">
+                <label><input type="radio" name="smallWindow" value="normal" checked> Normal</label>
+                <label><input type="radio" name="smallWindow" value="mirrored"> Mirrored</label>
+                <label><input type="radio" name="smallWindow" value="flipped"> Flipped</label>
+                <label><input type="radio" name="smallWindow" value="both"> Both</label>
+                <span style="font-size:11px;margin-left:8px">Size :</span>
+                <input type="range" id="smallWindowSize" min="10" max="50" value="25" style="width:80px">
+              </div>
+            </div>
+
+            <div>
+              <label class="check-row"><input type="checkbox" id="chkSecondary" checked> Secondary Display Output Settings</label>
+              <div class="radio-group" style="margin-left:20px">
+                <label><input type="radio" name="secondaryDisplay" value="normal" checked> Normal</label>
+                <label><input type="radio" name="secondaryDisplay" value="mirrored"> Mirrored</label>
+                <label><input type="radio" name="secondaryDisplay" value="flipped"> Flipped</label>
+                <label><input type="radio" name="secondaryDisplay" value="both"> Both</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: PrompterQ Extras -->
+          <div class="settings-col">
+            <div class="settings-group-title">PrompterQ Extras</div>
+
+            <div class="stat-row" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+              <div style="background:#fff;border:1px solid var(--border);border-radius:2px;padding:6px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:16px;font-weight:700" id="statWords">0</div>
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase">Words</div>
+              </div>
+              <div style="background:#fff;border:1px solid var(--border);border-radius:2px;padding:6px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:16px;font-weight:700" id="statTime">0:00</div>
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase">Est. Read</div>
+              </div>
+            </div>
+
+            <div class="stat-row" style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              <div style="background:#fff;border:1px solid var(--border);border-radius:2px;padding:6px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:16px;font-weight:700" id="statChars">0</div>
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase">Characters</div>
+              </div>
+              <div style="background:#fff;border:1px solid var(--border);border-radius:2px;padding:6px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:16px;font-weight:700" id="statPages">0</div>
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase">Pages</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="statusbar">
+    <span class="status-cell status-green" id="statusState">Ready</span>
+    <span class="status-cell" id="statusWords">Words: 0</span>
+    <span class="status-cell" id="statusFile">No file loaded</span>
+    <span class="status-cell right" id="statusFps">60 fps</span>
+    <span class="status-cell" id="statusDate"></span>
+    <span class="status-cell" id="statusTime"></span>
+  </div>
+
+</div>
+
+<!-- ═══════════════ PROMPTER MODE ═══════════════ -->
+<div id="prompterMode">
+  <div id="prompterCanvas">
+    <div id="prompterText"></div>
+  </div>
+  <div class="cue-marker" id="cueMarkerLine" style="display:none"></div>
+  <div id="progressBar" style="width:0%"></div>
+  <div id="speedIndicator">Speed: 3.0</div>
+  <div id="scrollStatus">PAUSED</div>
+  <div id="prompterHUD">
+    <div style="display:flex;gap:4px">
+      <button class="hud-btn exit" onclick="exitPrompter()">✕ EXIT</button>
+      <button class="hud-btn" onclick="toggleMirrorLive()">⟲ Display (M)</button>
+    </div>
+    <div style="display:flex;gap:12px">
+      <div class="hud-stat"><div class="val" id="hudSpeed">3.0</div><div class="lbl">Speed</div></div>
+      <div class="hud-stat"><div class="val" id="hudElapsed">0:00</div><div class="lbl">Elapsed</div></div>
+      <div class="hud-stat"><div class="val" id="hudRemaining">--:--</div><div class="lbl">Remaining</div></div>
+      <div class="hud-stat"><div class="val" id="hudProgress">0%</div><div class="lbl">Progress</div></div>
+    </div>
+    <div></div>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal-bg" id="helpModal">
+  <div class="modal">
+    <div class="modal-title">Keyboard Shortcuts — PrompterQ</div>
+    <div class="shortcuts-grid">
+      <div class="shortcut-row"><kbd>F8</kbd> Start / Stop Prompter</div>
+      <div class="shortcut-row"><kbd>Space</kbd> Pause / Resume</div>
+      <div class="shortcut-row"><kbd>↑</kbd> Speed Up</div>
+      <div class="shortcut-row"><kbd>↓</kbd> Slow Down / Reverse</div>
+      <div class="shortcut-row"><kbd>← →</kbd> Cycle Cues</div>
+      <div class="shortcut-row"><kbd>ESC</kbd> Exit Prompter</div>
+      <div class="shortcut-row"><kbd>M</kbd> Toggle Mirror</div>
+      <div class="shortcut-row"><kbd>B</kbd> Blackout Output</div>
+      <div class="shortcut-row"><kbd>Home</kbd> Jump to Start</div>
+      <div class="shortcut-row"><kbd>End</kbd> Jump to End</div>
+      <div class="shortcut-row"><kbd>+/-</kbd> Font Size Live</div>
+      <div class="shortcut-row"><kbd>0-9,A-Z</kbd> Jump to Cue (36 max)</div>
+      <div class="shortcut-row"><kbd>Ctrl+O</kbd> Open File</div>
+      <div class="shortcut-row"><kbd>Ctrl+M</kbd> Set Cue at Cursor</div>
+      <div class="shortcut-row"><kbd>PgDn</kbd> Next Script (Run List)</div>
+      <div class="shortcut-row"><kbd>PgUp</kbd> Prev Script (Run List)</div>
+    </div>
+    <button class="list-btn" onclick="closeHelp()" style="margin-top:12px">OK</button>
+  </div>
+</div>
+
+<!-- Hidden inputs -->
+<input type="file" id="fileInput" accept=".txt,.rtf,.docx,.pqs" style="display:none" onchange="handleFileSelect(event)">
+<input type="file" id="runListInput" accept=".txt,.rtf" style="display:none" multiple onchange="handleRunListFiles(event)">
+<input type="file" id="sessionInput" accept=".pqs" style="display:none" onchange="handleSessionLoad(event)">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+// ═══════════════ STATE ═══════════════
+const S = {
+  isPrompting: false,
+  isPaused: true,
+  speed: 3,
+  scrollPos: 0,
+  mirrored: false,
+  displayMode: 'normal',
+  blackout: false,
+  showCue: false,
+  cuePos: 33,
+  fontSize: 120,
+  lineSpacing: 1.15,
+  textAlign: 'left',
+  fontColor: '#ffffff',
+  bgColor: '#000000',
+  fontFamily: 'Arial, Helvetica, sans-serif',
+  runList: [],
+  runListIdx: -1,
+  shortcuts: [],
+  selectedShortcut: -1,
+  selectedRunItem: -1,
+  elapsed: 0,
+  animFrame: null,
+  lastTs: null,
+  speedTimeout: null,
+  statusTimeout: null,
+  timerInt: null,
+  textH: 0,
+  vpH: 0,
+  fileName: '',
+};
+
+const editor = document.getElementById('scriptEditor');
+
+// ═══════════════ TABS ═══════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-page').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  // Fix tab name mapping
+  const map = { shortcuts: 'tabShortcuts', runlist: 'tabRunList', settings: 'tabSettings' };
+  document.getElementById(map[tab]).classList.add('active');
+}
+
+// Fix: proper tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-page').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const tabName = this.textContent.trim().toLowerCase();
+    if (tabName.includes('shortcut')) document.getElementById('tabShortcuts').classList.add('active');
+    else if (tabName.includes('run')) document.getElementById('tabRunList').classList.add('active');
+    else document.getElementById('tabSettings').classList.add('active');
+  });
+});
+
+// ═══════════════ FONT / EDITOR ═══════════════
+function applyFont() {
+  S.fontFamily = document.getElementById('fontFamily').value;
+  S.fontSize = parseInt(document.getElementById('fontSize').value) || 120;
+  editor.style.fontFamily = S.fontFamily;
+  editor.style.fontSize = S.fontSize + 'px';
+  updateStats();
+}
+
+function setAlign(a) {
+  S.textAlign = a;
+  editor.style.textAlign = a;
+}
+
+function toggleBold() { document.execCommand('bold', false, null); editor.focus(); }
+function toggleItalic() { document.execCommand('italic', false, null); editor.focus(); }
+function toggleUnderline() { document.execCommand('underline', false, null); editor.focus(); }
+
+function applyColor(color) {
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+
+  const range = sel.getRangeAt(0);
+
+  // If nothing selected, color the entire current line
+  if (range.collapsed) {
+    // Find the current line (block-level element or direct child of editor)
+    let node = sel.anchorNode;
+    while (node && node !== editor && node.parentNode !== editor) {
+      node = node.parentNode;
+    }
+    if (node && node !== editor) {
+      // It's a line element (div, p, or text node)
+      if (node.nodeType === 3) {
+        // Wrap text node in a span
+        const span = document.createElement('span');
+        span.style.color = color;
+        node.parentNode.insertBefore(span, node);
+        span.appendChild(node);
+      } else {
+        node.style.color = color;
+      }
+    }
+  } else {
+    // Selection exists — color the selected text
+    document.execCommand('foreColor', false, color);
+  }
+  editor.focus();
+}
+
+// Helper to get plain text from contenteditable
+function getEditorText() {
+  // Get text content preserving line breaks from divs/brs
+  const clone = editor.cloneNode(true);
+  // Replace <br> with newlines
+  clone.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
+  // Replace block elements with newline + their content
+  clone.querySelectorAll('div, p').forEach(el => {
+    el.insertAdjacentText('beforebegin', '\n');
+  });
+  return clone.textContent.replace(/^\n/, '').replace(/\n{3,}/g, '\n\n');
+}
+
+// Helper to set editor content from plain text
+function setEditorText(text) {
+  const lines = text.split('\n');
+  editor.innerHTML = lines.map(line => {
+    if (line === '') return '<div><br></div>';
+    const escaped = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return '<div>' + escaped + '</div>';
+  }).join('');
+}
+
+// Set editor HTML directly (for session restore with formatting)
+function setEditorHTML(html) {
+  if (html.startsWith('<div') || html.startsWith('<span') || html.includes('<br')) {
+    editor.innerHTML = html;
+  } else {
+    setEditorText(html);
+  }
+}
+
+// Paste handler — strip formatting except our own
+editor.addEventListener('paste', function(e) {
+  e.preventDefault();
+  const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+  document.execCommand('insertText', false, text);
+});
+function toggleBgColor() {
+  const current = S.bgColor === '#000000' ? '#001133' : '#000000';
+  S.bgColor = current;
+  editor.style.backgroundColor = current;
+}
+
+function showFontPicker() {
+  const size = prompt('Enter font size (px):', S.fontSize);
+  if (size && !isNaN(size)) {
+    S.fontSize = parseInt(size);
+    document.getElementById('fontSize').value = S.fontSize;
+    editor.style.fontSize = S.fontSize + 'px';
+  }
+}
+
+function showMarginDialog() {
+  const ls = prompt('Line Spacing (e.g. 0.5, 1.0, 1.5):', S.lineSpacing);
+  if (ls && !isNaN(ls)) {
+    S.lineSpacing = parseFloat(ls);
+    editor.style.lineHeight = S.lineSpacing;
+  }
+}
+
+// ═══════════════ STATS ═══════════════
+function updateStats() {
+  const text = getEditorText().trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  const chars = text.length;
+  const mins = Math.floor(words / 150);
+  const secs = Math.round((words % 150) / 150 * 60);
+  const pages = Math.max(0, Math.ceil(words / Math.max(20, Math.round(120 * (48 / S.fontSize)))));
+
+  document.getElementById('statWords').textContent = words;
+  document.getElementById('statChars').textContent = chars;
+  document.getElementById('statTime').textContent = mins + ':' + String(secs).padStart(2, '0');
+  document.getElementById('statPages').textContent = pages;
+  document.getElementById('statusWords').textContent = 'Words: ' + words;
+}
+
+editor.addEventListener('input', updateStats);
+
+// ═══════════════ AUTO-FORMAT SENTENCE BREAKS ═══════════════
+function autoFormatScript() {
+  // Check if editor has any formatting (colors, italics)
+  var hasFormatting = editor.querySelector('span[style*="color"], em, i');
+  if (hasFormatting) {
+    if (!confirm('Auto-format will remove existing speaker colors and italics.\n\nUse FMT BEFORE coloring speakers.\n\nProceed?')) return;
+  }
+  var text = getEditorText();
+  if (!text.trim()) return;
+  setEditorText(prompterqFormat(text, { targetWords: 7 }));
+  updateStats();
+  flashStatus('Script formatted');
+}
+
+// ═══════════════ FULL FORMATTER PIPELINE ═══════════════
+
+function prompterqFormat(raw, options) {
+  options = options || {};
+  var cleaned = normalizeScript(raw);
+  var blocks = detectBlocks(cleaned);
+  var formatted = blocks.map(function(block) { return formatBlock(block, options); }).join('\n\n');
+  return formatted.trim();
+}
+
+// --- 1. NORMALIZE / CLEAN ---
+function normalizeScript(raw) {
+  return raw
+    .normalize('NFKC')
+    .replace(/\r\n?/g, '\n')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .replace(/\u00A0/g, ' ')
+    .replace(/[""„]/g, '"')
+    .replace(/[''‚]/g, "'")
+    .replace(/[–—]/g, ' — ')
+    .replace(/[•◦▪▫‣⁃]/g, '- ')
+    .replace(/\t/g, ' ')
+    .replace(/[ ]{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/^\s*Page\s+\d+(\s+of\s+\d+)?\s*$/gim, '')
+    .replace(/^\s*\d+\s*$/gm, '')
+    .trim();
+}
+
+// --- 2. DETECT SPEAKERS / STAGE DIRECTIONS / TEXT ---
+var falseLabels = /^(note|time|date|location|subject|re|from|to)$/i;
+var speakerRe = /^\s*((?:[A-Z][A-Z0-9 .'-]{1,40})|(?:[A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,3})|MC|HOST|MODERATOR|SPEAKER\s*\d+|PANELIST\s*\d+)\s*:\s*(.*)$/;
+var stageStandaloneRe = /^\s*[\[(](.{1,80})[\])]\s*$/;
+var inlineStageRe = /(\[[^\]]{1,80}\]|\([^)]{1,80}\))/g;
+
+function detectBlocks(text) {
+  var lines = text.split('\n');
+  var blocks = [];
+
+  for (var li = 0; li < lines.length; li++) {
+    var line = lines[li].trim();
+    if (!line) continue;
+
+    var speakerMatch = line.match(speakerRe);
+    if (speakerMatch && !falseLabels.test(speakerMatch[1])) {
+      blocks.push({ type: 'speaker', text: speakerMatch[1].trim() + ':' });
+      if (speakerMatch[2].trim()) {
+        blocks.push({ type: 'text', text: speakerMatch[2].trim() });
+      }
+      continue;
+    }
+
+    if (stageStandaloneRe.test(line)) {
+      blocks.push({ type: 'stage', text: line });
+      continue;
+    }
+
+    var pieces = splitInlineStageDirections(line);
+    pieces.forEach(function(piece) { blocks.push(piece); });
+  }
+
+  return blocks;
+}
+
+function splitInlineStageDirections(line) {
+  var result = [];
+  var lastIndex = 0;
+  var match;
+  inlineStageRe.lastIndex = 0;
+
+  while ((match = inlineStageRe.exec(line)) !== null) {
+    var before = line.slice(lastIndex, match.index).trim();
+    if (before) result.push({ type: 'text', text: before });
+    result.push({ type: 'stage', text: match[0].trim() });
+    lastIndex = match.index + match[0].length;
+  }
+
+  var after = line.slice(lastIndex).trim();
+  if (after) result.push({ type: 'text', text: after });
+
+  return result.length ? result : [{ type: 'text', text: line }];
+}
+
+// --- 3. SENTENCE DETECTION ---
+var fmtAbbreviations = new Set([
+  'mr', 'mrs', 'ms', 'dr', 'prof', 'rev', 'gov', 'gen', 'sen', 'rep',
+  'st', 'ave', 'blvd', 'inc', 'corp', 'ltd', 'co', 'jr', 'sr', 'vs',
+  'etc', 'dept', 'est', 'approx', 'fig', 'no', 'vol', 'u.s', 'u.k',
+  'a.m', 'p.m', 'e.g', 'i.e'
+]);
+
+function splitSentences(text) {
+  var sentences = [];
+  var current = '';
+
+  for (var i = 0; i < text.length; i++) {
+    var ch = text[i];
+    current += ch;
+
+    if (ch !== '.' && ch !== '?' && ch !== '!') continue;
+
+    if (isProtectedPeriod(text, i)) continue;
+
+    while (i + 1 < text.length && /["')\]]/.test(text[i + 1])) {
+      current += text[++i];
+    }
+
+    var next = text.slice(i + 1);
+    if (/^\s+([A-Z"'(\[]|$)/.test(next) || i === text.length - 1) {
+      sentences.push(current.trim());
+      current = '';
+      while (i + 1 < text.length && /\s/.test(text[i + 1])) i++;
+    }
+  }
+
+  if (current.trim()) sentences.push(current.trim());
+  return sentences;
+}
+
+function isProtectedPeriod(text, i) {
+  // Decimal numbers: 3.5, $1.5
+  if (i > 0 && i < text.length - 1 && /\d/.test(text[i - 1]) && /\d/.test(text[i + 1])) return true;
+
+  // Known abbreviations
+  var wordStart = i - 1;
+  while (wordStart >= 0 && /[a-zA-Z.]/.test(text[wordStart])) wordStart--;
+  wordStart++;
+  var before = text.slice(wordStart, i).toLowerCase().replace(/\./g, '');
+  if (fmtAbbreviations.has(before)) return true;
+
+  // Initials: U.S.A., J.F.K.
+  var initialSeq = text.slice(Math.max(0, i - 10), i + 1);
+  if (/(?:[A-Z]\.){2,}$/.test(initialSeq)) return true;
+
+  // URLs/emails
+  var nearby = text.slice(Math.max(0, i - 30), Math.min(text.length, i + 30));
+  if (/@|https?:\/\/|www\./i.test(nearby)) return true;
+
+  return false;
+}
+
+// --- 4. PROTECT PHRASES BEFORE LINE BREAKING ---
+var PROTECT_CHAR = '\uE000';
+
+var protectPatterns = [
+  /\$?\d[\d,.]*\s*(million|billion|thousand|percent|%)/gi,
+  /\b(President|Secretary|Chief|Vice President|CEO|CFO|COO|Chairman|Director)\s+of\s+the\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*/g,
+  /\bUnited\s+States\b/gi,
+  /\bNew\s+York\b/gi,
+  /\bLos\s+Angeles\b/gi,
+  /\bSan\s+Francisco\b/gi,
+  /\bSt\.\s+[A-Z][a-z]+/g,
+  /\b[A-Z][a-z]+\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?\b/g
+];
+
+function protectPhrases(text) {
+  var protectedText = text;
+  var saved = [];
+
+  protectPatterns.forEach(function(pattern) {
+    protectedText = protectedText.replace(pattern, function(match) {
+      var token = '\uE001' + saved.length + '\uE002';
+      saved.push(match.replace(/\s+/g, PROTECT_CHAR));
+      return token;
+    });
+  });
+
+  return { protectedText: protectedText, saved: saved };
+}
+
+function restorePhrases(text, saved) {
+  var result = text.replace(/\uE001(\d+)\uE002/g, function(_, i) { return saved[Number(i)]; });
+  while (result.indexOf(PROTECT_CHAR) >= 0) result = result.replace(PROTECT_CHAR, ' ');
+  return result;
+}
+
+// --- 5. SPEECH-RHYTHM LINE BREAKING ---
+var hardBreakBefore = /^(which|who|that|where|when|because|although|while|resulting|including)$/i;
+var softBreakBefore = /^(and|but|or|so|yet|for|with|from|into|onto|across|throughout|during|after|before|under|over|to|in|on|by|at)$/i;
+
+function breakSentence(sentence, target) {
+  target = target || 7;
+  var pResult = protectPhrases(sentence);
+  var words = pResult.protectedText.split(/\s+/).filter(Boolean);
+  var lines = [];
+  var line = [];
+
+  for (var i = 0; i < words.length; i++) {
+    var w = words[i];
+    var prev = line.length > 0 ? line[line.length - 1] : '';
+
+    var shouldBreak =
+      line.length >= 5 &&
+      (
+        /[,;:]$/.test(prev) ||
+        hardBreakBefore.test(w) ||
+        (line.length >= target && softBreakBefore.test(w)) ||
+        line.length >= 9
+      );
+
+    if (shouldBreak && line.length > 1) {
+      lines.push(line.join(' '));
+      line = [];
+    }
+
+    line.push(w);
+  }
+
+  if (line.length) lines.push(line.join(' '));
+
+  return fixOrphans(lines.map(function(l) { return restorePhrases(l, pResult.saved); }));
+}
+
+function fixOrphans(lines) {
+  for (var i = 1; i < lines.length; i++) {
+    if (lines[i].split(/\s+/).length === 1) {
+      lines[i - 1] += ' ' + lines[i];
+      lines.splice(i, 1);
+      i--;
+    }
+  }
+  return lines;
+}
+
+// --- 6. FORMAT BLOCKS ---
+function formatBlock(block, options) {
+  if (block.type === 'speaker') return block.text;
+  if (block.type === 'stage') return block.text;
+
+  var sentences = splitSentences(block.text);
+  var result = '';
+
+  for (var s = 0; s < sentences.length; s++) {
+    var sentence = sentences[s];
+    var wordCount = sentence.split(/\s+/).length;
+    var nextSentence = s + 1 < sentences.length ? sentences[s + 1] : null;
+    var nextWordCount = nextSentence ? nextSentence.split(/\s+/).length : 999;
+
+    // Format the sentence (break long ones into lines)
+    if (wordCount <= 6) {
+      result += sentence;
+    } else {
+      result += breakSentence(sentence, options.targetWords || 7).join('\n');
+    }
+
+    // Spacing between sentences
+    if (s < sentences.length - 1) {
+      // Both current AND next are short = stack tight
+      if (wordCount <= 5 && nextWordCount <= 5) {
+        result += '\n';
+      } else {
+        result += '\n\n';
+      }
+    }
+  }
+
+  return result;
+}
+
+// ═══════════════ FILE I/O ═══════════════
+function openFile() { document.getElementById('fileInput').click(); }
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  readFile(file).then(text => {
+    setEditorText(prompterqFormat(text, { targetWords: 7 }));
+    S.fileName = file.name;
+    document.getElementById('statusFile').textContent = file.name;
+    document.title = 'PrompterQ — ' + file.name;
+    updateStats();
+  });
+  e.target.value = '';
+}
+
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const ext = file.name.split('.').pop().toLowerCase();
+
+    if (ext === 'docx') {
+      // Use mammoth.js to extract text from DOCX
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const arrayBuffer = e.target.result;
+        mammoth.extractRawText({ arrayBuffer: arrayBuffer })
+          .then(function(result) {
+            resolve(result.value);
+          })
+          .catch(function(err) {
+            console.error('DOCX read error:', err);
+            reject(err);
+          });
+      };
+      reader.readAsArrayBuffer(file);
+    } else if (ext === 'rtf') {
+      const reader = new FileReader();
+      reader.onload = e => resolve(stripRTF(e.target.result));
+      reader.readAsText(file);
+    } else {
+      // TXT and everything else
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.readAsText(file);
+    }
+  });
+}
+
+function stripRTF(rtf) {
+  rtf = rtf.replace(/\\par[d]?/g, '\n');
+  rtf = rtf.replace(/\{\*?\\[^{}]+\}|[{}]|\\[A-Za-z]+\n?(?:-?\d+)?[ ]?/g, '');
+  rtf = rtf.replace(/\\'[0-9a-fA-F]{2}/g, '');
+  return rtf.trim();
+}
+
+function saveFile() {
+  const blob = new Blob([getEditorText()], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = S.fileName || 'script.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function saveSession() {
+  const session = {
+    version: 'pqs-1.0',
+    name: S.fileName || 'Untitled Session',
+    script: editor.innerHTML,
+    settings: {
+      fontFamily: S.fontFamily,
+      fontSize: S.fontSize,
+      lineSpacing: S.lineSpacing,
+      textAlign: S.textAlign,
+      fontColor: S.fontColor,
+      bgColor: S.bgColor,
+      speed: parseFloat(document.getElementById('speedSlider').value),
+      sensitivity: parseInt(document.getElementById('sensSlider').value),
+      cuePosition: parseInt(document.getElementById('cueSlider').value),
+      showCueMarker: document.getElementById('chkCueMarker').checked,
+      showTimer: document.getElementById('chkTimer').checked,
+      autoFormat: true,
+      primaryDisplay: document.querySelector('input[name="primaryDisplay"]:checked')?.value || 'normal',
+      secondaryDisplay: document.querySelector('input[name="secondaryDisplay"]:checked')?.value || 'normal',
+      displayMode: S.displayMode || 'normal',
+    },
+    shortcuts: S.shortcuts,
+    runList: S.runList,
+    savedAt: new Date().toISOString()
+  };
+
+  const blob = new Blob([JSON.stringify(session, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const sessionName = (S.fileName || 'session').replace(/\.[^.]+$/, '');
+  a.download = sessionName + '.pqs';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  flashStatus('Session saved: ' + sessionName + '.pqs');
+}
+
+function loadSession() {
+  document.getElementById('sessionInput').click();
+}
+
+function handleSessionLoad(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const session = JSON.parse(ev.target.result);
+      if (!session.version || !session.version.startsWith('pqs')) {
+        alert('Invalid session file.');
+        return;
+      }
+
+      // Restore script
+      setEditorHTML(session.script || '');
+      S.fileName = session.name || file.name;
+      document.getElementById('statusFile').textContent = S.fileName;
+      document.title = 'PrompterQ — ' + S.fileName;
+
+      // Restore settings
+      const s = session.settings || {};
+      if (s.fontFamily) { S.fontFamily = s.fontFamily; document.getElementById('fontFamily').value = s.fontFamily; }
+      if (s.fontSize) { S.fontSize = s.fontSize; document.getElementById('fontSize').value = s.fontSize; }
+      if (s.lineSpacing) { S.lineSpacing = s.lineSpacing; }
+      if (s.textAlign) { S.textAlign = s.textAlign; }
+      if (s.fontColor) { S.fontColor = s.fontColor; }
+      if (s.bgColor) { S.bgColor = s.bgColor; }
+      if (s.speed) document.getElementById('speedSlider').value = s.speed;
+      if (s.sensitivity) document.getElementById('sensSlider').value = s.sensitivity;
+      if (s.cuePosition) document.getElementById('cueSlider').value = s.cuePosition;
+      if (s.showCueMarker !== undefined) document.getElementById('chkCueMarker').checked = s.showCueMarker;
+      if (s.showTimer !== undefined) document.getElementById('chkTimer').checked = s.showTimer;
+      // auto-format always on — no setting to restore
+      if (s.primaryDisplay) {
+        const r = document.querySelector('input[name="primaryDisplay"][value="' + s.primaryDisplay + '"]');
+        if (r) r.checked = true;
+      }
+      if (s.secondaryDisplay) {
+        const r = document.querySelector('input[name="secondaryDisplay"][value="' + s.secondaryDisplay + '"]');
+        if (r) r.checked = true;
+      }
+
+      // Update display values
+      document.getElementById('speedVal').textContent = s.speed || 3;
+      document.getElementById('sensVal').textContent = s.sensitivity || 5;
+      document.getElementById('cueVal').textContent = (s.cuePosition || 33) + '%';
+
+      // Apply font
+      editor.style.fontFamily = S.fontFamily;
+      editor.style.fontSize = S.fontSize + 'px';
+      editor.style.lineHeight = S.lineSpacing;
+      editor.style.textAlign = S.textAlign;
+      editor.style.color = S.fontColor;
+      editor.style.backgroundColor = S.bgColor;
+
+      // Restore shortcuts
+      S.shortcuts = session.shortcuts || [];
+      S.selectedShortcut = -1;
+      renderShortcuts();
+
+      // Restore run list
+      S.runList = session.runList || [];
+      S.selectedRunItem = -1;
+      S.runListIdx = -1;
+      renderRunList();
+
+      updateStats();
+      flashStatus('Session loaded: ' + S.fileName);
+    } catch (err) {
+      alert('Error loading session: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function clearEditor() {
+  if (getEditorText() && !confirm('Clear current script?')) return;
+  editor.innerHTML = '';
+  S.fileName = '';
+  document.getElementById('statusFile').textContent = 'No file loaded';
+  updateStats();
+}
+
+function loadDemo() {
+  setEditorText("Good evening friends,\nand welcome to the reveal\nof Roche Bobois St Pete Tower.\n\nWe are thrilled to have you\nhere tonight to celebrate\nthis incredible milestone.\n\nPlease enjoy the evening\nand let us know if you need\nanything at all.\n\nThank you.");
+  S.fileName = 'demo.txt';
+  document.getElementById('statusFile').textContent = 'demo.txt';
+  updateStats();
+}
+
+// Drag & drop
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', e => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) readFile(file).then(text => {
+    setEditorText(prompterqFormat(text, { targetWords: 7 }));
+    S.fileName = file.name;
+    document.getElementById('statusFile').textContent = file.name;
+    updateStats();
+  });
+});
+
+// ═══════════════ RUN LIST ═══════════════
+function addToRunList() { document.getElementById('runListInput').click(); }
+
+function handleRunListFiles(e) {
+  Array.from(e.target.files).forEach(file => {
+    readFile(file).then(text => {
+      S.runList.push({ name: file.name, text });
+      renderRunList();
+    });
+  });
+  e.target.value = '';
+}
+
+function renderRunList() {
+  const body = document.getElementById('runListBody');
+  body.innerHTML = S.runList.map((item, i) => `
+    <div class="list-row ${i === S.selectedRunItem ? 'active' : ''}" onclick="selectRunItem(${i})" ondblclick="loadRunItem(${i})">
+      <div style="width:200px">${item.name}</div>
+      <div style="flex:1">Double-click to load</div>
+    </div>
+  `).join('');
+}
+
+function selectRunItem(i) { S.selectedRunItem = i; renderRunList(); }
+function loadRunItem(i) {
+  S.runListIdx = i;
+  setEditorText(S.runList[i].text);
+  S.fileName = S.runList[i].name;
+  document.getElementById('statusFile').textContent = S.runList[i].name;
+  updateStats();
+}
+function editRunListItem() { }
+function deleteRunListItem() {
+  if (S.selectedRunItem >= 0) {
+    S.runList.splice(S.selectedRunItem, 1);
+    S.selectedRunItem = -1;
+    renderRunList();
+  }
+}
+
+// ═══════════════ SHORTCUTS ═══════════════
+function getCursorInfo() {
+  var sel = window.getSelection();
+  if (!sel.rangeCount) return { node: null, offset: 0, preview: '' };
+  var range = sel.getRangeAt(0);
+  // Get preview text from current line
+  var container = sel.anchorNode;
+  while (container && container !== editor && container.parentNode !== editor) {
+    container = container.parentNode;
+  }
+  var preview = (container ? container.textContent : '').trim().substring(0, 50);
+  return { node: sel.anchorNode, offset: sel.anchorOffset, preview: preview, range: range };
+}
+
+function addShortcut() {
+  var text = getEditorText();
+  if (!text) return;
+  var keySequence = ['1','2','3','4','5','6','7','8','9','0',
+    'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+  if (S.shortcuts.length >= 36) return alert('Max 36 shortcuts (0-9, A-Z)');
+  var info = getCursorInfo();
+  var key = keySequence[S.shortcuts.length];
+  var name = prompt('Shortcut name:', 'Cue ' + key);
+  if (!name) return;
+  var cueId = 'pq-cue-' + key;
+  injectCueAnchor(cueId, info);
+  S.shortcuts.push({ name: name, key: key, cueId: cueId, preview: info.preview });
+  renderShortcuts();
+}
+
+function injectCueAnchor(cueId, cursorInfo) {
+  // Remove existing anchor with same ID
+  var existing = editor.querySelector('#' + cueId);
+  if (existing) existing.remove();
+
+  // Create invisible anchor span
+  var anchor = document.createElement('span');
+  anchor.id = cueId;
+  anchor.className = 'cue-anchor';
+  anchor.setAttribute('contenteditable', 'false');
+
+  // Insert at cursor position
+  var sel = window.getSelection();
+  if (sel.rangeCount) {
+    var range = sel.getRangeAt(0).cloneRange();
+    range.collapse(true);
+    range.insertNode(anchor);
+    // Move cursor after the anchor
+    range.setStartAfter(anchor);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+}
+
+function renderShortcuts() {
+  var body = document.getElementById('shortcutListBody');
+  body.innerHTML = S.shortcuts.map(function(s, i) {
+    return '<div class="list-row ' + (i === S.selectedShortcut ? 'active' : '') + '" onclick="selectShortcut(' + i + ')">' +
+      '<div style="width:120px">' + s.name + '</div>' +
+      '<div style="width:70px">' + s.key + '</div>' +
+      '<div style="width:60px">' + s.cueId + '</div>' +
+      '<div style="flex:1">' + s.preview + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function selectShortcut(i) { S.selectedShortcut = i; renderShortcuts(); }
+function editShortcut() {
+  if (S.selectedShortcut < 0) return;
+  var s = S.shortcuts[S.selectedShortcut];
+  var name = prompt('Shortcut name:', s.name);
+  if (name) { s.name = name; renderShortcuts(); }
+}
+function deleteShortcut() {
+  if (S.selectedShortcut >= 0) {
+    var cue = S.shortcuts[S.selectedShortcut];
+    // Remove DOM anchor
+    var anchor = editor.querySelector('#' + cue.cueId);
+    if (anchor) anchor.remove();
+    S.shortcuts.splice(S.selectedShortcut, 1);
+    var keySequence = ['1','2','3','4','5','6','7','8','9','0',
+      'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    S.shortcuts.forEach(function(s, i) {
+      var newKey = keySequence[i];
+      var newId = 'pq-cue-' + newKey;
+      var el = editor.querySelector('#' + s.cueId);
+      if (el) el.id = newId;
+      s.key = newKey;
+      s.cueId = newId;
+    });
+    S.selectedShortcut = -1;
+    renderShortcuts();
+  }
+}
+
+function quickAddShortcut() {
+  var text = getEditorText();
+  if (!text) return;
+  if (S.shortcuts.length >= 36) { flashStatus('Max 36 shortcuts (0-9, A-Z)'); return; }
+
+  var info = getCursorInfo();
+  var keySequence = ['1','2','3','4','5','6','7','8','9','0',
+    'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+  var key = keySequence[S.shortcuts.length];
+  var cueId = 'pq-cue-' + key;
+
+  injectCueAnchor(cueId, info);
+
+  S.shortcuts.push({
+    name: 'Cue ' + key,
+    key: key,
+    cueId: cueId,
+    preview: info.preview || 'Cue ' + key
+  });
+
+  renderShortcuts();
+  flashStatus('⚑ Cue ' + key + ' set: ' + (info.preview.substring(0, 30) || 'Cue ' + key));
+}
+
+function flashStatus(msg) {
+  const el = document.getElementById('statusState');
+  const prev = el.textContent;
+  const prevClass = el.className;
+  el.textContent = msg;
+  el.className = 'status-cell status-gold';
+  setTimeout(() => {
+    el.textContent = prev;
+    el.className = prevClass;
+  }, 2000);
+}
+
+// ═══════════════ PROMPTER ENGINE ═══════════════
+function startPrompter() {
+  const text = getEditorText().trim();
+  if (!text) return alert('No script loaded.');
+
+  S.isPrompting = true;
+  S.isPaused = true;
+  S.scrollPos = 0;
+  S.elapsed = 0;
+  outputHTMLSent = false;
+  S.speed = parseFloat(document.getElementById('speedSlider').value);
+  S.mirrored = document.querySelector('input[name="secondaryDisplay"]:checked')?.value === 'mirrored';
+  S.showCue = document.getElementById('chkCueMarker').checked;
+  S.cuePos = parseInt(document.getElementById('cueSlider').value);
+
+  const pt = document.getElementById('prompterText');
+  const canvas = document.getElementById('prompterCanvas');
+  const mode = document.getElementById('prompterMode');
+
+  pt.style.fontFamily = S.fontFamily;
+  pt.style.fontSize = S.fontSize + 'px';
+  pt.style.lineHeight = S.lineSpacing;
+  pt.style.color = S.fontColor;
+  pt.style.textAlign = S.textAlign;
+  canvas.style.backgroundColor = S.bgColor;
+  // Pass rich HTML directly from editor to prompter (preserves colors, italics)
+  pt.innerHTML = editor.innerHTML;
+
+  const displayMode = document.querySelector('input[name="secondaryDisplay"]:checked')?.value || 'normal';
+  S.displayMode = displayMode;
+
+  canvas.classList.remove('mirrored', 'flipped', 'mirrored-flipped');
+  if (displayMode === 'mirrored') canvas.classList.add('mirrored');
+  else if (displayMode === 'flipped') canvas.classList.add('flipped');
+  else if (displayMode === 'both') canvas.classList.add('mirrored-flipped');
+
+  const cueLine = document.getElementById('cueMarkerLine');
+  cueLine.style.display = S.showCue ? 'block' : 'none';
+  cueLine.style.top = S.cuePos + '%';
+
+  mode.style.display = 'block';
+  document.getElementById('editorMode').style.display = 'none';
+  document.getElementById('statusState').textContent = 'PROMPTING';
+  document.getElementById('statusState').className = 'status-cell status-gold';
+
+  // Request true fullscreen — hides browser toolbar and OS taskbar
+  if (mode.requestFullscreen) mode.requestFullscreen().catch(function(){});
+  else if (mode.webkitRequestFullscreen) mode.webkitRequestFullscreen();
+
+  requestAnimationFrame(() => {
+    S.textH = pt.offsetHeight;
+    S.vpH = window.innerHeight;
+    pt.style.transform = 'translateY(' + S.vpH + 'px)';
+    S.scrollPos = S.vpH;
+    showStatus('READY — Press Space or ↑');
+    S.lastTs = null;
+    S.animFrame = requestAnimationFrame(scrollLoop);
+    S.timerInt = setInterval(updateTimer, 1000);
+  });
+}
+
+function scrollLoop(ts) {
+  if (!S.isPrompting) return;
+  if (!S.lastTs) S.lastTs = ts;
+  const dt = (ts - S.lastTs) / 1000;
+  S.lastTs = ts;
+
+  if (!S.isPaused) {
+    const pps = S.speed * 30;
+    S.scrollPos -= pps * dt;
+    document.getElementById('prompterText').style.transform = 'translateY(' + S.scrollPos + 'px)';
+
+    const total = S.vpH + S.textH;
+    const scrolled = S.vpH - S.scrollPos;
+    const pct = Math.max(0, Math.min(100, (scrolled / total) * 100));
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('hudProgress').textContent = Math.round(pct) + '%';
+
+    if (pps > 0) {
+      const rem = (S.scrollPos + S.textH) / pps;
+      const m = Math.floor(rem / 60), s = Math.round(rem % 60);
+      document.getElementById('hudRemaining').textContent = m + ':' + String(s).padStart(2, '0');
+    }
+
+    if (S.scrollPos < -S.textH) {
+      S.isPaused = true;
+      showStatus('END');
+    }
+  }
+
+  S.animFrame = requestAnimationFrame(scrollLoop);
+  syncOutput();
+}
+
+function updateTimer() {
+  if (!S.isPaused) S.elapsed++;
+  const m = Math.floor(S.elapsed / 60), s = S.elapsed % 60;
+  document.getElementById('hudElapsed').textContent = m + ':' + String(s).padStart(2, '0');
+}
+
+function exitPrompter() {
+  S.isPrompting = false;
+  cancelAnimationFrame(S.animFrame);
+  clearInterval(S.timerInt);
+  document.getElementById('prompterMode').style.display = 'none';
+  document.getElementById('editorMode').style.display = 'flex';
+  document.getElementById('statusState').textContent = 'Ready';
+  document.getElementById('statusState').className = 'status-cell status-green';
+
+  // Exit browser fullscreen
+  if (document.fullscreenElement) document.exitFullscreen().catch(function(){});
+  else if (document.webkitFullscreenElement) document.webkitExitFullscreen();
+}
+
+function togglePause() {
+  S.isPaused = !S.isPaused;
+  showStatus(S.isPaused ? 'PAUSED' : '▶');
+}
+
+function adjustSpeed(d) {
+  const sens = parseInt(document.getElementById('sensSlider').value);
+  S.speed = Math.max(-10, Math.min(20, S.speed + d * (sens / 5) * 0.5));
+  S.speed = Math.round(S.speed * 10) / 10;
+  document.getElementById('speedSlider').value = Math.max(1, S.speed);
+  document.getElementById('speedVal').textContent = Math.max(1, S.speed);
+  document.getElementById('hudSpeed').textContent = S.speed.toFixed(1);
+
+  const ind = document.getElementById('speedIndicator');
+  ind.textContent = 'Speed: ' + S.speed.toFixed(1);
+  ind.classList.add('show');
+  clearTimeout(S.speedTimeout);
+  S.speedTimeout = setTimeout(() => ind.classList.remove('show'), 1500);
+}
+
+function showStatus(t) {
+  const el = document.getElementById('scrollStatus');
+  el.textContent = t;
+  el.classList.add('show');
+  clearTimeout(S.statusTimeout);
+  S.statusTimeout = setTimeout(() => el.classList.remove('show'), 1500);
+}
+
+function toggleMirrorLive() {
+  const modes = ['normal', 'mirrored', 'flipped', 'both'];
+  const currentIdx = modes.indexOf(S.displayMode || 'normal');
+  const nextIdx = (currentIdx + 1) % modes.length;
+  S.displayMode = modes[nextIdx];
+
+  const canvas = document.getElementById('prompterCanvas');
+  canvas.classList.remove('mirrored', 'flipped', 'mirrored-flipped');
+  if (S.displayMode === 'mirrored') canvas.classList.add('mirrored');
+  else if (S.displayMode === 'flipped') canvas.classList.add('flipped');
+  else if (S.displayMode === 'both') canvas.classList.add('mirrored-flipped');
+
+  const labels = { normal: 'NORMAL', mirrored: 'MIRROR', flipped: 'FLIP', both: 'MIRROR+FLIP' };
+  showStatus(labels[S.displayMode]);
+}
+
+function toggleBlackout() {
+  S.blackout = !S.blackout;
+  // Blackout only affects the output window — operator still sees the scroll
+  showStatus(S.blackout ? 'OUTPUT BLACKED OUT' : 'OUTPUT LIVE');
+  // If in browser mode, black out the popup
+  if (outputWindow && !outputWindow.closed) {
+    try {
+      var ot = outputWindow.document.getElementById('ot');
+      if (ot) ot.style.visibility = S.blackout ? 'hidden' : 'visible';
+    } catch(e) {}
+  }
+}
+
+function loadScriptInPrompter(item) {
+  // Swap script text without leaving prompter mode
+  const pt = document.getElementById('prompterText');
+  setEditorText(item.text);
+  S.fileName = item.name;
+  document.getElementById('statusFile').textContent = item.name;
+  pt.innerHTML = editor.innerHTML;
+  outputHTMLSent = false; // force re-sync to output
+
+  // Reset scroll to top
+  requestAnimationFrame(() => {
+    S.textH = pt.offsetHeight;
+    S.scrollPos = S.vpH;
+    pt.style.transform = 'translateY(' + S.vpH + 'px)';
+    S.isPaused = true;
+    S.elapsed = 0;
+    document.getElementById('hudElapsed').textContent = '0:00';
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('hudProgress').textContent = '0%';
+    renderRunList();
+  });
+}
+
+function jumpToCue(idx) {
+  if (idx < 0 || idx >= S.shortcuts.length) return;
+  var cue = S.shortcuts[idx];
+  var pt = document.getElementById('prompterText');
+  // Find the cue anchor in the prompter text
+  var anchor = pt.querySelector('#' + cue.cueId);
+  if (anchor) {
+    // Get anchor's position relative to the prompter text container
+    var anchorTop = anchor.offsetTop;
+    // Scroll so the anchor aligns with the cue line position
+    var cueLineOffset = S.vpH * (S.cuePos / 100);
+    S.scrollPos = cueLineOffset - anchorTop;
+  } else {
+    // Fallback: estimate from shortcut index ratio
+    var ratio = idx / Math.max(1, S.shortcuts.length);
+    S.scrollPos = S.vpH - (ratio * S.textH);
+  }
+  pt.style.transform = 'translateY(' + S.scrollPos + 'px)';
+}
+
+// ═══════════════ KEYBOARD ═══════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'F8' || e.key === 'F5') {
+    e.preventDefault();
+    S.isPrompting ? exitPrompter() : startPrompter();
+    return;
+  }
+  if (e.ctrlKey && e.key === 'o') { e.preventDefault(); openFile(); return; }
+  if (e.ctrlKey && e.key === 's') { e.preventDefault(); saveFile(); return; }
+  if (e.ctrlKey && e.key === 'i') { e.preventDefault(); toggleItalic(); return; }
+  if (e.ctrlKey && e.key === '1') { e.preventDefault(); applyColor('#00ff00'); return; }
+  if (e.ctrlKey && e.key === '2') { e.preventDefault(); applyColor('#00bfff'); return; }
+  if (e.ctrlKey && e.key === '3') { e.preventDefault(); applyColor('#ffff00'); return; }
+  if (e.ctrlKey && e.key === '4') { e.preventDefault(); applyColor('#ffffff'); return; }
+  if (e.ctrlKey && (e.key === 'm' || e.key === 'M')) {
+    e.preventDefault();
+    quickAddShortcut();
+    return;
+  }
+
+  if (S.isPrompting) {
+    switch (e.key) {
+      case 'Escape': e.preventDefault(); exitPrompter(); break;
+      case ' ': e.preventDefault(); togglePause(); break;
+      case 'ArrowUp': e.preventDefault(); adjustSpeed(1); break;
+      case 'ArrowDown': e.preventDefault(); adjustSpeed(-1); break;
+      case 'ArrowLeft': e.preventDefault(); if (S.selectedShortcut > 0) jumpToCue(--S.selectedShortcut); break;
+      case 'ArrowRight': e.preventDefault(); if (S.selectedShortcut < S.shortcuts.length - 1) jumpToCue(++S.selectedShortcut); break;
+      case 'Home': e.preventDefault(); S.scrollPos = S.vpH; document.getElementById('prompterText').style.transform = 'translateY(' + S.scrollPos + 'px)'; break;
+      case 'End': e.preventDefault(); S.scrollPos = -S.textH; document.getElementById('prompterText').style.transform = 'translateY(' + S.scrollPos + 'px)'; break;
+      case 'm': case 'M': e.preventDefault(); toggleMirrorLive(); break;
+      case 'b': case 'B': e.preventDefault(); toggleBlackout(); break;
+      case '+': case '=': e.preventDefault(); S.fontSize = Math.min(200, S.fontSize + 4); document.getElementById('prompterText').style.fontSize = S.fontSize + 'px'; document.getElementById('fontSize').value = S.fontSize; setTimeout(() => S.textH = document.getElementById('prompterText').offsetHeight, 50); break;
+      case '-': case '_': e.preventDefault(); S.fontSize = Math.max(20, S.fontSize - 4); document.getElementById('prompterText').style.fontSize = S.fontSize + 'px'; document.getElementById('fontSize').value = S.fontSize; setTimeout(() => S.textH = document.getElementById('prompterText').offsetHeight, 50); break;
+      default:
+        // PageDown = next script in run list
+        if (e.key === 'PageDown') {
+          e.preventDefault();
+          if (S.runList.length > 0 && S.runListIdx < S.runList.length - 1) {
+            S.runListIdx++;
+            loadScriptInPrompter(S.runList[S.runListIdx]);
+            showStatus('SCRIPT ' + (S.runListIdx + 1) + '/' + S.runList.length);
+          } else {
+            showStatus('END OF RUN LIST');
+          }
+          break;
+        }
+        // PageUp = previous script in run list
+        if (e.key === 'PageUp') {
+          e.preventDefault();
+          if (S.runList.length > 0 && S.runListIdx > 0) {
+            S.runListIdx--;
+            loadScriptInPrompter(S.runList[S.runListIdx]);
+            showStatus('SCRIPT ' + (S.runListIdx + 1) + '/' + S.runList.length);
+          } else {
+            showStatus('START OF RUN LIST');
+          }
+          break;
+        }
+        // 0-9 and A-Z cue jumps
+        const keyPressed = e.key.toUpperCase();
+        const cueMatch = S.shortcuts.findIndex(s => String(s.key).toUpperCase() === keyPressed);
+        if (cueMatch >= 0) {
+          e.preventDefault();
+          S.selectedShortcut = cueMatch;
+          jumpToCue(cueMatch);
+          showStatus('CUE ' + S.shortcuts[cueMatch].key);
+        }
+    }
+  }
+});
+
+// ═══════════════ STATUS BAR CLOCK ═══════════════
+function updateClock() {
+  const now = new Date();
+  document.getElementById('statusDate').textContent = now.toLocaleDateString();
+  document.getElementById('statusTime').textContent = now.toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ═══════════════ HELPERS ═══════════════
+function showHelp() { document.getElementById('helpModal').classList.add('open'); }
+function closeHelp() { document.getElementById('helpModal').classList.remove('open'); }
+document.getElementById('helpModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeHelp(); });
+
+// FPS counter
+let frameCount = 0, lastFpsTime = performance.now();
+function fpsLoop() {
+  frameCount++;
+  const now = performance.now();
+  if (now - lastFpsTime >= 1000) {
+    document.getElementById('statusFps').textContent = frameCount + ' fps';
+    frameCount = 0;
+    lastFpsTime = now;
+  }
+  requestAnimationFrame(fpsLoop);
+}
+requestAnimationFrame(fpsLoop);
+
+// =============== OUTPUT WINDOW (SECOND MONITOR) ===============
+let outputWindow = null;
+
+function launchOutputWindow() {
+  // ELECTRON MODE: auto-detect monitors, fullscreen on secondary
+  if (window.prompterq && window.prompterq.isElectron) {
+    window.prompterq.getDisplays().then(function(displays) {
+      if (displays.length > 1) {
+        // Find non-primary display
+        var secondary = displays.findIndex(function(d) { return !d.isPrimary; });
+        window.prompterq.launchOutput(secondary >= 0 ? secondary : 1).then(function(result) {
+          flashStatus('Output on Display ' + (result.display.index + 1) + ' (' + result.display.width + 'x' + result.display.height + ')');
+          S.electronOutput = true;
+        });
+      } else {
+        window.prompterq.launchOutput(0).then(function() {
+          flashStatus('Output launched (single display)');
+          S.electronOutput = true;
+        });
+      }
+    });
+    return;
+  }
+
+  // BROWSER MODE: popup window fallback
+  if (outputWindow && !outputWindow.closed) {
+    outputWindow.focus();
+    flashStatus('Output window already open - drag to talent monitor, F11');
+    return;
+  }
+
+  outputWindow = window.open('', 'PrompterQ_Output', 'width=800,height=600');
+  if (!outputWindow) {
+    alert('Popup blocked! Allow popups for this page, then try again.');
+    return;
+  }
+
+  outputWindow.document.write('<html><head><title>PrompterQ Output</title>' +
+    '<style>*{margin:0;padding:0;box-sizing:border-box}' +
+    'body{background:#000;overflow:hidden;height:100vh}' +
+    '#oc{width:100%;height:100%;overflow:hidden;position:relative}' +
+    '#ot{position:absolute;top:100vh;left:0;right:0;padding:5% 8%;' +
+    'font-family:Arial,Helvetica,sans-serif;color:#fff;white-space:pre-wrap;word-wrap:break-word}' +
+    '.mirrored{transform:scaleX(-1)}.flipped{transform:scaleY(-1)}.mirrored-flipped{transform:scale(-1,-1)}' +
+    '#cl{position:fixed;left:0;right:0;height:2px;background:#F5B84C;opacity:0.7;z-index:10;pointer-events:none;box-shadow:0 0 6px #F5B84C;display:none}' +
+    '#ob{position:fixed;top:0;left:0;height:3px;background:#F5B84C;z-index:10;box-shadow:0 0 4px #F5B84C}' +
+    '#om{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);' +
+    'font-size:20px;color:rgba(255,255,255,0.4);font-family:Arial;text-align:center;line-height:1.8}' +
+    '</style></head><body>' +
+    '<div id="oc"><div id="ot"></div></div>' +
+    '<div id="cl"></div>' +
+    '<div id="ob" style="width:0%"></div>' +
+    '<div id="om">PROMPTERQ OUTPUT<br><br>1. Drag this window to the talent monitor<br>2. Press F11 for fullscreen<br>3. Walk back to operator station<br>4. Press Go<br><br>Waiting for operator...</div>' +
+    '</body></html>');
+  outputWindow.document.close();
+
+  flashStatus('Output launched - drag to talent monitor, press F11');
+}
+
+var outputHTMLSent = false;
+
+function syncOutput() {
+  // ELECTRON MODE: send via IPC
+  if (S.electronOutput && window.prompterq && window.prompterq.isElectron) {
+    var pt = document.getElementById('prompterText');
+    if (!pt) return;
+    var data = {
+      type: 'pq-sync',
+      transform: pt.style.transform,
+      displayMode: S.displayMode || 'normal',
+      progress: document.getElementById('progressBar').style.width,
+      showCue: S.showCue,
+      cuePos: S.cuePos,
+      blackout: S.blackout
+    };
+    // Only send full HTML on first sync or script change
+    if (!outputHTMLSent) {
+      data.html = pt.innerHTML;
+      data.fontSize = pt.style.fontSize;
+      data.fontFamily = pt.style.fontFamily;
+      data.lineHeight = pt.style.lineHeight;
+      data.color = pt.style.color;
+      data.textAlign = pt.style.textAlign;
+      data.bgColor = document.getElementById('prompterCanvas').style.backgroundColor;
+      outputHTMLSent = true;
+    }
+    window.prompterq.syncOutput(data);
+    return;
+  }
+
+  // BROWSER MODE: direct DOM manipulation
+  if (!outputWindow || outputWindow.closed) return;
+  try {
+    var ot = outputWindow.document.getElementById('ot');
+    var oc = outputWindow.document.getElementById('oc');
+    var om = outputWindow.document.getElementById('om');
+    var ob = outputWindow.document.getElementById('ob');
+    var cl = outputWindow.document.getElementById('cl');
+    var pt = document.getElementById('prompterText');
+    if (!ot || !pt) return;
+
+    if (om) om.style.display = 'none';
+
+    // Only send full HTML once, then just sync position
+    if (!outputHTMLSent) {
+      ot.innerHTML = pt.innerHTML;
+      ot.style.fontFamily = pt.style.fontFamily;
+      ot.style.fontSize = pt.style.fontSize;
+      ot.style.lineHeight = pt.style.lineHeight;
+      ot.style.color = pt.style.color;
+      ot.style.textAlign = pt.style.textAlign;
+      oc.style.backgroundColor = document.getElementById('prompterCanvas').style.backgroundColor;
+      outputHTMLSent = true;
+    }
+
+    // Per-frame: only position and mode
+    ot.style.transform = pt.style.transform;
+    ot.style.visibility = S.blackout ? 'hidden' : 'visible';
+
+    oc.classList.remove('mirrored','flipped','mirrored-flipped');
+    if (S.displayMode === 'mirrored') oc.classList.add('mirrored');
+    else if (S.displayMode === 'flipped') oc.classList.add('flipped');
+    else if (S.displayMode === 'both') oc.classList.add('mirrored-flipped');
+
+    if (ob) ob.style.width = document.getElementById('progressBar').style.width;
+    if (cl) {
+      cl.style.display = S.showCue ? 'block' : 'none';
+      cl.style.top = S.cuePos + '%';
+    }
+  } catch(e) {}
+}
+
+// =============== SHARE / COPY TO CLIPBOARD ===============
+function copyScriptToClipboard() {
+  var text = getEditorText();
+  if (!text.trim()) { flashStatus('Nothing to copy'); return; }
+  navigator.clipboard.writeText(text).then(function() {
+    flashStatus('Script copied — paste into any app');
+  }).catch(function() {
+    // Fallback for older browsers
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    flashStatus('Script copied — paste into any app');
+  });
+}
+
+// =============== SEARCH / FIND ===============
+var lastSearchTerm = '';
+var lastSearchIndex = -1;
+
+function findNext() {
+  var term = document.getElementById('searchField').value.trim();
+  if (!term) return;
+
+  var text = getEditorText().toLowerCase();
+  var searchTerm = term.toLowerCase();
+
+  // If new search term, start from beginning
+  if (searchTerm !== lastSearchTerm) {
+    lastSearchIndex = -1;
+    lastSearchTerm = searchTerm;
+    // Clear previous highlights
+    clearHighlights();
+  }
+
+  // Find next occurrence after last position
+  var startPos = lastSearchIndex + 1;
+  var idx = text.indexOf(searchTerm, startPos);
+
+  // Wrap around
+  if (idx === -1 && startPos > 0) {
+    idx = text.indexOf(searchTerm, 0);
+    if (idx >= 0) flashStatus('Wrapped to top');
+  }
+
+  if (idx === -1) {
+    flashStatus('Not found: ' + term);
+    lastSearchIndex = -1;
+    return;
+  }
+
+  lastSearchIndex = idx;
+
+  // Highlight and scroll to match in contenteditable
+  clearHighlights();
+  highlightMatch(term, idx);
+}
+
+function clearHighlights() {
+  editor.querySelectorAll('.search-highlight').forEach(function(el) {
+    var parent = el.parentNode;
+    parent.replaceChild(document.createTextNode(el.textContent), el);
+    parent.normalize();
+  });
+}
+
+function highlightMatch(term, charIndex) {
+  // Walk through text nodes to find the one at charIndex
+  var tw = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT, null);
+  var node;
+  var currentPos = 0;
+
+  while (node = tw.nextNode()) {
+    var nodeText = node.textContent;
+    var nodeLen = nodeText.length;
+
+    if (currentPos + nodeLen > charIndex) {
+      // Found the node containing our match
+      var offsetInNode = charIndex - currentPos;
+      var matchEnd = offsetInNode + term.length;
+
+      // Check if match spans this single node
+      if (matchEnd <= nodeLen) {
+        var range = document.createRange();
+        range.setStart(node, offsetInNode);
+        range.setEnd(node, matchEnd);
+
+        var highlight = document.createElement('span');
+        highlight.className = 'search-highlight';
+        highlight.style.backgroundColor = '#F5B84C';
+        highlight.style.color = '#000';
+        highlight.style.borderRadius = '2px';
+        highlight.style.padding = '0 1px';
+
+        range.surroundContents(highlight);
+
+        // Scroll into view
+        highlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+
+    // Account for line breaks between block elements
+    if (node.parentNode && node.parentNode !== editor) {
+      var next = node.parentNode.nextSibling;
+      if (next) currentPos++; // for the \n between divs
+    }
+    currentPos += nodeLen;
+  }
+}
+
+// Ctrl+F to focus search
+document.addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 'f') {
+    e.preventDefault();
+    document.getElementById('searchField').focus();
+    document.getElementById('searchField').select();
+  }
+});
+
+// Init
+updateStats();
+applyFont();
+</script>
+</body>
+</html>
