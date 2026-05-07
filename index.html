@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrompterQ — Professional Teleprompter Software</title>
-<meta name="description" content="Built by a 25-year veteran operator. The modern replacement for FlipQ. Free HTML version. EleQtron Pro for show-day reliability.">
+<meta name="description" content="Built by a 25-year veteran operator. The modern replacement for legacy teleprompter software. Free HTML version. EleQtron Pro for show-day reliability.">
 <meta property="og:title" content="PrompterQ — Professional Teleprompter Software">
 <meta property="og:description" content="Stop fighting your software. Start delivering flawless reads.">
 <meta property="og:type" content="website">
@@ -146,64 +146,191 @@ nav{
 .trust-item{display:flex;align-items:center;gap:6px}
 .trust-item::before{content:"✓";color:var(--green);font-weight:900}
 
-/* ═════ SCREENSHOT ═════ */
+/* ═════ SCREENSHOT — actual PrompterQ retro UI ═════ */
 .screenshot-wrap{
   max-width:1100px;margin:60px auto 0;padding:0 24px;
 }
 .screenshot{
-  border:1px solid var(--border);
   border-radius:12px;
   overflow:hidden;
-  background:#000;
-  box-shadow:0 40px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(245,184,76,0.1);
+  box-shadow:0 40px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(245,184,76,0.15);
   cursor:pointer;
   transition:transform 0.3s;
+  background:#000;
 }
-.screenshot:hover{transform:translateY(-4px);box-shadow:0 50px 100px rgba(0,0,0,0.7),0 0 0 1px rgba(245,184,76,0.2)}
-.screenshot-mock{
-  aspect-ratio:16/10;
-  background:linear-gradient(180deg,#0e0e12 0%,#000 100%);
-  position:relative;
+.screenshot:hover{transform:translateY(-4px);box-shadow:0 50px 100px rgba(0,0,0,0.7),0 0 0 1px rgba(245,184,76,0.3)}
+.pq-window{
+  background:#d4d0c8;
+  font-family:"Segoe UI","Tahoma","MS Sans Serif",sans-serif;
+  font-size:11px;
+  color:#000;
   display:flex;flex-direction:column;
+  aspect-ratio:16/10;
+  position:relative;
 }
-.sc-header{
-  background:#1a1a1f;
-  padding:8px 14px;
-  display:flex;align-items:center;gap:10px;
-  border-bottom:1px solid var(--border);
+/* Title bar (dark, like a real OS chrome) */
+.pq-title{
+  background:linear-gradient(to bottom,#1a1a1f,#0a0a0c);
+  color:#e8e8ea;
+  padding:6px 12px;
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;
+  border-bottom:1px solid #000;
 }
-.sc-dot{width:10px;height:10px;border-radius:50%;background:#444}
-.sc-title{font-size:11px;color:var(--text-dim);margin-left:auto}
-.sc-hint{font-size:11px;color:var(--gold);margin-right:8px;opacity:0.7}
-.sc-body{flex:1;display:flex;overflow:hidden}
-.sc-sidebar{
-  width:200px;border-right:1px solid var(--border);
-  padding:14px;background:#0e0e12;flex-shrink:0;
+.pq-title .dots{display:flex;gap:6px}
+.pq-title .dot{width:10px;height:10px;border-radius:50%;background:#444}
+.pq-title .name{font-weight:600;color:#e8e8ea}
+.pq-title .hint{margin-left:auto;color:var(--gold);font-size:10px;opacity:0.85}
+/* Menu bar */
+.pq-menu{
+  background:#d4d0c8;
+  border-bottom:1px solid #999;
+  padding:3px 6px;
+  display:flex;gap:2px;
 }
-.sc-sidebar h5{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:10px}
-.sc-sidebar-item{
-  font-size:11px;color:var(--text-dim);
-  padding:6px 8px;margin-bottom:4px;
-  border-radius:4px;
+.pq-menu span{
+  padding:3px 10px;
+  cursor:default;
+  font-size:11px;
 }
-.sc-sidebar-item.active{background:rgba(245,184,76,0.15);color:var(--gold)}
-.sc-main{flex:1;position:relative;overflow:hidden}
-.sc-scroll{
-  position:absolute;left:0;right:0;top:0;
-  padding:20px 30px;
+.pq-menu span.active{background:#316ac5;color:#fff}
+/* Toolbar */
+.pq-tb{
+  background:#d4d0c8;
+  border-bottom:1px solid #bbb;
+  padding:5px 6px;
+  display:flex;align-items:center;gap:3px;
+  flex-wrap:wrap;
+}
+.pq-btn{
+  width:26px;height:24px;
+  background:#d4d0c8;
+  border:1px solid;
+  border-color:#fff #666 #666 #fff;
+  font-size:11px;font-weight:700;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:#000;
+  cursor:default;
+}
+.pq-btn.color-a{font-family:Georgia,serif;font-size:13px}
+.pq-btn.color-green{color:#00a000}
+.pq-btn.color-blue{color:#0066cc}
+.pq-btn.color-yellow{color:#cc9900}
+.pq-btn.italic{font-style:italic;font-family:Georgia,serif}
+.pq-tb-sep{width:1px;height:20px;background:#999;margin:0 4px}
+.pq-tb-label{font-size:10px;color:#555;margin-left:6px;margin-right:4px}
+.pq-tb-input{
+  background:#fff;border:1px solid #999;
+  padding:2px 5px;
+  font-size:11px;font-family:inherit;
+  height:22px;
+  display:inline-flex;align-items:center;
+}
+.pq-tb-input.size{width:48px;justify-content:center}
+.pq-tb-input.font{width:90px}
+.pq-go{
+  margin-left:auto;
+  background:linear-gradient(to bottom,#ffe890,#f5b84c);
+  border:1px solid #b8861e;
+  padding:3px 14px;
+  font-size:11px;font-weight:700;
+  color:#3a2e10;
+  height:24px;
+  display:inline-flex;align-items:center;gap:5px;
+  cursor:default;
+}
+.pq-go::before{content:"▶";font-size:9px}
+/* Body — editor + tabs */
+.pq-body{flex:1;display:flex;flex-direction:column;min-height:0;background:#d4d0c8}
+.pq-editor{
+  flex:1;
+  background:#000;
+  color:#fff;
+  padding:18px 28px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:18px;
+  font-weight:600;
+  line-height:1.4;
+  overflow:hidden;
+  position:relative;
+}
+.pq-editor-scroll{
+  position:absolute;inset:18px 28px;
   transition:transform 0.05s linear;
   will-change:transform;
 }
-.sc-line{font-size:clamp(14px,2vw,22px);font-weight:600;margin-bottom:14px;text-align:center;font-family:Arial,sans-serif}
-.sc-line.host{color:#4ade80}
-.sc-line.guest{color:#60a5fa}
-.sc-line.normal{color:#fff}
-.sc-line.dim{color:#444}
-.sc-cuebar{
-  position:absolute;left:0;right:0;height:2px;
+.pq-line{margin-bottom:8px}
+.pq-line.green{color:#00ff66}
+.pq-line.blue{color:#3ab1ff}
+.pq-line.yellow{color:#ffd84a}
+.pq-line.white{color:#fff}
+.pq-line em{font-style:italic;color:#ffd84a}
+.pq-line .cue{
+  display:inline-block;
+  background:var(--gold);color:#000;
+  font-family:Consolas,Monaco,monospace;
+  font-size:11px;font-weight:900;
+  padding:1px 5px;border-radius:2px;
+  margin-right:8px;vertical-align:middle;
+}
+/* Tabs at bottom */
+.pq-tabs{
+  background:#d4d0c8;
+  border-top:1px solid #bbb;
+  display:flex;
+  padding:0 6px;
+  padding-top:4px;
+}
+.pq-tab{
+  background:#c8c4bd;
+  border:1px solid #999;
+  border-bottom:none;
+  padding:5px 14px;
+  font-size:11px;
+  margin-right:2px;
+  color:#444;
+  cursor:default;
+  position:relative;
+  top:1px;
+}
+.pq-tab.active{
+  background:#d4d0c8;
+  color:#000;
+  font-weight:600;
+  border-bottom:1px solid #d4d0c8;
+  z-index:2;
+}
+.pq-panel{
+  background:#d4d0c8;
+  padding:10px 14px;
+  border-top:1px solid #999;
+  margin-top:-1px;
+  font-size:11px;
+  display:flex;flex-wrap:wrap;gap:4px 16px;
+}
+.pq-panel kbd{
+  display:inline-block;
+  background:#fff;border:1px solid #888;
+  padding:1px 6px;
+  font-family:Consolas,Monaco,monospace;
+  font-size:10px;
+  border-radius:2px;
+  margin-right:4px;
+}
+.pq-panel-row{display:inline-flex;align-items:center;gap:4px}
+/* Cue line in prompter */
+.pq-cuebar{
+  position:absolute;left:0;right:0;
+  top:50%;
+  height:2px;
   background:var(--gold);
   box-shadow:0 0 8px var(--gold);
-  top:50%;z-index:2;pointer-events:none;
+  z-index:5;pointer-events:none;
+}
+@media (max-width:700px){
+  .pq-tb-label,.pq-tb-input.font{display:none}
+  .pq-editor{font-size:14px;padding:14px 18px}
+  .pq-panel{font-size:10px}
 }
 
 /* ═════ TRUST BAR ═════ */
@@ -532,7 +659,7 @@ footer{
     <div class="nav-links">
       <a href="#workflow">How It Works</a>
       <a href="#features">Features</a>
-      <a href="#vs">vs FlipQ</a>
+      <a href="#vs">Comparison</a>
       <a href="#pricing">Pricing</a>
       <a href="#network">Network</a>
       <a href="#pricing" class="nav-cta">Get PrompterQ</a>
@@ -560,36 +687,78 @@ footer{
 
   <div class="screenshot-wrap">
     <div class="screenshot" id="screenshotMock" title="Hover to see live scroll">
-      <div class="screenshot-mock">
-        <div class="sc-header">
-          <div class="sc-dot"></div><div class="sc-dot"></div><div class="sc-dot"></div>
-          <div class="sc-hint">▶ Hover to scroll</div>
-          <div class="sc-title">PrompterQ — Live Show</div>
+      <div class="pq-window">
+        <!-- Title bar -->
+        <div class="pq-title">
+          <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <div class="name">PrompterQ — Keynote Q4.docx</div>
+          <div class="hint">▶ Hover to scroll</div>
         </div>
-        <div class="sc-body">
-          <div class="sc-sidebar">
-            <h5>Run List</h5>
-            <div class="sc-sidebar-item">Welcome</div>
-            <div class="sc-sidebar-item active">Keynote — Q4</div>
-            <div class="sc-sidebar-item">Awards Intro</div>
-            <div class="sc-sidebar-item">Closing</div>
-          </div>
-          <div class="sc-main">
-            <div class="sc-scroll" id="scScroll">
-              <div class="sc-line dim">Good evening everyone.</div>
-              <div class="sc-line dim">Thank you for joining us.</div>
-              <div class="sc-line host">HOST: Tonight we're celebrating</div>
-              <div class="sc-line normal">a year of <em style="color:var(--gold)">extraordinary</em> growth.</div>
-              <div class="sc-line guest">GUEST: And I'm thrilled to be here.</div>
-              <div class="sc-line normal">It's been an incredible journey.</div>
-              <div class="sc-line host">HOST: Let's start with the numbers.</div>
-              <div class="sc-line normal">Revenue grew <em style="color:var(--gold)">forty percent</em> this year.</div>
-              <div class="sc-line guest">GUEST: Most of that came from</div>
-              <div class="sc-line guest">our enterprise segment.</div>
-              <div class="sc-line dim">[applause]</div>
-              <div class="sc-line dim">[applause]</div>
+        <!-- Menu bar -->
+        <div class="pq-menu">
+          <span>File</span>
+          <span>Edit</span>
+          <span>Font</span>
+          <span>Language</span>
+          <span>Help</span>
+        </div>
+        <!-- Toolbar -->
+        <div class="pq-tb">
+          <button class="pq-btn">📄</button>
+          <button class="pq-btn">📂</button>
+          <button class="pq-btn">💾</button>
+          <div class="pq-tb-sep"></div>
+          <button class="pq-btn">↶</button>
+          <button class="pq-btn">↷</button>
+          <div class="pq-tb-sep"></div>
+          <button class="pq-btn color-a color-green">A</button>
+          <button class="pq-btn color-a color-blue">A</button>
+          <button class="pq-btn color-a color-yellow">A</button>
+          <button class="pq-btn italic">I</button>
+          <div class="pq-tb-sep"></div>
+          <span class="pq-tb-label">Font:</span>
+          <span class="pq-tb-input font">Arial</span>
+          <span class="pq-tb-label">Size:</span>
+          <span class="pq-tb-input size">120</span>
+          <button class="pq-go">GO PROMPTER</button>
+        </div>
+        <!-- Body: editor + tabs -->
+        <div class="pq-body">
+          <div class="pq-editor">
+            <div class="pq-editor-scroll" id="scScroll">
+              <div class="pq-line green"><span class="cue">1</span>HOST: Good evening everyone</div>
+              <div class="pq-line green">and welcome to our annual</div>
+              <div class="pq-line green">shareholder meeting.</div>
+              <div class="pq-line white">Tonight we're celebrating</div>
+              <div class="pq-line white">a year of <em>extraordinary</em> growth.</div>
+              <div class="pq-line blue"><span class="cue">2</span>GUEST: Thank you for having me.</div>
+              <div class="pq-line blue">It's an <em>incredible</em> honor</div>
+              <div class="pq-line blue">to be here tonight.</div>
+              <div class="pq-line white">Revenue grew forty percent</div>
+              <div class="pq-line white">across all business units.</div>
+              <div class="pq-line yellow"><span class="cue">3</span>CFO: The numbers speak for themselves.</div>
+              <div class="pq-line yellow">Operating margin expanded</div>
+              <div class="pq-line yellow">to twenty-eight percent.</div>
+              <div class="pq-line white">Free cash flow hit a record.</div>
+              <div class="pq-line green"><span class="cue">4</span>HOST: Let's hear from our team.</div>
             </div>
-            <div class="sc-cuebar"></div>
+            <div class="pq-cuebar"></div>
+          </div>
+          <!-- Tabs -->
+          <div class="pq-tabs">
+            <div class="pq-tab active">Shortcut List</div>
+            <div class="pq-tab">Run List</div>
+            <div class="pq-tab">General Settings</div>
+          </div>
+          <div class="pq-panel">
+            <div class="pq-panel-row"><kbd>F8</kbd>Start/Stop</div>
+            <div class="pq-panel-row"><kbd>Space</kbd>Pause</div>
+            <div class="pq-panel-row"><kbd>↑↓</kbd>Speed</div>
+            <div class="pq-panel-row"><kbd>M</kbd>Mirror/Flip</div>
+            <div class="pq-panel-row"><kbd>Ctrl+M</kbd>Drop Cue</div>
+            <div class="pq-panel-row"><kbd>Ctrl+1/2/3</kbd>Speaker Color</div>
+            <div class="pq-panel-row"><kbd>PgDn</kbd>Next Script</div>
+            <div class="pq-panel-row"><kbd>ESC</kbd>Exit</div>
           </div>
         </div>
       </div>
@@ -766,16 +935,16 @@ footer{
 <section id="vs">
   <div class="container">
     <div class="section-head">
-      <div class="section-eyebrow">vs The Old Way</div>
-      <h2 class="section-title">FlipQ has been the standard since 2003.</h2>
-      <p class="section-sub">It still requires a hardware dongle. It still only runs on Windows. It still costs $500 per machine. We did the math.</p>
+      <div class="section-eyebrow">PrompterQ vs Legacy Software</div>
+      <h2 class="section-title">Built for the way operators work in 2026.</h2>
+      <p class="section-sub">Most teleprompter software was written before smartphones existed. It still requires hardware dongles, only runs on Windows, and costs $500 per machine. We did the math.</p>
     </div>
 
     <div class="compare">
       <div class="compare-row head">
         <div class="compare-cell head">Capability</div>
         <div class="compare-cell head">PrompterQ</div>
-        <div class="compare-cell head">FlipQ</div>
+        <div class="compare-cell head">Legacy Software</div>
       </div>
       <div class="compare-row">
         <div class="compare-cell">Hardware dongle required</div>
@@ -994,7 +1163,7 @@ footer{
         <h4>Product</h4>
         <a href="#workflow">How It Works</a>
         <a href="#features">Features</a>
-        <a href="#vs">vs FlipQ</a>
+        <a href="#vs">Comparison</a>
         <a href="#pricing">Pricing</a>
         <a href="#" id="downloadFooter">Download Free</a>
       </div>
