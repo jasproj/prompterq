@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrompterQ — The Modern Teleprompter for Professional Operators</title>
+<meta name="description" content="Built by a 25-year veteran operator. PrompterQ replaces FlipQ with software that actually understands how professional operators work. Free HTML version. EleQtron Pro $349/yr.">
+<meta property="og:title" content="PrompterQ — The Modern Teleprompter for Professional Operators">
+<meta property="og:description" content="Stop fighting your software. Start delivering flawless reads. Built by a 25-year operator for the real demands of the stage.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prompterq.com">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='8' fill='%230a0a0c'/><text x='32' y='44' font-family='Arial' font-size='38' font-weight='900' fill='%23F5B84C' text-anchor='middle'>Q</text></svg>">
+
+<!-- GA4 placeholder -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-XXXXXXXXXX');
+</script> -->
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0c;
+  --bg-2:#111114;
+  --bg-3:#1a1a1f;
+  --border:#2a2a32;
+  --text:#e8e8ea;
+  --text-dim:#8a8a92;
+  --gold:#F5B84C;
+  --gold-dim:#c69638;
+  --green:#4ade80;
+  --red:#f87171;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+a{color:var(--gold);text-decoration:none}
+a:hover{color:var(--text)}
+
+/* ═════ NAV ═════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,10,12,0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;max-width:1200px;margin:0 auto;
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--text)}
+.logo-mark{
+  width:32px;height:32px;border-radius:6px;
+  background:var(--bg-3);border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);font-weight:900;font-size:18px;
+}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--text-dim);font-size:14px;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{
+  background:var(--gold);color:#000 !important;
+  padding:8px 18px;border-radius:6px;font-weight:700;font-size:14px;
+}
+.nav-cta:hover{background:var(--text);color:#000 !important}
+@media (max-width:768px){.nav-links a:not(.nav-cta){display:none}}
+
+/* ═════ HERO ═════ */
+.hero{
+  padding:140px 0 60px;
+  text-align:center;
+  position:relative;
+  background:radial-gradient(ellipse at top,rgba(245,184,76,0.08),transparent 60%);
+}
+.hero-eyebrow{
+  display:inline-block;
+  background:rgba(245,184,76,0.1);
+  border:1px solid rgba(245,184,76,0.3);
+  color:var(--gold);
+  font-size:12px;font-weight:700;
+  padding:6px 14px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:0.1em;
+  margin-bottom:24px;
+}
+.hero h1{
+  font-size:clamp(40px,6vw,72px);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  margin-bottom:20px;
+  background:linear-gradient(180deg,#fff 0%,#a0a0a8 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  font-size:clamp(16px,2vw,20px);
+  color:var(--text-dim);
+  max-width:720px;margin:0 auto 36px;
+}
+.hero-sub strong{color:var(--gold);font-weight:600}
+.hero-ctas{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:36px;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:8px;
+  font-weight:700;font-size:15px;
+  transition:all 0.15s;cursor:pointer;border:none;
+  font-family:inherit;
+}
+.btn-primary{background:var(--gold);color:#000}
+.btn-primary:hover{background:#fff;color:#000;transform:translateY(-1px)}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.btn-large{padding:18px 36px;font-size:16px}
+
+.hero-trust{
+  display:flex;gap:32px;justify-content:center;flex-wrap:wrap;
+  font-size:13px;color:var(--text-dim);
+}
+.trust-item{display:flex;align-items:center;gap:6px}
+.trust-item::before{content:"✓";color:var(--green);font-weight:900}
+
+/* ═════ SCREENSHOT ═════ */
+.screenshot-wrap{
+  max-width:1100px;margin:60px auto 0;padding:0 24px;
+}
+.screenshot{
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  background:#000;
+  box-shadow:0 40px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(245,184,76,0.1);
+}
+.screenshot-mock{
+  aspect-ratio:16/10;
+  background:linear-gradient(180deg,#0e0e12 0%,#000 100%);
+  position:relative;
+  display:flex;flex-direction:column;
+}
+.sc-header{
+  background:#1a1a1f;
+  padding:8px 14px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.sc-dot{width:10px;height:10px;border-radius:50%;background:#444}
+.sc-title{font-size:11px;color:var(--text-dim);margin-left:auto}
+.sc-body{flex:1;display:flex}
+.sc-sidebar{
+  width:200px;border-right:1px solid var(--border);
+  padding:14px;background:#0e0e12;
+}
+.sc-sidebar h5{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:10px}
+.sc-sidebar-item{
+  font-size:11px;color:var(--text-dim);
+  padding:6px 8px;margin-bottom:4px;
+  border-radius:4px;
+}
+.sc-sidebar-item.active{background:rgba(245,184,76,0.15);color:var(--gold)}
+.sc-main{flex:1;padding:30px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}
+.sc-line{font-size:clamp(14px,2vw,22px);font-weight:600;margin-bottom:14px;text-align:center;font-family:Arial,sans-serif}
+.sc-line.host{color:#4ade80}
+.sc-line.guest{color:#60a5fa}
+.sc-line.normal{color:#fff}
+.sc-line.dim{color:#444}
+.sc-cuebar{
+  position:absolute;left:0;right:0;height:2px;
+  background:var(--gold);
+  box-shadow:0 0 8px var(--gold);
+  top:50%;
+}
+
+/* ═════ SECTION ═════ */
+section{padding:100px 0}
+.section-head{text-align:center;margin-bottom:60px}
+.section-eyebrow{
+  font-size:12px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.15em;color:var(--gold);margin-bottom:12px;
+}
+.section-title{
+  font-size:clamp(32px,4vw,48px);
+  font-weight:900;letter-spacing:-0.02em;
+  line-height:1.1;margin-bottom:14px;
+}
+.section-sub{font-size:17px;color:var(--text-dim);max-width:680px;margin:0 auto}
+
+/* ═════ WHY SWITCH ═════ */
+#why{background:var(--bg-2)}
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  max-width:1100px;margin:0 auto;
+}
+.why-item{
+  background:var(--bg-3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:24px 26px;
+  display:flex;gap:14px;
+}
+.why-icon{
+  flex-shrink:0;width:40px;height:40px;border-radius:8px;
+  background:rgba(245,184,76,0.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:var(--gold);font-weight:900;
+}
+.why-item h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.why-item p{font-size:13px;color:var(--text-dim);line-height:1.55}
+
+/* ═════ FEATURE CATEGORIES ═════ */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:24px;
+}
+.cat{
+  background:var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:32px;
+}
+.cat-head{
+  display:flex;align-items:center;gap:14px;margin-bottom:20px;
+  padding-bottom:18px;border-bottom:1px solid var(--border);
+}
+.cat-icon{
+  width:44px;height:44px;border-radius:8px;
+  background:rgba(245,184,76,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+.cat h3{font-size:18px;font-weight:800}
+.cat ul{list-style:none}
+.cat li{
+  font-size:14px;color:var(--text);padding:8px 0;
+  display:flex;align-items:flex-start;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.cat li:last-child{border-bottom:none}
+.cat li::before{content:"→";color:var(--gold);font-weight:900;flex-shrink:0}
+.cat li strong{color:var(--text)}
+.cat li span{color:var(--text-dim);display:block;font-size:13px;margin-top:2px}
+.pro-badge{font-size:11px;background:var(--gold);color:#000;padding:3px 8px;border-radius:4px;margin-left:6px}
+
+/* ═════ COMPARISON ═════ */
+#vs{background:var(--bg-2)}
+.compare{
+  background:var(--bg-3);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;
+  max-width:900px;margin:0 auto;
+}
+.compare-row{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  border-bottom:1px solid var(--border);
+}
+.compare-row:last-child{border-bottom:none}
+.compare-row.head{background:#0a0a0c;font-weight:700}
+.compare-cell{padding:18px 20px;font-size:14px;display:flex;align-items:center}
+.compare-cell.win{color:var(--green)}
+.compare-cell.lose{color:var(--red)}
+.compare-cell.head{color:var(--gold);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:0.05em}
+@media (max-width:600px){
+  .compare-cell{padding:12px;font-size:12px}
+}
+
+/* ═════ PRICING ═════ */
+#pricing{background:var(--bg-2)}
+.pricing{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+  max-width:1100px;margin:0 auto;
+}
+.tier{
+  background:var(--bg-3);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:36px 30px;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.tier.featured{border-color:var(--gold);box-shadow:0 20px 60px rgba(245,184,76,0.1)}
+.tier-badge{
+  position:absolute;top:-12px;right:24px;
+  background:var(--gold);color:#000;
+  font-size:11px;font-weight:800;
+  padding:5px 12px;border-radius:20px;
+  letter-spacing:0.05em;text-transform:uppercase;
+}
+.tier-name{font-size:14px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px}
+.tier-price{font-size:48px;font-weight:900;letter-spacing:-0.02em;margin-bottom:4px;line-height:1}
+.tier-price .unit{font-size:16px;color:var(--text-dim);font-weight:500}
+.tier-altprice{font-size:13px;color:var(--text-dim);margin-bottom:16px}
+.tier-altprice strong{color:var(--gold)}
+.tier-tagline{font-size:14px;color:var(--text-dim);margin-bottom:24px;min-height:42px}
+.tier-features{list-style:none;margin-bottom:28px;flex:1}
+.tier-features li{
+  font-size:14px;padding:8px 0;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.tier-features li::before{
+  content:"✓";color:var(--green);font-weight:900;flex-shrink:0;
+}
+.tier-cta{width:100%;justify-content:center}
+
+/* ═════ TESTIMONIALS ═════ */
+.testimonials{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:24px;
+  max-width:1000px;margin:0 auto;
+}
+.quote{
+  background:var(--bg-3);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:30px;
+  position:relative;
+}
+.quote::before{
+  content:"\201C";
+  position:absolute;top:10px;left:18px;
+  font-size:60px;color:var(--gold);
+  opacity:0.3;line-height:1;font-family:Georgia,serif;
+}
+.quote p{font-size:15px;line-height:1.6;margin-bottom:16px;position:relative;z-index:1}
+.quote-author{font-size:13px;color:var(--text-dim);font-weight:600}
+.quote-author strong{color:var(--gold)}
+
+/* ═════ NTN PROMO ═════ */
+.ntn-promo{
+  background:linear-gradient(135deg,#0e0e12 0%,#1a1a1f 100%);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:48px;
+  text-align:center;
+  max-width:900px;margin:0 auto;
+}
+.ntn-promo h3{font-size:28px;font-weight:900;margin-bottom:12px}
+.ntn-promo p{color:var(--text-dim);margin-bottom:24px;max-width:600px;margin-left:auto;margin-right:auto}
+.ntn-states{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:28px;
+}
+.ntn-state{
+  background:var(--bg-3);border:1px solid var(--border);
+  padding:6px 14px;border-radius:20px;font-size:13px;
+  color:var(--text-dim);
+}
+
+/* ═════ CTA BAND ═════ */
+.cta-band{
+  background:linear-gradient(135deg,rgba(245,184,76,0.1) 0%,rgba(245,184,76,0.02) 100%);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:80px 0;
+  text-align:center;
+}
+.cta-band h2{
+  font-size:clamp(28px,4vw,42px);
+  font-weight:900;margin-bottom:14px;
+  letter-spacing:-0.02em;
+}
+.cta-band p{color:var(--text-dim);margin-bottom:32px;max-width:580px;margin-left:auto;margin-right:auto;font-size:17px}
+
+/* ═════ LEAD FORM ═════ */
+#contact{background:var(--bg-2)}
+.lead-form{
+  max-width:560px;margin:0 auto;
+  background:var(--bg-3);border:1px solid var(--border);
+  border-radius:14px;padding:40px;
+}
+.form-row{margin-bottom:18px}
+.form-row label{display:block;font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em}
+.form-row input,.form-row textarea,.form-row select{
+  width:100%;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:12px 14px;
+  color:var(--text);
+  font-family:inherit;
+  font-size:15px;
+}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{
+  outline:none;border-color:var(--gold);
+}
+.form-row textarea{resize:vertical;min-height:100px}
+
+/* ═════ FOOTER ═════ */
+footer{
+  background:#000;
+  border-top:1px solid var(--border);
+  padding:48px 0 32px;
+  font-size:13px;color:var(--text-dim);
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;margin-bottom:32px;
+}
+@media (max-width:768px){.footer-grid{grid-template-columns:1fr 1fr}}
+.footer-col h4{color:var(--text);font-size:13px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;font-weight:700}
+.footer-col a{display:block;color:var(--text-dim);padding:4px 0;font-size:13px}
+.footer-col a:hover{color:var(--gold)}
+.footer-bottom{
+  padding-top:24px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+
+/* ═════ UTIL ═════ */
+.fade-in{opacity:0;transform:translateY(20px);transition:all 0.6s}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ═════ NAV ═════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">Q</div>
+      PrompterQ
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#vs">vs FlipQ</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#network">Network</a>
+      <a href="#contact">Contact</a>
+      <a href="#pricing" class="nav-cta">Get PrompterQ</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═════ HERO ═════ -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">The New Standard in Professional Teleprompting</div>
+    <h1>Stop fighting your software.<br>Start delivering flawless reads.</h1>
+    <p class="hero-sub">PrompterQ is the modern teleprompter built by a <strong>25-year veteran operator</strong> for the real demands of the stage. Clean scripts fast. Rock-solid prompting. Support that answers at 7 AM load-in.</p>
+    <div class="hero-ctas">
+      <a href="#pricing" class="btn btn-primary btn-large">Download Free →</a>
+      <a href="#features" class="btn btn-secondary btn-large">See What's Inside</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item">Works offline</div>
+      <div class="trust-item">Any OS</div>
+      <div class="trust-item">No install required</div>
+      <div class="trust-item">Single HTML file</div>
+    </div>
+  </div>
+
+  <div class="screenshot-wrap">
+    <div class="screenshot">
+      <div class="screenshot-mock">
+        <div class="sc-header">
+          <div class="sc-dot"></div><div class="sc-dot"></div><div class="sc-dot"></div>
+          <div class="sc-title">PrompterQ — Live Show</div>
+        </div>
+        <div class="sc-body">
+          <div class="sc-sidebar">
+            <h5>Run List</h5>
+            <div class="sc-sidebar-item">Welcome</div>
+            <div class="sc-sidebar-item active">Keynote — Q4</div>
+            <div class="sc-sidebar-item">Awards Intro</div>
+            <div class="sc-sidebar-item">Closing</div>
+          </div>
+          <div class="sc-main">
+            <div class="sc-line dim">Good evening everyone.</div>
+            <div class="sc-line dim">Thank you for joining us tonight.</div>
+            <div class="sc-line host">HOST: Tonight we're celebrating</div>
+            <div class="sc-line normal">a year of <em style="color:var(--gold)">extraordinary</em> growth.</div>
+            <div class="sc-line guest">GUEST: And I'm thrilled to be here.</div>
+            <div class="sc-line dim">Let's get started.</div>
+            <div class="sc-cuebar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═════ WHY OPERATORS SWITCH ═════ -->
+<section id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Why Operators Are Switching</div>
+      <h2 class="section-title">Built for how you actually work.</h2>
+      <p class="section-sub">Every feature comes from a real show problem. No theoretical UX. No consumer fluff.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon">⚡</div>
+        <div>
+          <h4>One-click professional formatting</h4>
+          <p>Turns messy Word, Google Docs, and PDF scripts into broadcast-ready prompter copy in seconds.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🎯</div>
+        <div>
+          <h4>True 60fps scrolling</h4>
+          <p>GPU-accelerated, frame-rate independent. Buttery smooth on any hardware, from venue laptops to 144Hz machines.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🎨</div>
+        <div>
+          <h4>Speaker colors + word-level italics</h4>
+          <p>Right in the editor. Ctrl+1/2/3 to color a line, Ctrl+I to emphasize a word. Talent reads it right the first time.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">📍</div>
+        <div>
+          <h4>36 instant cue markers</h4>
+          <p>Keys 1–9, 0, A–Z. One keystroke (Ctrl+M) to drop. One keystroke to jump. Built for run-of-show pressure.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">📋</div>
+        <div>
+          <h4>Live multi-script run list</h4>
+          <p>Switch scripts instantly with PageUp / PageDown. No exiting prompter mode. Run a full show day from one window.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">📞</div>
+        <div>
+          <h4>Direct operator support</h4>
+          <p>Text or call Jason — he's an operator too. No ticket queues. No "we'll get back to you Monday." Shows happen at 6 AM.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ FEATURE CATEGORIES ═════ -->
+<section id="features">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Core Features</div>
+      <h2 class="section-title">Everything an operator reaches for.</h2>
+      <p class="section-sub">From script prep to talent monitor — keyboard-first, show-tested, zero friction.</p>
+    </div>
+
+    <div class="cat-grid">
+      <div class="cat">
+        <div class="cat-head">
+          <div class="cat-icon">📝</div>
+          <h3>Script Preparation</h3>
+        </div>
+        <ul>
+          <li><div><strong>Smart Auto-Formatter (¶ FMT)</strong><span>Speech-rhythm line breaking. Detects abbreviations, decimals, and ellipses.</span></div></li>
+          <li><div><strong>Advanced text normalization</strong><span>Curly quotes, em-dashes, encoding garbage, page numbers, bullets — all cleaned automatically.</span></div></li>
+          <li><div><strong>DOCX, RTF, TXT import</strong><span>Drag-and-drop. High-fidelity Word handling via mammoth.js.</span></div></li>
+          <li><div><strong>Rich contenteditable editor</strong><span>Ctrl+1/2/3 speaker colors. Ctrl+I italics. Ctrl+M cue markers.</span></div></li>
+        </ul>
+      </div>
+
+      <div class="cat">
+        <div class="cat-head">
+          <div class="cat-icon">🎬</div>
+          <h3>Prompter Mode</h3>
+        </div>
+        <ul>
+          <li><div><strong>True fullscreen + 4 display modes</strong><span>Normal / Mirror / Flip / Mirror+Flip — cycle live with M key.</span></div></li>
+          <li><div><strong>Live speed and font control</strong><span>↑↓ arrows for speed. Space to pause. Adjust font size mid-scroll.</span></div></li>
+          <li><div><strong>Full HUD overlay</strong><span>Word count, estimated read time, elapsed timer, progress bar — operator only.</span></div></li>
+          <li><div><strong>Cue marker jump line</strong><span>36 programmable jumps. Get to any section of a 5,000+ word script instantly.</span></div></li>
+        </ul>
+      </div>
+
+      <div class="cat">
+        <div class="cat-head">
+          <div class="cat-icon">🛠️</div>
+          <h3>Workflow Tools</h3>
+        </div>
+        <ul>
+          <li><div><strong>Full session save/load (.pqs)</strong><span>Preserves formatting, colors, cues, run list, and settings. Walk into any laptop.</span></div></li>
+          <li><div><strong>Search &amp; Find</strong><span>Highlighted matches. Find any word in seconds.</span></div></li>
+          <li><div><strong>Talent monitor output window</strong><span>Pop out to second display. SDI-friendly. Operator station stays full control.</span></div></li>
+          <li><div><strong>Keyboard-first design</strong><span>Built for operators under pressure. Mouse optional, keyboard mandatory.</span></div></li>
+        </ul>
+      </div>
+
+      <div class="cat">
+        <div class="cat-head">
+          <div class="cat-icon">🛡️</div>
+          <h3>Show-Day Safety <span class="pro-badge">PRO</span></h3>
+        </div>
+        <ul>
+          <li><div><strong>Auto-display detection</strong><span>EleQtron detects secondary monitor and fullscreens automatically. No drag-to-second-screen ritual.</span></div></li>
+          <li><div><strong>Live editing while scrolling</strong><span>Fix typos in real-time. Client sends a change at call time? You're already on it.</span></div></li>
+          <li><div><strong>Blackout key</strong><span>Instantly kill the talent feed. Operator continues to scroll or edit.</span></div></li>
+          <li><div><strong>Autosave + crash recovery</strong><span>Persistent session state. Power loss? Pick up exactly where you were.</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ COMPARISON ═════ -->
+<section id="vs">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">vs The Old Way</div>
+      <h2 class="section-title">FlipQ has been the standard since 2003.</h2>
+      <p class="section-sub">It still requires a hardware dongle. It still only runs on Windows. It still costs $500 per machine. We did the math.</p>
+    </div>
+
+    <div class="compare">
+      <div class="compare-row head">
+        <div class="compare-cell head">Capability</div>
+        <div class="compare-cell head">PrompterQ</div>
+        <div class="compare-cell head">FlipQ</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Hardware dongle required</div>
+        <div class="compare-cell win">No</div>
+        <div class="compare-cell lose">Yes</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Mac / Linux support</div>
+        <div class="compare-cell win">Yes</div>
+        <div class="compare-cell lose">No</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Script length limit</div>
+        <div class="compare-cell win">Unlimited</div>
+        <div class="compare-cell lose">Hard cap</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Speaker color coding</div>
+        <div class="compare-cell win">Built-in</div>
+        <div class="compare-cell lose">Manual RTF</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Free tier</div>
+        <div class="compare-cell win">Yes</div>
+        <div class="compare-cell lose">No</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Operator-direct support</div>
+        <div class="compare-cell win">Yes</div>
+        <div class="compare-cell lose">Email queue</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">Per-machine cost</div>
+        <div class="compare-cell win">Free / $349/yr</div>
+        <div class="compare-cell lose">$500 each</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ PRICING ═════ -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Pricing</div>
+      <h2 class="section-title">Start free. Upgrade when shows demand it.</h2>
+      <p class="section-sub">The free version is a complete teleprompter — not crippleware. Pro adds the show-risk reduction features that justify the price tag for working operators.</p>
+    </div>
+
+    <div class="pricing">
+      <div class="tier">
+        <div class="tier-name">Free</div>
+        <div class="tier-price">$0</div>
+        <div class="tier-altprice">Forever free. Single HTML file.</div>
+        <div class="tier-tagline">Run from any laptop. Test on real shows. Zero install.</div>
+        <ul class="tier-features">
+          <li>Full editor with speaker colors</li>
+          <li>36 cue markers (1–9, 0, A–Z)</li>
+          <li>Mirror / Flip / 60fps scroll</li>
+          <li>DOCX / TXT / RTF import</li>
+          <li>Multi-script run list</li>
+          <li>Session save / load (.pqs)</li>
+          <li>Browser popup output</li>
+          <li>Works offline, any OS</li>
+        </ul>
+        <a href="#" id="downloadFree" class="btn btn-secondary tier-cta">Download Free</a>
+      </div>
+
+      <div class="tier featured">
+        <div class="tier-badge">Most Popular</div>
+        <div class="tier-name">Pro — EleQtron</div>
+        <div class="tier-price">$349<span class="unit">/year</span></div>
+        <div class="tier-altprice">or <strong>$399 one-time</strong> for first year only</div>
+        <div class="tier-tagline">Native desktop app. Show-day reliability. Perpetual fallback if you cancel.</div>
+        <ul class="tier-features">
+          <li>Everything in Free</li>
+          <li>Auto-display detection + fullscreen</li>
+          <li>Live editing while scrolling</li>
+          <li>Blackout key</li>
+          <li>Autosave + crash recovery</li>
+          <li>DOM-anchored cue markers</li>
+          <li>Talent timer on glass</li>
+          <li>Remappable key bindings</li>
+          <li>Find &amp; replace</li>
+          <li>NDI output</li>
+          <li>Direct operator support</li>
+        </ul>
+        <a href="https://buy.stripe.com/REPLACE_WITH_STRIPE_LINK" class="btn btn-primary tier-cta">Buy Pro — $349/yr</a>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">Team / Enterprise</div>
+        <div class="tier-price">$1.5K<span class="unit">+/yr</span></div>
+        <div class="tier-altprice">Volume + white-label available</div>
+        <div class="tier-tagline">For teleprompter shops, broadcasters, and production companies.</div>
+        <ul class="tier-features">
+          <li>Everything in Pro</li>
+          <li>Producer Link / cloud script sync</li>
+          <li>Remote iPad / phone control</li>
+          <li>Multi-operator sync</li>
+          <li>Volume licensing</li>
+          <li>White-label option</li>
+          <li>Operator certification</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#contact" class="btn btn-secondary tier-cta">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ TESTIMONIALS (PLACEHOLDERS - DO NOT PUBLISH AS-IS) ═════ -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Trusted by Working Operators</div>
+      <h2 class="section-title">From people who can't afford downtime.</h2>
+    </div>
+
+    <div class="testimonials">
+      <div class="quote">
+        <p>The auto-formatter alone saves me 40 minutes per script. The live editing saved a show last month when the client sent changes at call time.</p>
+        <div class="quote-author"><strong>Veteran Operator</strong> — East Coast</div>
+      </div>
+      <div class="quote">
+        <p>Finally, a prompter that feels like it was built by someone who actually runs shows.</p>
+        <div class="quote-author"><strong>NTN Operator</strong> — Florida</div>
+      </div>
+      <div class="quote">
+        <p>I keep PrompterQ on every laptop in my kit. Even when I'm running FlipQ for a client, it's my safety net.</p>
+        <div class="quote-author"><strong>Senior Operator</strong> — Corporate AV</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ NTN PROMO ═════ -->
+<section id="network">
+  <div class="container">
+    <div class="ntn-promo">
+      <div class="section-eyebrow">Need an Operator?</div>
+      <h3>National Teleprompter Network</h3>
+      <p>PrompterQ is the proprietary software powering the National Teleprompter Network — a multi-state operator network providing live event, broadcast, and corporate teleprompter services.</p>
+      <div class="ntn-states">
+        <div class="ntn-state">Florida</div>
+        <div class="ntn-state">Georgia</div>
+        <div class="ntn-state">Ohio</div>
+        <div class="ntn-state">Pennsylvania</div>
+        <div class="ntn-state">New York</div>
+      </div>
+      <a href="https://nationalteleprompter.com" class="btn btn-secondary" target="_blank" rel="noopener">Book an Operator →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ CTA BAND ═════ -->
+<section class="cta-band">
+  <div class="container">
+    <h2>When the CEO is on stage,<br>"good enough" software isn't.</h2>
+    <p>Download the free HTML version and run it on your next show. Upgrade when you're ready for native reliability.</p>
+    <div class="hero-ctas" style="margin-bottom:0">
+      <a href="#pricing" class="btn btn-primary btn-large">Download Free →</a>
+      <a href="#pricing" class="btn btn-secondary btn-large">Get Pro — $349/yr</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ CONTACT / LEAD FORM ═════ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Get in Touch</div>
+      <h2 class="section-title">Questions? Custom needs?</h2>
+      <p class="section-sub">For Team / Enterprise pricing, white-label, volume licensing, or to book an operator — drop a note. Direct reply within 24 hours.</p>
+    </div>
+
+    <form class="lead-form" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST">
+      <div class="form-row">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-row">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-row">
+        <label for="company">Company / Production</label>
+        <input type="text" id="company" name="company">
+      </div>
+      <div class="form-row">
+        <label for="interest">I'm interested in</label>
+        <select id="interest" name="interest">
+          <option>Pro / EleQtron pricing</option>
+          <option>Team / Enterprise licensing</option>
+          <option>White-label deployment</option>
+          <option>Booking a teleprompter operator</option>
+          <option>General question</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+      <button type="submit" class="btn btn-primary tier-cta">Send Message</button>
+    </form>
+  </div>
+</section>
+
+<!-- ═════ FOOTER ═════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="logo" style="margin-bottom:14px">
+          <div class="logo-mark">Q</div>
+          PrompterQ
+        </div>
+        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;max-width:280px">
+          Professional teleprompter software built by working operators. A product of Claduta Corp.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#vs">vs FlipQ</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#" id="downloadFooter">Download Free</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="https://cladutacorp.com" target="_blank" rel="noopener">Claduta Corp</a>
+        <a href="https://nationalteleprompter.com" target="_blank" rel="noopener">Operator Network</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#contact">Email Support</a>
+        <a href="#">Documentation</a>
+        <a href="#">Release Notes</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Claduta Corp. All rights reserved.</div>
+      <div>PrompterQ™ is a trademark of Claduta Corp.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('section').forEach(el => {
+  el.classList.add('fade-in');
+  observer.observe(el);
+});
+
+const FREE_DOWNLOAD_URL = '/PrompterQ-v4.html';
+document.getElementById('downloadFree').href = FREE_DOWNLOAD_URL;
+document.getElementById('downloadFree').setAttribute('download', 'PrompterQ.html');
+document.getElementById('downloadFooter').href = FREE_DOWNLOAD_URL;
+document.getElementById('downloadFooter').setAttribute('download', 'PrompterQ.html');
+</script>
+
+</body>
+</html>
