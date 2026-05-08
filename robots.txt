@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /PrompterQ-v4.html
+
+Sitemap: https://prompterq.com/sitemap.xml

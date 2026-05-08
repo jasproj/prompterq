@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.sitemaps.org/schemas/sitemap-image/0.9">
+  <url>
+    <loc>https://prompterq.com/</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://prompterq.com/og-image.png</image:loc>
+      <image:title>PrompterQ — Teleprompter software that behaves under pressure</image:title>
+    </image:image>
+  </url>
+</urlset>
