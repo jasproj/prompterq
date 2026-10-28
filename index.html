@@ -1,1448 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PrompterQ — Free Professional Teleprompter Software for Live Shows</title>
-<meta name="description" content="Free professional teleprompter software built by a 25-year operator. Runs offline, any OS, no install. Replace $2,000 flip monitors with software. Pro desktop app coming soon.">
-<meta name="keywords" content="teleprompter software, free teleprompter, professional teleprompter, teleprompter app, teleprompter for mac, FlipQ alternative, live event teleprompter, broadcast teleprompter, corporate teleprompter, prompter software, autocue alternative">
-<meta property="og:title" content="PrompterQ — Professional Teleprompter Software Built for Show Day">
-<meta property="og:description" content="Built by a working teleprompter operator for corporate events, broadcast, politics, keynote stages, and production crews.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://prompterq.com">
-<meta property="og:image" content="https://prompterq.com/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="PrompterQ — Teleprompter software that behaves under pressure.">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PrompterQ — Professional Teleprompter Software">
-<meta name="twitter:description" content="Built by a 25-year operator. Free HTML download. PrompterQ Pro for show-day reliability.">
-<meta name="twitter:image" content="https://prompterq.com/og-image.png">
-
-<!-- Canonical URL -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PrompterQ — Teleprompter software built for live shows</title>
+<meta name="description" content="PrompterQ is professional teleprompter software for live production. One HTML file, runs in Chrome, fully offline. Autosave, crash recovery, mirror and flip, cue markers, reverse as fast as forward. $199, one time.">
 <link rel="canonical" href="https://prompterq.com/">
-
-<!-- JSON-LD Structured Data: SoftwareApplication -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="PrompterQ — Teleprompter software built for live shows">
+<meta property="og:description" content="One HTML file. Runs in Chrome. Never touches the internet. Built by a live-show operator for keynotes, galas, awards, broadcast and political events. $199, one time.">
+<meta property="og:url" content="https://prompterq.com/">
+<meta property="og:image" content="https://prompterq.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Crect x='4' y='14' width='24' height='3' fill='%23E2A22A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "PrompterQ",
-  "alternateName": "PrompterQ Free",
   "applicationCategory": "MultimediaApplication",
-  "applicationSubCategory": "Teleprompter Software",
-  "operatingSystem": "Web, Windows, macOS, Linux, ChromeOS",
-  "description": "Free professional teleprompter software built by a 25-year working operator. Runs offline in any browser. Speaker color coding, 36 cue markers, mirror/flip display modes, 60fps scrolling, and DOCX/RTF/TXT import. Replaces $2,000 hardware flip monitors with software.",
-  "url": "https://prompterq.com",
-  "downloadUrl": "https://prompterq.com/PrompterQ-v4.html",
-  "offers": [
-    {
-      "@type": "Offer",
-      "name": "PrompterQ Free",
-      "price": "0",
-      "priceCurrency": "USD",
-      "category": "Free"
-    },
-    {
-      "@type": "Offer",
-      "name": "PrompterQ Pro",
-      "price": "349",
-      "priceCurrency": "USD",
-      "billingDuration": "P1Y",
-      "availability": "https://schema.org/PreOrder"
-    }
-  ],
-  "featureList": [
-    "60fps smooth scrolling",
-    "36 cue markers (1-9, 0, A-Z)",
-    "Speaker color coding",
-    "Word-level italics",
-    "Mirror, Flip, and Mirror+Flip display modes",
-    "DOCX, RTF, TXT import",
-    "Multi-script run list with live switching",
-    "Smart auto-formatter",
-    "Session save/load (.pqs)",
-    "Talent monitor output window",
-    "Works offline",
-    "No install required"
-  ],
-  "creator": {
-    "@type": "Organization",
-    "name": "Claduta Corp",
-    "url": "https://cladutacorp.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Claduta Corp",
-    "url": "https://cladutacorp.com"
-  }
+  "operatingSystem": "Any (Chrome browser)",
+  "description": "Professional teleprompter software for live production. One HTML file, runs in Chrome, fully offline.",
+  "offers": {"@type": "Offer", "price": "199", "priceCurrency": "USD"},
+  "url": "https://prompterq.com/"
 }
 </script>
-
-<!-- JSON-LD Structured Data: Organization -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "PrompterQ",
-  "url": "https://prompterq.com",
-  "logo": "https://prompterq.com/og-image.png",
-  "description": "Professional teleprompter software for working operators.",
-  "parentOrganization": {
-    "@type": "Organization",
-    "name": "Claduta Corp",
-    "url": "https://cladutacorp.com"
-  },
-  "sameAs": [
-    "https://nationalteleprompter.com",
-    "https://cladutacorp.com"
-  ]
-}
-</script>
-
-<!-- JSON-LD Structured Data: FAQPage (helps win featured snippets) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is PrompterQ free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. PrompterQ Free is a complete, professional teleprompter that runs in any modern browser, offline, on any operating system. No install, no signup, no hardware dongle. PrompterQ Pro is the optional paid desktop app for show-day reliability features."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does PrompterQ work on Mac?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. PrompterQ is a single HTML file that runs in any modern browser on macOS, Windows, Linux, or ChromeOS. No install required."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do I need a special flip monitor for PrompterQ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. PrompterQ flips the image in software with four display modes: Normal, Mirror, Flip, and Mirror+Flip. This replaces the typical $2,000 hardware flip monitor that legacy teleprompter software requires. Run any monitor as a teleprompter."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How is PrompterQ different from FlipQ or other legacy teleprompter software?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "PrompterQ runs without hardware dongles, supports Mac/Linux/Windows/browser, has built-in speaker color coding and 36 cue markers, software-based mirror/flip (no special monitor required), and a free tier. Legacy software typically requires Windows-only installs, hardware dongles, $2,000 flip monitors, and per-machine licenses."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I import Word documents into PrompterQ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. PrompterQ imports DOCX, RTF, and TXT files via drag-and-drop. The smart auto-formatter normalizes spacing, line breaks, smart quotes, em-dashes, and page numbers automatically."
-      }
-    }
-  ]
-}
-</script>
-<meta name="theme-color" content="#0a0a0c">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='8' fill='%230a0a0c'/><text x='32' y='44' font-family='Arial' font-size='38' font-weight='900' fill='%23F5B84C' text-anchor='middle'>Q</text></svg>">
-
-<!-- GA4 placeholder -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-XXXXXXXXXX');
-</script> -->
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0a0a0c;
-  --bg-2:#111114;
-  --bg-3:#1a1a1f;
-  --border:#2a2a32;
-  --border-2:#3a3a46;
-  --text:#e8e8ea;
-  --text-dim:#8a8a92;
-  --gold:#F5B84C;
-  --gold-dim:#c69638;
-  --green:#4ade80;
-  --red:#f87171;
-  --shadow:0 24px 80px rgba(0,0,0,.45);
+  --glass:#000000;
+  --text:#FFFFFF;
+  --amber:#E2A22A;
+  --amber-dim:#7A5A1E;
+  --chrome:#ECE8DA;
+  --chrome-deep:#D9D4C2;
+  --ink:#141210;
+  --ink-soft:#5C574D;
+  --rule:#C8C2AD;
+  --font:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --prompter:Arial,"Helvetica Neue",Helvetica,sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
 }
+*{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
-  line-height:1.6;
-  overflow-x:hidden;
-}
-.container{max-width:1200px;margin:0 auto;padding:0 24px}
-a{color:var(--gold);text-decoration:none}
-a:hover{color:var(--text)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{font-family:var(--font);font-weight:400;background:var(--glass);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;font-variation-settings:"wdth" 100}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.wrap{width:min(1180px,100% - 48px);margin-inline:auto}
+@media (max-width:640px){.wrap{width:calc(100% - 32px)}}
 
-/* ═════ NAV ═════ */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(10,10,12,0.85);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-}
-.nav-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 24px;max-width:1200px;margin:0 auto;
-}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--text)}
-.logo-mark{
-  width:32px;height:32px;border-radius:6px;
-  background:var(--bg-3);border:1px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--gold);font-weight:900;font-size:18px;
-}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-links a{color:var(--text-dim);font-size:14px;font-weight:500}
-.nav-links a:hover{color:var(--text)}
-.nav-cta{
-  background:var(--gold);color:#000 !important;
-  padding:8px 18px;border-radius:6px;font-weight:700;font-size:14px;
-}
-.nav-cta:hover{background:var(--text);color:#000 !important}
-@media (max-width:900px){.nav-links a:not(.nav-cta){display:none}}
+/* ---------- top bar ---------- */
+.bar{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:flex-start;justify-content:space-between;padding:22px 0}
+.mark{font-weight:800;font-size:20px;letter-spacing:-0.02em;text-decoration:none;font-variation-settings:"wdth" 112}
+.mark span{color:var(--amber)}
+.bar nav{display:flex;gap:28px;font-size:15px}
+.bar nav a{text-decoration:none;opacity:.85}
+.bar nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+@media (max-width:640px){.bar nav{gap:18px;font-size:14px}}
 
-/* ═════ HERO — side-by-side ═════ */
-.hero{
-  padding:130px 0 80px;
-  position:relative;
-  background:radial-gradient(900px 420px at 50% 0%,rgba(245,184,76,.12),transparent 68%),linear-gradient(180deg,#0d0d11 0%,var(--bg) 72%);
-  overflow:hidden;
-}
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:radial-gradient(var(--border) 1px,transparent 1px);
-  background-size:40px 40px;
-  opacity:0.12;
-  pointer-events:none;
-  mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
-  -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
-}
-.hero > .container{position:relative;z-index:1}
-.hero-grid{
-  display:grid;
-  grid-template-columns:1.04fr 0.96fr;
-  gap:48px;
-  align-items:center;
-}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:9px;
-  background:rgba(245,184,76,0.1);
-  border:1px solid rgba(245,184,76,0.35);
-  color:var(--gold);
-  font-size:12px;font-weight:800;
-  padding:7px 14px;border-radius:999px;
-  text-transform:uppercase;letter-spacing:0.09em;
-  margin-bottom:22px;
-}
-.hero-eyebrow .dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 12px var(--green);
-}
-.hero h1{
-  font-size:clamp(40px,5.6vw,68px);
-  font-weight:950;
-  line-height:1;
-  letter-spacing:-0.04em;
-  margin-bottom:22px;
-  background:linear-gradient(180deg,#fff 0%,#a0a0a8 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.hero-sub{
-  font-size:clamp(16px,1.6vw,19px);
-  color:var(--text-dim);
-  max-width:560px;margin:0 0 28px;
-}
-.hero-sub strong{color:var(--gold);font-weight:600}
-.hero-ctas{
-  display:flex;gap:13px;flex-wrap:wrap;
-  margin-bottom:32px;
-}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:14px 24px;border-radius:10px;
-  font-weight:700;font-size:15px;
-  transition:all 0.15s;cursor:pointer;border:1px solid transparent;
-  font-family:inherit;
-}
-.btn-primary{background:var(--gold);color:#000}
-.btn-primary:hover{background:#fff;color:#000;transform:translateY(-2px);box-shadow:0 16px 40px rgba(245,184,76,0.25)}
-.btn-secondary{background:rgba(255,255,255,0.03);color:var(--text);border-color:var(--border-2)}
-.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
-.btn-large{padding:16px 28px;font-size:16px}
-
-.hero-pills{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:10px;
-  max-width:560px;
-}
-.pill{
-  border:1px solid var(--border);
-  background:rgba(255,255,255,0.025);
-  border-radius:10px;
-  padding:10px 12px;
-}
-.pill b{display:block;color:var(--text);font-size:14px;font-weight:700;margin-bottom:2px}
-.pill span{color:var(--text-dim);font-size:12px}
-
-@media (max-width:980px){
-  .hero-grid{grid-template-columns:1fr;gap:50px}
-  .hero{padding:120px 0 60px;text-align:center}
-  .hero-sub{margin-left:auto;margin-right:auto}
-  .hero-ctas{justify-content:center}
-  .hero-pills{margin-left:auto;margin-right:auto;grid-template-columns:repeat(2,1fr)}
+/* ---------- hero: a working prompter ---------- */
+.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;background:var(--glass)}
+.glass{position:absolute;inset:0;overflow:hidden}
+.roll{position:absolute;left:0;right:0;top:100%;padding:0 6vw;font-family:var(--prompter);font-size:clamp(44px,7.2vw,118px);line-height:1.18;color:#fff;will-change:transform;animation:roll 58s linear infinite}
+.roll p{margin:0}
+.roll .gap{height:.55em}
+@keyframes roll{from{transform:translateY(0)}to{transform:translateY(-100%) translateY(-100svh)}}
+.cue{position:absolute;left:0;top:33%;width:min(18vw,230px);height:4px;background:var(--amber);z-index:2}
+.fade{position:absolute;left:0;right:0;height:18%;z-index:1;pointer-events:none}
+.fade.top{top:0;background:linear-gradient(#000,rgba(0,0,0,0))}
+.fade.bot{bottom:0;height:24%;background:linear-gradient(rgba(0,0,0,0),#000 70%)}
+.hud{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:34px;z-index:3;font-family:var(--mono)}
+.hud div{text-align:center}
+.hud b{display:block;color:var(--amber);font-size:15px;font-weight:600}
+.hud small{display:block;color:#8a8a8a;font-size:9px;letter-spacing:.18em;margin-top:3px}
+.exit{position:absolute;left:24px;bottom:22px;z-index:3;font-family:var(--mono);font-size:11px;color:#e4514a;border:1px solid #e4514a;padding:5px 9px;border-radius:3px;opacity:.9}
+.lede{font-weight:400;font-size:15px;line-height:1.4;color:#bdbdbd;max-width:300px;margin-top:6px}
+@media (max-width:860px){.hud{gap:22px}}
+@media (max-width:640px){.lede{font-size:13px;max-width:200px}.exit{display:none}.fade.bot{height:32%}.hud{gap:18px}}
+@media (prefers-reduced-motion:reduce){
+  .roll{animation:none;top:auto;bottom:0;transform:translateY(0)}
 }
 
-/* ═════ HERO SCREENSHOT — actual PrompterQ retro UI ═════ */
-.screenshot{
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:var(--shadow),0 0 0 1px rgba(245,184,76,0.15);
-  cursor:pointer;
-  transition:transform 0.3s;
-  background:#000;
-}
-.screenshot:hover{transform:translateY(-4px);box-shadow:0 32px 100px rgba(0,0,0,0.6),0 0 0 1px rgba(245,184,76,0.3)}
-.pq-window{
-  background:#d4d0c8;
-  font-family:"Segoe UI","Tahoma","MS Sans Serif",sans-serif;
-  font-size:11px;
-  color:#000;
-  display:flex;flex-direction:column;
-  aspect-ratio:4/3;
-  position:relative;
-}
-.pq-title{
-  background:linear-gradient(to bottom,#1a1a1f,#0a0a0c);
-  color:#e8e8ea;
-  padding:6px 12px;
-  display:flex;align-items:center;gap:8px;
-  font-size:11px;
-  border-bottom:1px solid #000;
-}
-.pq-title .dots{display:flex;gap:6px}
-.pq-title .dot{width:10px;height:10px;border-radius:50%;background:#444}
-.pq-title .name{font-weight:600;color:#e8e8ea}
-.pq-title .hint{margin-left:auto;color:var(--gold);font-size:10px;opacity:0.85}
-.pq-menu{
-  background:#d4d0c8;
-  border-bottom:1px solid #999;
-  padding:3px 6px;
-  display:flex;gap:2px;
-}
-.pq-menu span{padding:3px 10px;cursor:default;font-size:11px}
-.pq-tb{
-  background:#d4d0c8;
-  border-bottom:1px solid #bbb;
-  padding:5px 6px;
-  display:flex;align-items:center;gap:3px;
-  flex-wrap:wrap;
-}
-.pq-btn{
-  width:26px;height:24px;
-  background:#d4d0c8;
-  border:1px solid;
-  border-color:#fff #666 #666 #fff;
-  font-size:11px;font-weight:700;
-  display:inline-flex;align-items:center;justify-content:center;
-  color:#000;
-  cursor:default;
-}
-.pq-btn.color-a{font-family:Georgia,serif;font-size:13px}
-.pq-btn.color-green{color:#00a000}
-.pq-btn.color-blue{color:#0066cc}
-.pq-btn.color-yellow{color:#cc9900}
-.pq-btn.italic{font-style:italic;font-family:Georgia,serif}
-.pq-tb-sep{width:1px;height:20px;background:#999;margin:0 4px}
-.pq-tb-label{font-size:10px;color:#555;margin-left:6px;margin-right:4px}
-.pq-tb-input{
-  background:#fff;border:1px solid #999;
-  padding:2px 5px;
-  font-size:11px;font-family:inherit;
-  height:22px;
-  display:inline-flex;align-items:center;
-}
-.pq-tb-input.size{width:42px;justify-content:center}
-.pq-tb-input.font{width:74px}
-.pq-go{
-  margin-left:auto;
-  background:linear-gradient(to bottom,#ffe890,#f5b84c);
-  border:1px solid #b8861e;
-  padding:3px 12px;
-  font-size:11px;font-weight:700;
-  color:#3a2e10;
-  height:24px;
-  display:inline-flex;align-items:center;gap:5px;
-  cursor:default;
-}
-.pq-go::before{content:"▶";font-size:9px}
-.pq-body{flex:1;display:flex;flex-direction:column;min-height:0;background:#d4d0c8}
-.pq-editor{
-  flex:1;
-  background:#000;
-  color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
-  font-weight:700;
-  overflow:hidden;
-  position:relative;
-}
-.pq-editor-scroll{
-  position:absolute;left:0;right:0;top:0;
-  padding:14px 20px;
-  text-align:left;
-  transition:none;
-  will-change:transform;
-}
-.pq-line{
-  font-size:32px;
-  line-height:1.1;
-  margin-bottom:14px;
-  text-align:left;
-  white-space:nowrap;
-  overflow:hidden;
-}
-.pq-content{padding-bottom:14px}
-.pq-line.green{color:#00ff66}
-.pq-line.blue{color:#3ab1ff}
-.pq-line.yellow{color:#ffd84a}
-.pq-line.white{color:#fff}
-.pq-line em{font-style:italic;color:#ffd84a}
-.pq-line .cue{
-  display:inline-block;
-  background:var(--gold);color:#000;
-  font-family:Consolas,Monaco,monospace;
-  font-size:11px;font-weight:900;
-  padding:1px 5px;border-radius:2px;
-  margin-right:8px;vertical-align:middle;
-}
-.pq-tabs{
-  background:#d4d0c8;
-  border-top:1px solid #bbb;
-  display:flex;
-  padding:0 6px;
-  padding-top:4px;
-}
-.pq-tab{
-  background:#c8c4bd;
-  border:1px solid #999;
-  border-bottom:none;
-  padding:5px 12px;
-  font-size:11px;
-  margin-right:2px;
-  color:#444;
-  cursor:default;
-  position:relative;
-  top:1px;
-}
-.pq-tab.active{
-  background:#d4d0c8;
-  color:#000;
-  font-weight:600;
-  border-bottom:1px solid #d4d0c8;
-  z-index:2;
-}
-.pq-panel{
-  background:#d4d0c8;
-  padding:10px 14px;
-  border-top:1px solid #999;
-  margin-top:-1px;
-  font-size:10px;
-  display:flex;flex-wrap:wrap;gap:4px 14px;
-}
-.pq-panel kbd{
-  display:inline-block;
-  background:#fff;border:1px solid #888;
-  padding:1px 5px;
-  font-family:Consolas,Monaco,monospace;
-  font-size:9px;
-  border-radius:2px;
-  margin-right:4px;
-}
-.pq-panel-row{display:inline-flex;align-items:center;gap:4px}
-.pq-cuebar{
-  position:absolute;left:0;right:0;
-  top:50%;
-  height:2px;
-  background:var(--gold);
-  box-shadow:0 0 8px var(--gold);
-  z-index:5;pointer-events:none;
-}
-@media (max-width:700px){
-  .pq-tb-label,.pq-tb-input.font{display:none}
-  .pq-line{font-size:20px}
-  .pq-panel{font-size:9px}
-}
+/* ---------- editor sections (beige chrome) ---------- */
+.chrome{background:var(--chrome);color:var(--ink);padding:112px 0}
+.chrome h2,.glassy h2{font-weight:700;font-size:clamp(34px,4.6vw,58px);line-height:1.02;letter-spacing:-0.025em;font-variation-settings:"wdth" 108;max-width:18ch}
+.chrome p.big{font-size:clamp(20px,2.2vw,26px);line-height:1.35;max-width:36ch;margin-top:26px;font-weight:400}
+.chrome p.big+p.big{margin-top:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+@media (max-width:860px){.two{grid-template-columns:1fr;gap:36px}}
+.plain{font-size:17px;line-height:1.55;color:var(--ink);max-width:52ch}
+.plain li{margin:0 0 12px 0;padding-left:22px;position:relative;list-style:none}
+.plain li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:3px;background:var(--amber)}
 
-/* ═════ TRUST BAR ═════ */
-.trust-bar{
-  background:#000;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  padding:28px 0;
-}
-.trust-bar-text{
-  text-align:center;
-  font-size:13px;
-  color:var(--text-dim);
-  text-transform:uppercase;
-  letter-spacing:0.15em;
-  font-weight:600;
-}
-.trust-bar-text strong{color:var(--gold);font-weight:700}
+.window{margin-top:64px;border:1px solid var(--rule);background:#fff;box-shadow:0 30px 60px -30px rgba(20,18,16,.45)}
+.window .title{height:34px;display:flex;align-items:center;padding:0 14px;gap:8px;background:var(--chrome-deep);border-bottom:1px solid var(--rule);font-size:12px;color:var(--ink-soft)}
+.window .title i{width:11px;height:11px;border-radius:50%;background:#c9c2ad;display:inline-block}
+.window .title span{margin-left:8px}
+.caption{font-size:14px;color:var(--ink-soft);margin-top:12px}
 
-/* ═════ SECTION ═════ */
-section{padding:90px 0}
-.section-head{text-align:center;margin-bottom:54px;max-width:760px;margin-left:auto;margin-right:auto}
-.section-eyebrow{
-  font-size:12px;font-weight:800;text-transform:uppercase;
-  letter-spacing:0.13em;color:var(--gold);margin-bottom:12px;
-}
-.section-title{
-  font-size:clamp(30px,4vw,46px);
-  font-weight:900;letter-spacing:-0.03em;
-  line-height:1.05;margin-bottom:14px;
-}
-.section-sub{font-size:17px;color:var(--text-dim)}
+/* ---------- glass sections ---------- */
+.glassy{background:var(--glass);color:#fff;padding:112px 0}
+.glassy h2{max-width:20ch}
+.glassy .sub{color:#a9a9a9;font-size:18px;max-width:50ch;margin-top:18px}
 
-/* ═════ WORKFLOW — sticky split ═════ */
-#workflow{background:var(--bg-2)}
-.workflow-split{
-  display:grid;
-  grid-template-columns:0.9fr 1.1fr;
-  gap:36px;
-  align-items:start;
-}
-.workflow-quote{
-  position:sticky;top:92px;
-  background:linear-gradient(145deg,rgba(245,184,76,0.13),rgba(255,255,255,0.03));
-  border:1px solid rgba(245,184,76,0.25);
-  border-radius:18px;
-  padding:32px;
-}
-.workflow-quote h3{font-size:32px;line-height:1.05;letter-spacing:-0.03em;margin-bottom:14px}
-.workflow-quote p{color:var(--text-dim);font-size:15px}
-.workflow-steps{display:grid;gap:14px}
-.workflow-step{
-  display:grid;
-  grid-template-columns:48px 1fr;
-  gap:16px;
-  background:var(--bg-3);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:22px;
-  transition:all 0.2s;
-}
-.workflow-step:hover{border-color:var(--gold);transform:translateY(-2px)}
-.wf-num{
-  width:48px;height:48px;border-radius:12px;
-  background:var(--gold);color:#000;
-  display:flex;align-items:center;justify-content:center;
-  font-weight:900;font-size:18px;
-}
-.workflow-step h4{font-size:17px;font-weight:800;margin-bottom:6px}
-.workflow-step p{font-size:14px;color:var(--text-dim);line-height:1.55}
-@media (max-width:900px){
-  .workflow-split{grid-template-columns:1fr;gap:24px}
-  .workflow-quote{position:static}
-}
+/* feature list styled like the app's shortcut list */
+.list{margin-top:56px;border-top:1px solid #2a2a2a}
+.row{display:grid;grid-template-columns:minmax(200px,.9fr) 2fr;gap:40px;padding:26px 0;border-bottom:1px solid #2a2a2a}
+.row h3{font-weight:700;font-size:21px;letter-spacing:-0.01em;font-variation-settings:"wdth" 104;line-height:1.2}
+.row p{color:#c9c9c9;font-size:17px;max-width:58ch}
+.row p em{font-style:normal;color:var(--amber)}
+@media (max-width:720px){.row{grid-template-columns:1fr;gap:8px;padding:22px 0}}
 
-/* ═════ WHY GRID ═════ */
-.why-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:18px;
-  max-width:1100px;margin:0 auto;
-}
-.why-item{
-  background:var(--bg-2);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:24px 26px;
-  display:flex;gap:14px;
-  transition:all 0.2s;
-}
-.why-item:hover{border-color:var(--gold);transform:translateY(-2px)}
-.why-icon{
-  flex-shrink:0;width:42px;height:42px;border-radius:10px;
-  background:rgba(245,184,76,0.12);
-  border:1px solid rgba(245,184,76,0.18);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;color:var(--gold);font-weight:900;
-}
-.why-item h4{font-size:15px;font-weight:700;margin-bottom:6px}
-.why-item p{font-size:13px;color:var(--text-dim);line-height:1.55}
+/* screenshots pair */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:56px}
+.pair figure{border:1px solid #2a2a2a;background:#000}
+.pair figcaption{font-size:14px;color:#a9a9a9;padding:12px 14px;border-top:1px solid #2a2a2a}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
 
-/* ═════ FEATURE CATEGORIES ═════ */
-#features{background:var(--bg-2)}
-.cat-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:22px;
-}
-.cat{
-  background:var(--bg-3);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:30px;
-}
-.cat-head{
-  display:flex;align-items:center;gap:14px;margin-bottom:18px;
-  padding-bottom:16px;border-bottom:1px solid var(--border);
-}
-.cat-icon{
-  width:44px;height:44px;border-radius:10px;
-  background:rgba(245,184,76,0.1);
-  border:1px solid rgba(245,184,76,0.18);
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;
-}
-.cat h3{font-size:18px;font-weight:800}
-.cat ul{list-style:none}
-.cat li{
-  font-size:14px;color:var(--text);padding:10px 0;
-  display:flex;align-items:flex-start;gap:10px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-}
-.cat li:last-child{border-bottom:none}
-.cat li::before{content:"→";color:var(--gold);font-weight:900;flex-shrink:0}
-.cat li strong{color:var(--text)}
-.cat li span{color:var(--text-dim);display:block;font-size:13px;margin-top:2px}
-.pro-badge{font-size:11px;background:var(--gold);color:#000;padding:3px 8px;border-radius:4px;margin-left:6px}
+/* keyboard map */
+.keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0;margin-top:44px;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.keys div{padding:18px 20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:14px;font-size:15px}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:4px 8px;min-width:40px;text-align:center;color:var(--ink);white-space:nowrap}
 
-/* ═════ COMPARISON ═════ */
-.compare{
-  background:var(--bg-3);border:1px solid var(--border);
-  border-radius:14px;overflow:hidden;
-  max-width:900px;margin:0 auto;
-}
-.compare-row{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr;
-  border-bottom:1px solid var(--border);
-}
-.compare-row:last-child{border-bottom:none}
-.compare-row.head{background:#0a0a0c;font-weight:700}
-.compare-cell{padding:18px 20px;font-size:14px;display:flex;align-items:center}
-.compare-cell.win{color:var(--green);font-weight:700}
-.compare-cell.lose{color:var(--red);font-weight:700}
-.compare-cell.head{color:var(--gold);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:0.05em}
-@media (max-width:600px){
-  .compare-cell{padding:12px;font-size:12px}
-}
+/* the statement */
+.statement{padding:140px 0}
+.statement p{font-family:var(--prompter);font-size:clamp(34px,6vw,96px);line-height:1.08;max-width:14ch;color:#fff}
+.statement p+p{margin-top:.5em;color:#8a8a8a;font-family:var(--font);font-size:clamp(17px,1.6vw,20px);line-height:1.5;max-width:46ch}
 
-/* ═════ PRICING ═════ */
-#pricing{background:var(--bg-2)}
-.pricing{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:22px;
-  max-width:1100px;margin:0 auto;
-}
-.tier{
-  background:var(--bg-3);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:34px 28px;
-  display:flex;flex-direction:column;
-  position:relative;
-}
-.tier.featured{border-color:rgba(245,184,76,0.6);box-shadow:0 0 0 1px rgba(245,184,76,0.12),var(--shadow)}
-.tier-badge{
-  position:absolute;top:-12px;right:24px;
-  background:var(--gold);color:#000;
-  font-size:11px;font-weight:900;
-  padding:5px 12px;border-radius:999px;
-  letter-spacing:0.05em;text-transform:uppercase;
-}
-.tier-name{font-size:13px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px}
-.tier-price{font-size:46px;font-weight:950;letter-spacing:-0.04em;margin-bottom:4px;line-height:1}
-.tier-price .unit{font-size:16px;color:var(--text-dim);font-weight:500}
-.tier-altprice{font-size:13px;color:var(--text-dim);margin-bottom:16px}
-.tier-altprice strong{color:var(--gold)}
-.tier-tagline{font-size:14px;color:var(--text-dim);margin-bottom:24px;min-height:42px}
-.tier-features{list-style:none;margin-bottom:26px;flex:1}
-.tier-features li{
-  font-size:14px;padding:8px 0;
-  display:flex;align-items:flex-start;gap:10px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-}
-.tier-features li:last-child{border-bottom:none}
-.tier-features li::before{
-  content:"✓";color:var(--green);font-weight:900;flex-shrink:0;
-}
-.tier-cta{width:100%;justify-content:center}
+/* pricing */
+.price{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
+@media (max-width:860px){.price{grid-template-columns:1fr}}
+.amount{font-weight:800;font-size:clamp(72px,11vw,150px);line-height:.9;letter-spacing:-0.045em;font-variation-settings:"wdth" 118;color:var(--ink)}
+.amount small{display:block;font-weight:400;font-size:clamp(17px,1.6vw,20px);letter-spacing:0;margin-top:14px;color:var(--ink-soft);font-variation-settings:"wdth" 100}
+.includes{list-style:none;margin-top:36px}
+.includes li{padding:12px 0;border-bottom:1px solid var(--rule);font-size:17px}
+.includes li:first-child{border-top:1px solid var(--rule)}
+.form{background:#fff;border:1px solid var(--rule);padding:28px}
+.form h3{font-size:22px;font-weight:700;letter-spacing:-0.01em}
+.form p{font-size:15px;color:var(--ink-soft);margin-top:6px}
+.form label{display:block;font-size:13px;color:var(--ink-soft);margin:18px 0 6px}
+.form input,.form textarea{width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid var(--rule);background:#fff;color:var(--ink);border-radius:2px}
+.form textarea{min-height:88px;resize:vertical}
+.form button{margin-top:20px;width:100%;font:inherit;font-weight:700;font-size:17px;padding:16px;border:0;background:var(--ink);color:#fff;cursor:pointer;border-radius:2px}
+.form button:hover{background:#000}
+.form .tiny{font-size:12px;margin-top:12px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
-/* ═════ NTN PROMO ═════ */
-.ntn-promo{
-  background:linear-gradient(135deg,#0e0e12 0%,#1a1a1f 100%);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:48px;
-  text-align:center;
-  max-width:900px;margin:0 auto;
-}
-.ntn-promo h3{font-size:28px;font-weight:900;margin-bottom:12px}
-.ntn-promo p{color:var(--text-dim);margin-bottom:24px;max-width:600px;margin-left:auto;margin-right:auto}
-.ntn-states{
-  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
-  margin-bottom:28px;
-}
-.ntn-state{
-  background:var(--bg-3);border:1px solid var(--border);
-  padding:6px 14px;border-radius:20px;font-size:13px;
-  color:var(--text-dim);
-}
-
-/* ═════ FOUNDER NOTE ═════ */
-.founder-note{
-  max-width:760px;margin:0 auto;
-  background:linear-gradient(135deg,rgba(245,184,76,0.06) 0%,rgba(245,184,76,0.01) 100%);
-  border:1px solid rgba(245,184,76,0.2);
-  border-radius:16px;
-  padding:48px;
-  position:relative;
-}
-.founder-note::before{
-  content:"\201C";
-  position:absolute;top:-10px;left:30px;
-  font-size:120px;color:var(--gold);
-  opacity:0.2;line-height:1;font-family:Georgia,serif;
-}
-.founder-note p{
-  font-size:18px;line-height:1.7;
-  color:var(--text);
-  margin-bottom:20px;
-  position:relative;z-index:1;
-}
-.founder-sig{
-  display:flex;align-items:center;gap:14px;
-  margin-top:24px;
-}
-.founder-avatar{
-  width:48px;height:48px;border-radius:50%;
-  background:var(--bg-3);border:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:900;color:var(--gold);font-size:20px;
-}
-.founder-meta strong{display:block;font-size:15px;color:var(--text)}
-.founder-meta span{font-size:13px;color:var(--text-dim)}
-
-/* ═════ CTA BAND ═════ */
-.cta-band{
-  background:radial-gradient(600px 260px at 50% 50%,rgba(245,184,76,0.14),transparent 70%);
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  padding:80px 0;
-  text-align:center;
-}
-.cta-band h2{
-  font-size:clamp(28px,4vw,46px);
-  font-weight:950;margin-bottom:14px;
-  letter-spacing:-0.03em;line-height:1.05;
-}
-.cta-band p{color:var(--text-dim);margin-bottom:28px;max-width:600px;margin-left:auto;margin-right:auto;font-size:17px}
-
-/* ═════ LEAD FORM ═════ */
-#contact{background:var(--bg-2)}
-.lead-form{
-  max-width:760px;margin:0 auto;
-  background:var(--bg-3);border:1px solid var(--border);
-  border-radius:16px;padding:32px;
-}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-row.full{grid-column:1/-1}
-.form-row label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em}
-.form-row input,.form-row textarea,.form-row select{
-  width:100%;
-  background:#09090c;
-  border:1px solid var(--border-2);
-  border-radius:10px;
-  padding:12px 14px;
-  color:var(--text);
-  font-family:inherit;
-  font-size:15px;
-}
-.form-row input:focus,.form-row textarea:focus,.form-row select:focus{
-  outline:none;border-color:var(--gold);
-}
-.form-row textarea{resize:vertical;min-height:110px}
-@media (max-width:680px){.form-grid{grid-template-columns:1fr}}
-
-/* ═════ FOOTER ═════ */
-footer{
-  background:#020203;
-  border-top:1px solid var(--border);
-  padding:46px 0 32px;
-  font-size:13px;color:var(--text-dim);
-}
-.footer-grid{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr;
-  gap:36px;margin-bottom:28px;
-}
-@media (max-width:780px){.footer-grid{grid-template-columns:1fr 1fr}}
-.footer-col h4{color:var(--text);font-size:13px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;font-weight:700}
-.footer-col a{display:block;color:var(--text-dim);padding:4px 0;font-size:13px}
-.footer-col a:hover{color:var(--gold)}
-.footer-bottom{
-  padding-top:20px;border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
-  font-size:12px;
-}
-
-/* ═════ UTIL ═════ */
-.fade-in{opacity:0;transform:translateY(18px);transition:all 0.55s}
-.fade-in.visible{opacity:1;transform:translateY(0)}
+/* footer */
+footer{background:var(--glass);color:#8a8a8a;padding:48px 0;font-size:14px;border-top:1px solid #1e1e1e}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer a{text-decoration:none}
+footer a:hover{color:#fff}
 </style>
 </head>
 <body>
 
-<!-- ═════ NAV ═════ -->
-<nav>
-  <div class="nav-inner">
-    <a href="#" class="logo">
-      <div class="logo-mark">Q</div>
-      PrompterQ
-    </a>
-    <div class="nav-links">
-      <a href="#workflow">How It Works</a>
+<header class="hero" aria-label="PrompterQ, a working prompter">
+  <div class="wrap bar">
+    <div>
+      <a class="mark" href="/">Prompter<span>Q</span></a>
+      <h1 class="lede">Teleprompter software for live shows. This is how it reads on the glass.</h1>
+    </div>
+    <nav aria-label="Site">
+      <a href="#what">About</a>
       <a href="#features">Features</a>
-      <a href="#vs">Comparison</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#network">Network</a>
-      <a href="#pricing" class="nav-cta">Download Free</a>
-    </div>
+      <a href="#price">Price</a>
+    </nav>
   </div>
-</nav>
 
-<!-- ═════ HERO ═════ -->
-<header class="hero">
-  <div class="container">
-    <div class="hero-grid">
-      <div>
-        <div class="hero-eyebrow"><span class="dot"></span> Built for Live-Show Operators</div>
-        <h1>Teleprompter software that behaves under pressure.</h1>
-        <p class="hero-sub">25 years of real shows distilled into one tool. Clean scripts in seconds. <strong>Rock-solid 60fps prompting.</strong> Support that picks up at 6 AM load-in.</p>
-        <div class="hero-ctas">
-          <a id="downloadHero" href="/PrompterQ-v4.html" download="PrompterQ.html" class="btn btn-primary btn-large">Download Free →</a>
-          <a href="#pricing" class="btn btn-secondary btn-large">See Pro</a>
-        </div>
-        <div class="hero-pills">
-          <div class="pill"><b>Software flip</b><span>no $2K monitor needed</span></div>
-          <div class="pill"><b>60fps</b><span>smooth scroll</span></div>
-          <div class="pill"><b>36 cues</b><span>keyboard jumps</span></div>
-          <div class="pill"><b>Offline</b><span>single-file HTML</span></div>
-        </div>
-      </div>
-
-      <!-- Hero screenshot — actual PrompterQ retro UI -->
-      <div class="screenshot" id="screenshotMock" title="Hover to see live scroll">
-        <div class="pq-window">
-          <div class="pq-title">
-            <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-            <div class="name">PrompterQ — Keynote Q4.docx</div>
-            <div class="hint">▶ Hover to scroll</div>
-          </div>
-          <div class="pq-menu">
-            <span>File</span><span>Edit</span><span>Font</span><span>Language</span><span>Help</span>
-          </div>
-          <div class="pq-tb">
-            <button class="pq-btn">📄</button>
-            <button class="pq-btn">📂</button>
-            <button class="pq-btn">💾</button>
-            <div class="pq-tb-sep"></div>
-            <button class="pq-btn color-a color-green">A</button>
-            <button class="pq-btn color-a color-blue">A</button>
-            <button class="pq-btn color-a color-yellow">A</button>
-            <button class="pq-btn italic">I</button>
-            <div class="pq-tb-sep"></div>
-            <span class="pq-tb-label">Font:</span>
-            <span class="pq-tb-input font">Arial</span>
-            <span class="pq-tb-label">Size:</span>
-            <span class="pq-tb-input size">120</span>
-            <button class="pq-go">GO PROMPTER</button>
-          </div>
-          <div class="pq-body">
-            <div class="pq-editor">
-              <div class="pq-editor-scroll" id="scScroll">
-                <div class="pq-content">
-                  <div class="pq-line green"><span class="cue">1</span>HOST: Good evening</div>
-                  <div class="pq-line green">welcome to the meeting.</div>
-                  <div class="pq-line white">Tonight we celebrate</div>
-                  <div class="pq-line white">a year of <em>extraordinary</em></div>
-                  <div class="pq-line white">growth and progress.</div>
-                  <div class="pq-line blue"><span class="cue">2</span>GUEST: Thank you</div>
-                  <div class="pq-line blue">for having me here.</div>
-                  <div class="pq-line blue">It's an <em>incredible</em> honor.</div>
-                  <div class="pq-line white">Revenue grew forty percent</div>
-                  <div class="pq-line white">across all units.</div>
-                  <div class="pq-line yellow"><span class="cue">3</span>CFO: The numbers</div>
-                  <div class="pq-line yellow">speak for themselves.</div>
-                  <div class="pq-line yellow">Margin hit a record.</div>
-                  <div class="pq-line white">Free cash flow is strong.</div>
-                  <div class="pq-line green"><span class="cue">4</span>HOST: Let's hear</div>
-                  <div class="pq-line green">from our team now.</div>
-                </div>
-                <div class="pq-content" aria-hidden="true">
-                  <div class="pq-line green"><span class="cue">1</span>HOST: Good evening</div>
-                  <div class="pq-line green">welcome to the meeting.</div>
-                  <div class="pq-line white">Tonight we celebrate</div>
-                  <div class="pq-line white">a year of <em>extraordinary</em></div>
-                  <div class="pq-line white">growth and progress.</div>
-                  <div class="pq-line blue"><span class="cue">2</span>GUEST: Thank you</div>
-                  <div class="pq-line blue">for having me here.</div>
-                  <div class="pq-line blue">It's an <em>incredible</em> honor.</div>
-                  <div class="pq-line white">Revenue grew forty percent</div>
-                  <div class="pq-line white">across all units.</div>
-                  <div class="pq-line yellow"><span class="cue">3</span>CFO: The numbers</div>
-                  <div class="pq-line yellow">speak for themselves.</div>
-                  <div class="pq-line yellow">Margin hit a record.</div>
-                  <div class="pq-line white">Free cash flow is strong.</div>
-                  <div class="pq-line green"><span class="cue">4</span>HOST: Let's hear</div>
-                  <div class="pq-line green">from our team now.</div>
-                </div>
-              </div>
-              <div class="pq-cuebar"></div>
-            </div>
-            <div class="pq-tabs">
-              <div class="pq-tab active">Shortcut List</div>
-              <div class="pq-tab">Run List</div>
-              <div class="pq-tab">General Settings</div>
-            </div>
-            <div class="pq-panel">
-              <div class="pq-panel-row"><kbd>F8</kbd>Start/Stop</div>
-              <div class="pq-panel-row"><kbd>Space</kbd>Pause</div>
-              <div class="pq-panel-row"><kbd>↑↓</kbd>Speed</div>
-              <div class="pq-panel-row"><kbd>M</kbd>Mirror</div>
-              <div class="pq-panel-row"><kbd>Ctrl+M</kbd>Cue</div>
-              <div class="pq-panel-row"><kbd>Ctrl+1/2/3</kbd>Color</div>
-              <div class="pq-panel-row"><kbd>ESC</kbd>Exit</div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="glass" aria-hidden="true">
+    <div class="fade top"></div>
+    <div class="cue"></div>
+    <div class="roll" id="roll">
+      <p>PrompterQ is teleprompter software built on the operator desk.</p>
+      <p>Not in a boardroom.</p>
+      <div class="gap"></div>
+      <p>One HTML file.</p>
+      <p>It runs in Chrome.</p>
+      <p>It never touches the internet.</p>
+      <div class="gap"></div>
+      <p>It opens the script the client sent, whatever they typed it in.</p>
+      <p>It saves itself every thirty seconds.</p>
+      <p>If the laptop dies, the script does not.</p>
+      <div class="gap"></div>
+      <p>Forward at twenty.</p>
+      <p>Reverse at twenty.</p>
+      <p>The talent never knows you jumped.</p>
+      <div class="gap"></div>
+      <p>Twenty-five years of live shows taught it what matters.</p>
+      <p>Nothing else made the cut.</p>
+      <div class="gap"></div>
+      <p>$199. One time.</p>
     </div>
+    <div class="fade bot"></div>
+  </div>
+
+  <div class="exit" aria-hidden="true">✕ EXIT</div>
+  <div class="hud" aria-hidden="true">
+    <div><b>3.0</b><small>SPEED</small></div>
+    <div><b id="elapsed">0:00</b><small>ELAPSED</small></div>
+    <div><b id="remaining">0:58</b><small>REMAINING</small></div>
+    <div><b id="progress">0%</b><small>PROGRESS</small></div>
   </div>
 </header>
 
-<!-- ═════ TRUST BAR ═════ -->
-<div class="trust-bar">
-  <div class="container">
-    <p class="trust-bar-text">Used on stages for <strong>Fortune 500 keynotes</strong> · <strong>Broadcast networks</strong> · <strong>Political campaigns</strong> · <strong>Corporate town halls</strong></p>
-  </div>
-</div>
+<section class="chrome" id="what">
+  <div class="wrap">
+    <div class="two">
+      <div>
+        <h2>One file. No install. No login. No cloud.</h2>
+        <p class="big">PrompterQ is a single HTML file. Open it in Chrome and you have a full teleprompter: editor, output window for the talent glass, run list, cue markers and a timer.</p>
+        <p class="big">It works with the venue Wi-Fi off, which is how it should be on show day.</p>
+      </div>
+      <ul class="plain">
+        <li>Built for keynotes, galas, award shows, broadcast and political events.</li>
+        <li>Opens .docx, .doc, .rtf and .txt straight from the client, in any encoding. Garbage characters from a Word export get fixed, not pasted.</li>
+        <li>Output window goes to the second display or the glass feed. Normal, mirrored, flipped, or both.</li>
+        <li>Session files (.pqs) keep the script, cues and run list together so the next show loads in one click.</li>
+        <li>Made by a working operator with 25 years on the desk, and still used on his own shows.</li>
+      </ul>
+    </div>
 
-<!-- ═════ WORKFLOW — sticky split ═════ -->
-<section id="workflow">
-  <div class="container">
-    <div class="workflow-split">
-      <div class="workflow-quote">
-        <div class="section-eyebrow">Show-Day Workflow</div>
-        <h3>From dirty Word doc to glass-ready script.</h3>
-        <p>The value isn't just scrolling. It's cutting script-prep time and reducing live output risk. The same workflow, every time. No surprises at call time.</p>
+    <figure class="window">
+      <div class="title"><i></i><i></i><i></i><span>PrompterQ v11 — editor with a cue set on line four</span></div>
+      <img src="img/editor.jpg" width="1600" height="1000" alt="PrompterQ editor: a toolbar with New, Open, Save, Load and Save session, Archive, undo, speaker color tags, alignment, find, font and size controls; below it a black editing field showing white script text at 120 pt; at the bottom the Shortcut List, Run List and General Settings tabs." loading="lazy">
+    </figure>
+    <p class="caption">The editor wraps lines exactly where the glass will wrap them. What you see on the desk is what the talent sees, pixel for pixel.</p>
+  </div>
+</section>
+
+<section class="glassy" id="features">
+  <div class="wrap">
+    <h2>What it does, in the order it saved a show.</h2>
+    <p class="sub">Every feature below exists because something went wrong on a real stage once. None of them are there to fill a comparison chart.</p>
+
+    <div class="list">
+      <div class="row">
+        <h3>Reads any file the client sends</h3>
+        <p>Word, RTF and plain text, in any encoding. Smart quotes, em dashes and accented names come through clean instead of as <em>â€™</em> and <em>Ã©</em>.</p>
       </div>
-      <div class="workflow-steps">
-        <div class="workflow-step">
-          <div class="wf-num">1</div>
-          <div>
-            <h4>Import</h4>
-            <p>Drop in TXT, RTF, or DOCX. PrompterQ normalizes spacing, bullets, smart quotes, page numbers, and line breaks automatically.</p>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="wf-num">2</div>
-          <div>
-            <h4>Format</h4>
-            <p>One click. ¶ FMT runs speech-rhythm line breaks. Curly quotes, em-dashes, encoding garbage — gone.</p>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="wf-num">3</div>
-          <div>
-            <h4>Mark</h4>
-            <p>Speaker colors (Ctrl+1/2/3), italics for emphasis (Ctrl+I), and 36 cue markers (Ctrl+M). Save the show as a .pqs session.</p>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="wf-num">4</div>
-          <div>
-            <h4>Prompt</h4>
-            <p>F11 to fullscreen. M to mirror. Arrows for speed. PageUp/Down to switch scripts. You're rolling.</p>
-          </div>
-        </div>
+      <div class="row">
+        <h3>Autosave every 30 seconds, plus crash recovery</h3>
+        <p>A snapshot lands on every save, every Go and every Exit. If Chrome dies or the laptop reboots, Recover Autosave lists the snapshots and puts one back in the editor.</p>
       </div>
+      <div class="row">
+        <h3>One-key archive to a folder</h3>
+        <p>Set the archive folder once. Ctrl+Shift+A files the current script with a timestamp. Last-minute edits from the campaign never overwrite the version that was approved.</p>
+      </div>
+      <div class="row">
+        <h3>Software mirror and flip</h3>
+        <p>Normal, mirrored, flipped, or both, from the settings tab or with one key while running. No hardware mirror box, no re-rigging when the glass changes.</p>
+      </div>
+      <div class="row">
+        <h3>Editor matches the glass pixel for pixel</h3>
+        <p>Line breaks in the editor are the line breaks on the output. You can mark a cue on line 40 knowing line 40 is where the talent will be.</p>
+      </div>
+      <div class="row">
+        <h3>Speaker color tags</h3>
+        <p>Tag each speaker's lines with a color. On a panel or an awards show with six presenters, the operator sees the hand-off coming before the talent does.</p>
+      </div>
+      <div class="row">
+        <h3>Cue markers tied to the text</h3>
+        <p>Ctrl+M drops a cue at the cursor. Cues ride with the text when it is edited, and any key from 0–9 or A–Z jumps straight to its cue while running. 36 cues per script.</p>
+      </div>
+      <div class="row">
+        <h3>Reverse as fast as forward</h3>
+        <p>Speed runs from +20 to −20. When the speaker skips a paragraph and then comes back to it, you are already there, with a timer and percent-complete to tell the stage manager where you are.</p>
+      </div>
+      <div class="row">
+        <h3>Find as a locator</h3>
+        <p>Type three words the speaker just said and the editor jumps to them. Faster than scrolling, quieter than asking.</p>
+      </div>
+      <div class="row">
+        <h3>Undo for destructive actions</h3>
+        <p>Cleared the script by accident at 7:58 for an 8:00 downbeat? Ctrl+Shift+Z brings it back.</p>
+      </div>
+      <div class="row">
+        <h3>Run list</h3>
+        <p>Queue every script for the night. PgDn and PgUp move between them without leaving the prompter.</p>
+      </div>
+      <div class="row">
+        <h3>Voice-follow</h3>
+        <p>Scroll driven by the microphone is in development. It ships when it is reliable on a stage, not before.</p>
+      </div>
+    </div>
+
+    <div class="pair">
+      <figure>
+        <img src="img/running.jpg" width="1600" height="1000" alt="PrompterQ running: large white script text on a black field with the HUD reading speed 3.0, elapsed 0:15, remaining 0:34, progress 30 percent.">
+        <figcaption>Operator view while running. Speed, elapsed, remaining and progress sit at the foot of the screen.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/mirror.jpg" width="1600" height="1000" alt="PrompterQ output mirrored for the talent glass: the same script text reversed left to right, with a dim MIRROR indicator in the center.">
+        <figcaption>Same output, mirrored for the glass with the M key.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- ═════ WHY OPERATORS SWITCH ═════ -->
-<section>
-  <div class="container">
-    <div class="section-head">
-      <div class="section-eyebrow">Why Operators Are Switching</div>
-      <h2 class="section-title">Built for how you actually work.</h2>
-      <p class="section-sub">Every feature comes from a real show problem. No theoretical UX. No consumer fluff.</p>
-    </div>
-
-    <div class="why-grid">
-      <div class="why-item">
-        <div class="why-icon">⚡</div>
-        <div>
-          <h4>One-click professional formatting</h4>
-          <p>Turns messy Word, Google Docs, and PDF scripts into broadcast-ready prompter copy in seconds.</p>
-        </div>
-      </div>
-      <div class="why-item">
-        <div class="why-icon">🎯</div>
-        <div>
-          <h4>True 60fps scrolling</h4>
-          <p>requestAnimationFrame engine. Frame-rate independent. Zero jitter on venue laptops or 144Hz machines.</p>
-        </div>
-      </div>
-      <div class="why-item">
-        <div class="why-icon">💰</div>
-        <div>
-          <h4>Replace $2,000 flip monitors</h4>
-          <p>Most teleprompter rigs need expensive flip-capable monitors (~$2K each). PrompterQ flips the image in software — Normal, Mirror, Flip, Mirror+Flip. Cycle live with the M key. Run any cheap monitor as a teleprompter.</p>
-        </div>
-      </div>
-      <div class="why-item">
-        <div class="why-icon">📍</div>
-        <div>
-          <h4>36 instant cue markers</h4>
-          <p>Keys 1–9, 0, A–Z. One keystroke (Ctrl+M) to drop. One keystroke to jump. Built for run-of-show pressure.</p>
-        </div>
-      </div>
-      <div class="why-item">
-        <div class="why-icon">📋</div>
-        <div>
-          <h4>Live multi-script run list</h4>
-          <p>Switch scripts instantly with PageUp / PageDown. No exiting prompter mode. Run a full show day from one window.</p>
-        </div>
-      </div>
-      <div class="why-item">
-        <div class="why-icon">📞</div>
-        <div>
-          <h4>Direct operator support</h4>
-          <p>Text or call Jason — he's an operator too. No ticket queues. No "we'll get back to you Monday." Shows happen at 6 AM.</p>
-        </div>
-      </div>
+<section class="chrome" id="keys">
+  <div class="wrap">
+    <h2>Every control is one key. Your other hand stays on the speed.</h2>
+    <div class="keys">
+      <div><kbd>F8</kbd> Start or stop the prompter</div>
+      <div><kbd>Space</kbd> Pause and resume</div>
+      <div><kbd>↑</kbd> Speed up</div>
+      <div><kbd>↓</kbd> Slow down, then reverse</div>
+      <div><kbd>← →</kbd> Cycle through cues</div>
+      <div><kbd>0–9 A–Z</kbd> Jump to that cue</div>
+      <div><kbd>M</kbd> Toggle mirror</div>
+      <div><kbd>+ −</kbd> Font size, live</div>
+      <div><kbd>Home</kbd> Jump to start</div>
+      <div><kbd>End</kbd> Jump to end</div>
+      <div><kbd>Ctrl+M</kbd> Set a cue at the cursor</div>
+      <div><kbd>Ctrl+O</kbd> Open a script</div>
+      <div><kbd>Ctrl+Shift+A</kbd> Archive to folder</div>
+      <div><kbd>PgUp PgDn</kbd> Previous or next script in the run list</div>
+      <div><kbd>Esc</kbd> Exit the prompter</div>
     </div>
   </div>
 </section>
 
-<!-- ═════ FEATURE CATEGORIES ═════ -->
-<section id="features">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-eyebrow">Core Features</div>
-      <h2 class="section-title">Everything an operator reaches for.</h2>
-      <p class="section-sub">From script prep to talent monitor — keyboard-first, show-tested, zero friction.</p>
-    </div>
-
-    <div class="cat-grid">
-      <div class="cat">
-        <div class="cat-head">
-          <div class="cat-icon">📝</div>
-          <h3>Script Preparation</h3>
-        </div>
-        <ul>
-          <li><div><strong>Smart Auto-Formatter (¶ FMT)</strong><span>Speech-rhythm line breaking. Detects abbreviations, decimals, ellipses.</span></div></li>
-          <li><div><strong>Advanced text normalization</strong><span>Curly quotes, em-dashes, page numbers, bullets — cleaned automatically.</span></div></li>
-          <li><div><strong>DOCX, RTF, TXT import</strong><span>Drag-and-drop. High-fidelity Word handling via mammoth.js.</span></div></li>
-          <li><div><strong>Rich contenteditable editor</strong><span>Ctrl+1/2/3 speaker colors. Ctrl+I italics. Ctrl+M cue markers.</span></div></li>
-        </ul>
-      </div>
-
-      <div class="cat">
-        <div class="cat-head">
-          <div class="cat-icon">🎬</div>
-          <h3>Prompter Mode</h3>
-        </div>
-        <ul>
-          <li><div><strong>True fullscreen + 4 display modes</strong><span>Normal / Mirror / Flip / Mirror+Flip — cycle live with M key.</span></div></li>
-          <li><div><strong>Live speed and font control</strong><span>↑↓ arrows for speed. Space to pause. Adjust font size mid-scroll.</span></div></li>
-          <li><div><strong>Full HUD overlay</strong><span>Word count, estimated read time, elapsed timer, progress bar — operator only.</span></div></li>
-          <li><div><strong>Cue marker jump line</strong><span>36 programmable jumps. Get to any section of a 5,000+ word script instantly.</span></div></li>
-        </ul>
-      </div>
-
-      <div class="cat">
-        <div class="cat-head">
-          <div class="cat-icon">🛠️</div>
-          <h3>Workflow Tools</h3>
-        </div>
-        <ul>
-          <li><div><strong>Full session save/load (.pqs)</strong><span>Preserves formatting, colors, cues, run list, settings. Walk into any laptop.</span></div></li>
-          <li><div><strong>Search &amp; Find</strong><span>Highlighted matches. Find any word in seconds.</span></div></li>
-          <li><div><strong>Talent monitor output window</strong><span>Pop out to second display. SDI-friendly. Operator station stays full control.</span></div></li>
-          <li><div><strong>Keyboard-first design</strong><span>Built for operators under pressure. Mouse optional, keyboard mandatory.</span></div></li>
-        </ul>
-      </div>
-
-      <div class="cat">
-        <div class="cat-head">
-          <div class="cat-icon">🛡️</div>
-          <h3>Show-Day Safety <span class="pro-badge">PRO</span></h3>
-        </div>
-        <ul>
-          <li><div><strong>Auto-display detection</strong><span>PrompterQ Pro detects secondary monitor and fullscreens automatically.</span></div></li>
-          <li><div><strong>Live editing while scrolling</strong><span>Fix typos in real-time. Client sends changes at call time? You're already on it.</span></div></li>
-          <li><div><strong>FTB (Fade to Black)</strong><span>Instantly black out the talent feed. Operator continues to scroll or edit.</span></div></li>
-          <li><div><strong>Autosave + crash recovery</strong><span>Persistent session state. Power loss? Pick up exactly where you were.</span></div></li>
-        </ul>
-      </div>
-    </div>
+<section class="glassy statement">
+  <div class="wrap">
+    <p>Failure on a show is a CEO on stage with no words.</p>
+    <p>That is the whole design brief. PrompterQ has no accounts to expire, no update that lands the morning of load-in, and no server between the operator and the glass. The file you buy today runs the same way in five years.</p>
   </div>
 </section>
 
-<!-- ═════ COMPARISON ═════ -->
-<section id="vs">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-eyebrow">PrompterQ vs Legacy Software</div>
-      <h2 class="section-title">Built for the way operators work in 2026.</h2>
-      <p class="section-sub">Most teleprompter software was written before smartphones existed. It still requires hardware dongles, only runs on Windows, and costs $500 per machine. We did the math.</p>
+<section class="chrome" id="price">
+  <div class="wrap price">
+    <div>
+      <div class="amount">$199<small>One time. No subscription, no seat count, no renewal.</small></div>
+      <ul class="includes">
+        <li>PrompterQ v11, a single HTML file you keep</li>
+        <li>Runs on any laptop with Chrome, Mac or Windows</li>
+        <li>Delivered by email as one file. Nothing to install, nothing to activate</li>
+        <li>Questions go to the operator who built it, not a ticket queue</li>
+      </ul>
     </div>
-
-    <div class="compare">
-      <div class="compare-row head">
-        <div class="compare-cell head">Capability</div>
-        <div class="compare-cell head">PrompterQ</div>
-        <div class="compare-cell head">Legacy Software</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Free field-capable version</div>
-        <div class="compare-cell win">Yes</div>
-        <div class="compare-cell lose">Usually no</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Runs without installer</div>
-        <div class="compare-cell win">Yes</div>
-        <div class="compare-cell lose">Usually no</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Mac / Windows / browser support</div>
-        <div class="compare-cell win">All three</div>
-        <div class="compare-cell lose">Windows only</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Image mirror / flip</div>
-        <div class="compare-cell win">Software (free)</div>
-        <div class="compare-cell lose">Hardware ($2K monitor)</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Hardware dongle required</div>
-        <div class="compare-cell win">No</div>
-        <div class="compare-cell lose">Often yes</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Speaker color coding</div>
-        <div class="compare-cell win">Built-in</div>
-        <div class="compare-cell lose">Manual RTF</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Operator-built support</div>
-        <div class="compare-cell win">Direct line</div>
-        <div class="compare-cell lose">Vendor queue</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell">Per-machine cost</div>
-        <div class="compare-cell win">Free / $349/yr</div>
-        <div class="compare-cell lose">$500 each</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════ PRICING ═════ -->
-<section id="pricing">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-eyebrow">Pricing</div>
-      <h2 class="section-title">Start free. Pay for show-risk reduction.</h2>
-      <p class="section-sub">Free gets adoption. Pro earns the money by removing setup risk around output, recovery, and live-show control.</p>
-    </div>
-
-    <div class="pricing">
-      <div class="tier">
-        <div class="tier-name">Free HTML</div>
-        <div class="tier-price">$0</div>
-        <div class="tier-altprice">Forever free. Single HTML file.</div>
-        <div class="tier-tagline">Run from any laptop. Test on real shows. Zero install.</div>
-        <ul class="tier-features">
-          <li>Full editor with speaker colors</li>
-          <li>36 cue markers (1–9, 0, A–Z)</li>
-          <li>Mirror / Flip / 60fps scroll</li>
-          <li>DOCX / TXT / RTF import</li>
-          <li>Multi-script run list</li>
-          <li>Session save / load (.pqs)</li>
-          <li>Browser popup output</li>
-          <li>Works offline, any OS</li>
-        </ul>
-        <a id="downloadFree" href="/PrompterQ-v4.html" download="PrompterQ.html" class="btn btn-secondary tier-cta">Download Free</a>
-      </div>
-
-      <div class="tier featured">
-        <div class="tier-badge">Coming Soon</div>
-        <div class="tier-name">PrompterQ Pro</div>
-        <div class="tier-price">$349<span class="unit">/year</span></div>
-        <div class="tier-altprice">Native desktop app — <strong>shipping Q3 2026</strong></div>
-        <div class="tier-tagline">Show-day reliability. Auto-display, FTB, crash recovery, NDI, talent timer.</div>
-        <ul class="tier-features">
-          <li>Everything in Free</li>
-          <li>Auto-display detection + fullscreen</li>
-          <li>Live editing while scrolling</li>
-          <li>FTB (Fade to Black)</li>
-          <li>Autosave + crash recovery</li>
-          <li>DOM-anchored cue markers</li>
-          <li>Talent timer on glass</li>
-          <li>Remappable key bindings</li>
-          <li>Find &amp; replace</li>
-          <li>NDI output</li>
-          <li>Direct operator support</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary tier-cta">Join Waitlist</a>
-      </div>
-
-      <div class="tier">
-        <div class="tier-name">Team / Enterprise</div>
-        <div class="tier-price">$1.5K<span class="unit">+/yr</span></div>
-        <div class="tier-altprice">Volume + white-label available</div>
-        <div class="tier-tagline">For teleprompter shops, broadcasters, and production companies.</div>
-        <ul class="tier-features">
-          <li>Everything in Pro</li>
-          <li>Producer Link / cloud script sync</li>
-          <li>Remote iPad / phone control</li>
-          <li>Multi-operator sync</li>
-          <li>Volume licensing</li>
-          <li>White-label option</li>
-          <li>Operator certification</li>
-          <li>Priority support</li>
-        </ul>
-        <a href="#contact" class="btn btn-secondary tier-cta">Contact Sales</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════ FOUNDER NOTE ═════ -->
-<section>
-  <div class="container">
-    <div class="founder-note">
-      <p>I know the feeling of a script crashing five minutes before doors. Of a CEO walking on stage and a teleprompter that won't scroll. Of fighting software older than my career instead of running the show.</p>
-      <p style="font-size:16px;color:var(--text-dim)">I built PrompterQ so you never have to feel that again. If you've been an operator long enough to know what I'm talking about — try the free version on your next show. That's the whole pitch.</p>
-      <div class="founder-sig">
-        <div class="founder-avatar">J</div>
-        <div class="founder-meta">
-          <strong>Jason</strong>
-          <span>Founder, PrompterQ — 25 years on the glass</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════ NTN PROMO ═════ -->
-<section id="network">
-  <div class="container">
-    <div class="ntn-promo">
-      <div class="section-eyebrow">Need an Operator?</div>
-      <h3>National Teleprompter Network</h3>
-      <p>PrompterQ is the proprietary software powering the National Teleprompter Network — a multi-state operator network providing live event, broadcast, and corporate teleprompter services.</p>
-      <div class="ntn-states">
-        <div class="ntn-state">Florida</div>
-        <div class="ntn-state">Georgia</div>
-        <div class="ntn-state">Ohio</div>
-        <div class="ntn-state">Pennsylvania</div>
-        <div class="ntn-state">New York</div>
-      </div>
-      <a href="https://nationalteleprompter.com" class="btn btn-secondary" target="_blank" rel="noopener">Book an Operator →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═════ CTA BAND ═════ -->
-<section class="cta-band">
-  <div class="container">
-    <h2>When the talent is on stage,<br>the software has one job.</h2>
-    <p>Prompt cleanly. Respond instantly. Stay out of the way.</p>
-    <div class="hero-ctas" style="justify-content:center;margin-bottom:0">
-      <a href="/PrompterQ-v4.html" download="PrompterQ.html" class="btn btn-primary btn-large">Download Free →</a>
-      <a href="#contact" class="btn btn-secondary btn-large">Join Pro Waitlist</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═════ CONTACT / LEAD FORM ═════ -->
-<section id="contact">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-eyebrow">Get in Touch</div>
-      <h2 class="section-title">Pro waitlist, Team licensing, or operator booking.</h2>
-      <p class="section-sub">PrompterQ Pro launches Q3 2026 — join the waitlist for early access, founder pricing, and direct beta involvement. Team / Enterprise / white-label / operator booking inquiries also welcome.</p>
-    </div>
-
-    <form class="lead-form" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST">
-      <div class="form-grid">
-        <div class="form-row">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-row">
-          <label for="company">Company / Production</label>
-          <input type="text" id="company" name="company">
-        </div>
-        <div class="form-row">
-          <label for="interest">Interest</label>
-          <select id="interest" name="interest">
-            <option>Join PrompterQ Pro waitlist</option>
-            <option>Team / Enterprise</option>
-            <option>White-label deployment</option>
-            <option>Book a teleprompter operator</option>
-            <option>General question</option>
-          </select>
-        </div>
-        <div class="form-row full">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" required></textarea>
-        </div>
-        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
-        <div class="form-row full">
-          <button type="submit" class="btn btn-primary tier-cta">Send Message</button>
-        </div>
-      </div>
+    <form class="form" action="https://formspree.io/f/mjgkzzrq" method="POST">
+      <h3>Get PrompterQ</h3>
+      <p>Send your name and email. You'll get a reply with payment details and the file follows the same day.</p>
+      <input type="hidden" name="_subject" value="PrompterQ license request">
+      <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label for="f-name">Name</label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required>
+      <label for="f-email">Email</label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required>
+      <label for="f-msg">Where you run shows (optional)</label>
+      <textarea id="f-msg" name="message" placeholder="Corporate, broadcast, political, house of worship…"></textarea>
+      <button type="submit">Request the file</button>
+      <p class="tiny">No mailing list. One reply, then the file.</p>
     </form>
   </div>
 </section>
 
-<!-- ═════ FOOTER ═════ -->
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col">
-        <div class="logo" style="margin-bottom:14px">
-          <div class="logo-mark">Q</div>
-          PrompterQ
-        </div>
-        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;max-width:320px">
-          Professional teleprompter software for working operators. Built for script prep, live prompting, and show-day reliability. A product of Claduta Corp.
-        </p>
-      </div>
-      <div class="footer-col">
-        <h4>Product</h4>
-        <a href="#workflow">How It Works</a>
-        <a href="#features">Features</a>
-        <a href="#vs">Comparison</a>
-        <a href="#pricing">Pricing</a>
-        <a id="downloadFooter" href="/PrompterQ-v4.html" download="PrompterQ.html">Download Free</a>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <a href="https://cladutacorp.com" target="_blank" rel="noopener">Claduta Corp</a>
-        <a href="https://nationalteleprompter.com" target="_blank" rel="noopener">National Teleprompter Network</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <div class="footer-col">
-        <h4>Support</h4>
-        <a href="#contact">Email Support</a>
-        <a href="#contact">Pro Support</a>
-        <a href="#">Release Notes</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div>© 2026 Claduta Corp. All rights reserved.</div>
-      <div>PrompterQ™ is a trademark of Claduta Corp.</div>
-    </div>
+  <div class="wrap">
+    <div>PrompterQ · Teleprompter software for live production</div>
+    <div><a href="#what">What it is</a> &nbsp;·&nbsp; <a href="#features">Features</a> &nbsp;·&nbsp; <a href="#price">Price</a></div>
   </div>
 </footer>
 
 <script>
-// Fade in on scroll
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('section').forEach(el => {
-  el.classList.add('fade-in');
-  observer.observe(el);
-});
-
-// Live scroll preview - seamless loop using duplicated content
 (function(){
-  const screenshot = document.getElementById('screenshotMock');
-  const scroll = document.getElementById('scScroll');
-  if (!screenshot || !scroll) return;
-
-  const firstBlock = scroll.querySelector('.pq-content');
-
-  let pos = 0;
-  let raf = null;
-  let active = false;
-  let blockHeight = 0;
-
-  function animate(){
-    if (!active) return;
-    pos -= 0.6;
-    // Modulo loop: when first block fully scrolled past, jump back by exactly one block height
-    // Since content is duplicated, the jump is invisible
-    if (pos <= -blockHeight) pos += blockHeight;
-    scroll.style.transform = 'translate3d(0,' + pos + 'px,0)';
-    raf = requestAnimationFrame(animate);
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var el=document.getElementById('elapsed'), rem=document.getElementById('remaining'), prog=document.getElementById('progress');
+  var total=58, start=performance.now();
+  function fmt(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
+  if(reduce){el.textContent='0:00';rem.textContent=fmt(total);prog.textContent='0%';return;}
+  function tick(now){
+    var t=((now-start)/1000)%total;
+    el.textContent=fmt(t); rem.textContent=fmt(total-t); prog.textContent=Math.round(t/total*100)+'%';
+    requestAnimationFrame(tick);
   }
-
-  function start(){
-    if (active) return;
-    blockHeight = firstBlock.offsetHeight;
-    active = true;
-    animate();
-  }
-
-  function stop(){
-    active = false;
-    if (raf) cancelAnimationFrame(raf);
-  }
-
-  screenshot.addEventListener('mouseenter', start);
-  screenshot.addEventListener('mouseleave', stop);
-  screenshot.addEventListener('click', function(){
-    if (active) stop(); else start();
-  });
+  requestAnimationFrame(tick);
 })();
-
-// Free download links
-const FREE_DOWNLOAD_URL = '/PrompterQ-v4.html';
-['downloadHero','downloadFree','downloadFooter'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) { el.href = FREE_DOWNLOAD_URL; el.setAttribute('download', 'PrompterQ.html'); }
-});
 </script>
-
 </body>
 </html>
