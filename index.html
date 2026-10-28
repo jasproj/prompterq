@@ -75,10 +75,9 @@ img{display:block;max-width:100%;height:auto}
 .monitor{position:relative;margin-top:56px;aspect-ratio:16/9;max-height:62vh;border:1px solid #2a2a2a;background:#000;overflow:hidden}
 .glass{position:absolute;inset:0;overflow:hidden}
 .roll{position:absolute;left:0;right:0;top:100%;padding:0 5%;font-family:var(--prompter);font-size:clamp(22px,3.4vw,54px);line-height:1.18;color:#fff;will-change:transform;animation:roll 52s linear infinite}
-.roll p{margin:0}
-.roll .gap{height:.55em}
+.roll p{margin:0 0 .8em 0}
+.roll .gap{height:.4em}
 @keyframes roll{from{transform:translateY(0)}to{transform:translateY(-100%) translateY(-62vh)}}
-.cue{position:absolute;left:0;top:33%;width:12%;height:3px;background:var(--amber);z-index:2}
 .fade{position:absolute;left:0;right:0;height:16%;z-index:1;pointer-events:none}
 .fade.top{top:0;background:linear-gradient(#000,rgba(0,0,0,0))}
 .fade.bot{bottom:0;height:26%;background:linear-gradient(rgba(0,0,0,0),#000 70%)}
@@ -188,11 +187,10 @@ footer a:hover{color:#fff}
     <div class="monitor" aria-label="A live demonstration of how PrompterQ reads on the glass">
       <div class="glass" aria-hidden="true">
         <div class="fade top"></div>
-        <div class="cue"></div>
         <div class="roll" id="roll">
           <p>This is how PrompterQ reads on the glass.</p>
           <p>White Arial on a black field.</p>
-          <p>The cue line sits where the eye lands.</p>
+          <p>Every sentence on its own line, with air after it.</p>
           <div class="gap"></div>
           <p>One HTML file.</p>
           <p>It runs in Chrome.</p>
