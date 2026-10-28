@@ -55,7 +55,7 @@ img{display:block;max-width:100%;height:auto}
 @media (max-width:640px){.wrap{width:calc(100% - 32px)}}
 
 /* ---------- top bar ---------- */
-.bar{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:flex-start;justify-content:space-between;padding:22px 0}
+.bar{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:22px 0}
 .mark{font-weight:800;font-size:20px;letter-spacing:-0.02em;text-decoration:none;font-variation-settings:"wdth" 112}
 .mark span{color:var(--amber)}
 .bar nav{display:flex;gap:28px;font-size:15px}
@@ -63,27 +63,36 @@ img{display:block;max-width:100%;height:auto}
 .bar nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
 @media (max-width:640px){.bar nav{gap:18px;font-size:14px}}
 
-/* ---------- hero: a working prompter ---------- */
-.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;background:var(--glass)}
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--glass);padding:110px 0 72px}
+.hero h1{font-weight:700;font-size:clamp(36px,5vw,64px);line-height:1.02;letter-spacing:-0.03em;font-variation-settings:"wdth" 110;max-width:16ch}
+.hero .intro{margin-top:22px;font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:#bdbdbd;max-width:52ch}
+.hero .cta{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:16px;padding:14px 22px;border-radius:2px}
+.btn.solid{background:var(--amber);color:#000}
+.btn.solid:hover{background:#f0b23a}
+.btn.ghost{border:1px solid #3a3a3a;color:#fff}
+.btn.ghost:hover{border-color:#fff}
+.monitor{position:relative;margin-top:56px;aspect-ratio:16/9;max-height:62vh;border:1px solid #2a2a2a;background:#000;overflow:hidden}
 .glass{position:absolute;inset:0;overflow:hidden}
-.roll{position:absolute;left:0;right:0;top:100%;padding:0 6vw;font-family:var(--prompter);font-size:clamp(44px,7.2vw,118px);line-height:1.18;color:#fff;will-change:transform;animation:roll 58s linear infinite}
+.roll{position:absolute;left:0;right:0;top:100%;padding:0 5%;font-family:var(--prompter);font-size:clamp(22px,3.4vw,54px);line-height:1.18;color:#fff;will-change:transform;animation:roll 52s linear infinite}
 .roll p{margin:0}
 .roll .gap{height:.55em}
-@keyframes roll{from{transform:translateY(0)}to{transform:translateY(-100%) translateY(-100svh)}}
-.cue{position:absolute;left:0;top:33%;width:min(18vw,230px);height:4px;background:var(--amber);z-index:2}
-.fade{position:absolute;left:0;right:0;height:18%;z-index:1;pointer-events:none}
+@keyframes roll{from{transform:translateY(0)}to{transform:translateY(-100%) translateY(-62vh)}}
+.cue{position:absolute;left:0;top:33%;width:12%;height:3px;background:var(--amber);z-index:2}
+.fade{position:absolute;left:0;right:0;height:16%;z-index:1;pointer-events:none}
 .fade.top{top:0;background:linear-gradient(#000,rgba(0,0,0,0))}
-.fade.bot{bottom:0;height:24%;background:linear-gradient(rgba(0,0,0,0),#000 70%)}
-.hud{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:34px;z-index:3;font-family:var(--mono)}
+.fade.bot{bottom:0;height:26%;background:linear-gradient(rgba(0,0,0,0),#000 70%)}
+.hud{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:26px;z-index:3;font-family:var(--mono)}
 .hud div{text-align:center}
-.hud b{display:block;color:var(--amber);font-size:15px;font-weight:600}
-.hud small{display:block;color:#8a8a8a;font-size:9px;letter-spacing:.18em;margin-top:3px}
-.exit{position:absolute;left:24px;bottom:22px;z-index:3;font-family:var(--mono);font-size:11px;color:#e4514a;border:1px solid #e4514a;padding:5px 9px;border-radius:3px;opacity:.9}
-.lede{font-weight:400;font-size:15px;line-height:1.4;color:#bdbdbd;max-width:300px;margin-top:6px}
-@media (max-width:860px){.hud{gap:22px}}
-@media (max-width:640px){.lede{font-size:13px;max-width:200px}.exit{display:none}.fade.bot{height:32%}.hud{gap:18px}}
+.hud b{display:block;color:var(--amber);font-size:13px;font-weight:600}
+.hud small{display:block;color:#8a8a8a;font-size:8px;letter-spacing:.18em;margin-top:3px}
+.exit{position:absolute;left:14px;bottom:14px;z-index:3;font-family:var(--mono);font-size:10px;color:#e4514a;border:1px solid #e4514a;padding:4px 8px;border-radius:3px;opacity:.9}
+.hero .note{margin-top:12px;font-size:14px;color:#8a8a8a}
+@media (max-width:640px){.hero{padding-top:96px}.exit{display:none}.hud{gap:16px}.monitor{aspect-ratio:4/3}}
 @media (prefers-reduced-motion:reduce){
-  .roll{animation:none;top:auto;bottom:0;transform:translateY(0)}
+  .roll{animation:none;top:auto;bottom:auto;transform:none;position:relative;padding-top:8%}
+  .fade.top{display:none}
 }
 
 /* ---------- editor sections (beige chrome) ---------- */
@@ -160,52 +169,58 @@ footer a:hover{color:#fff}
 </head>
 <body>
 
-<header class="hero" aria-label="PrompterQ, a working prompter">
+<header class="hero">
   <div class="wrap bar">
-    <div>
-      <a class="mark" href="/">Prompter<span>Q</span></a>
-      <h1 class="lede">Teleprompter software for live shows. This is how it reads on the glass.</h1>
-    </div>
+    <a class="mark" href="/">Prompter<span>Q</span></a>
     <nav aria-label="Site">
       <a href="#what">About</a>
       <a href="#features">Features</a>
       <a href="#price">Price</a>
     </nav>
   </div>
-
-  <div class="glass" aria-hidden="true">
-    <div class="fade top"></div>
-    <div class="cue"></div>
-    <div class="roll" id="roll">
-      <p>PrompterQ is teleprompter software built on the operator desk.</p>
-      <p>Not in a boardroom.</p>
-      <div class="gap"></div>
-      <p>One HTML file.</p>
-      <p>It runs in Chrome.</p>
-      <p>It never touches the internet.</p>
-      <div class="gap"></div>
-      <p>It opens the script the client sent, whatever they typed it in.</p>
-      <p>It saves itself every thirty seconds.</p>
-      <p>If the laptop dies, the script does not.</p>
-      <div class="gap"></div>
-      <p>Forward at twenty.</p>
-      <p>Reverse at twenty.</p>
-      <p>The talent never knows you jumped.</p>
-      <div class="gap"></div>
-      <p>Twenty-five years of live shows taught it what matters.</p>
-      <p>Nothing else made the cut.</p>
-      <div class="gap"></div>
-      <p>$199. One time.</p>
+  <div class="wrap">
+    <h1>Teleprompter software built on the operator desk.</h1>
+    <p class="intro">One HTML file that runs in Chrome and never touches the internet. Autosave, crash recovery, mirror and flip, cue markers, and reverse as fast as forward. Made by a live-show operator for keynotes, galas, awards, broadcast and political events.</p>
+    <div class="cta">
+      <a class="btn solid" href="#price">$199, one time</a>
+      <a class="btn ghost" href="#features">See what it does</a>
     </div>
-    <div class="fade bot"></div>
-  </div>
 
-  <div class="exit" aria-hidden="true">✕ EXIT</div>
-  <div class="hud" aria-hidden="true">
-    <div><b>3.0</b><small>SPEED</small></div>
-    <div><b id="elapsed">0:00</b><small>ELAPSED</small></div>
-    <div><b id="remaining">0:58</b><small>REMAINING</small></div>
-    <div><b id="progress">0%</b><small>PROGRESS</small></div>
+    <div class="monitor" aria-label="A live demonstration of how PrompterQ reads on the glass">
+      <div class="glass" aria-hidden="true">
+        <div class="fade top"></div>
+        <div class="cue"></div>
+        <div class="roll" id="roll">
+          <p>This is how PrompterQ reads on the glass.</p>
+          <p>White Arial on a black field.</p>
+          <p>The cue line sits where the eye lands.</p>
+          <div class="gap"></div>
+          <p>One HTML file.</p>
+          <p>It runs in Chrome.</p>
+          <p>It never touches the internet.</p>
+          <div class="gap"></div>
+          <p>It opens the script the client sent, whatever they typed it in.</p>
+          <p>It saves itself every thirty seconds.</p>
+          <p>If the laptop dies, the script does not.</p>
+          <div class="gap"></div>
+          <p>Forward at twenty.</p>
+          <p>Reverse at twenty.</p>
+          <p>The talent never knows you jumped.</p>
+          <div class="gap"></div>
+          <p>Twenty-five years of live shows taught it what matters.</p>
+          <p>Nothing else made the cut.</p>
+        </div>
+        <div class="fade bot"></div>
+      </div>
+      <div class="exit" aria-hidden="true">✕ EXIT</div>
+      <div class="hud" aria-hidden="true">
+        <div><b>3.0</b><small>SPEED</small></div>
+        <div><b id="elapsed">0:00</b><small>ELAPSED</small></div>
+        <div><b id="remaining">0:52</b><small>REMAINING</small></div>
+        <div><b id="progress">0%</b><small>PROGRESS</small></div>
+      </div>
+    </div>
+    <p class="note">Live demo of the output window. Real screenshots of the editor and prompter are further down.</p>
   </div>
 </header>
 
@@ -372,7 +387,7 @@ footer a:hover{color:#fff}
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var el=document.getElementById('elapsed'), rem=document.getElementById('remaining'), prog=document.getElementById('progress');
-  var total=58, start=performance.now();
+  var total=52, start=performance.now();
   function fmt(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
   if(reduce){el.textContent='0:00';rem.textContent=fmt(total);prog.textContent='0%';return;}
   function tick(now){
