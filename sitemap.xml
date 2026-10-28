@@ -3,12 +3,12 @@
         xmlns:image="http://www.sitemaps.org/schemas/sitemap-image/0.9">
   <url>
     <loc>https://prompterq.com/</loc>
-    <lastmod>2026-05-07</lastmod>
+    <lastmod>2026-10-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://prompterq.com/og-image.png</image:loc>
-      <image:title>PrompterQ — Teleprompter software that behaves under pressure</image:title>
+      <image:title>PrompterQ — Teleprompter software built for live shows</image:title>
     </image:image>
   </url>
 </urlset>
