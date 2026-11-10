@@ -180,7 +180,7 @@ footer a:hover{color:#fff}
     <h1>Teleprompter software built on the operator desk.</h1>
     <p class="intro">One HTML file that runs in Chrome and never touches the internet. Autosave, crash recovery, mirror and flip, cue markers, and reverse as fast as forward. Made by a live-show operator for keynotes, galas, awards, broadcast and political events.</p>
     <div class="cta">
-      <a class="btn solid" href="PrompterQ-v11.html" download>Download free (v11)</a>
+      <a class="btn solid" href="#license">Download PrompterQ v12</a>
       <a class="btn ghost" href="#features">See what it does</a>
     </div>
 
@@ -349,28 +349,42 @@ footer a:hover{color:#fff}
   <div class="wrap price">
     <div>
       <h2>Created by a teleprompter operator for the operators who run the room.</h2>
-      <p class="big">PrompterQ is free. Download the file, keep it, run it on every laptop you own.</p>
+      <p class="big">PrompterQ is free. Enter your email, download the file, keep it, run it on every laptop you own.</p>
       <ul class="includes">
-        <li>PrompterQ v11, a single HTML file you keep. <a href="PrompterQ-v11.html" download><strong>Download it here</strong></a></li>
+        <li>PrompterQ v12, a single HTML file you keep</li>
+        <li>New in v12: Link. Two laptops, one scroll, over a single Ethernet cable</li>
         <li>Runs on any laptop with Chrome, Mac or Windows</li>
         <li>Nothing to install, nothing to activate, no account</li>
         <li>Questions go to the operator who built it, not a ticket queue</li>
       </ul>
     </div>
-    <form class="form" action="https://formspree.io/f/mjgkzzrq" method="POST">
-      <h3>Questions?</h3>
-      <p>Send your name and email. You will get a reply from the operator who built it.</p>
-      <input type="hidden" name="_subject" value="PrompterQ question">
-      <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <label for="f-name">Name</label>
-      <input id="f-name" name="name" type="text" autocomplete="name" required>
-      <label for="f-email">Email</label>
-      <input id="f-email" name="email" type="email" autocomplete="email" required>
-      <label for="f-msg">Where you run shows (optional)</label>
-      <textarea id="f-msg" name="message" placeholder="Corporate, broadcast, political, house of worship…"></textarea>
-      <button type="submit">Send</button>
-      <p class="tiny">No mailing list. One reply.</p>
-    </form>
+    <div class="form" id="dlBox">
+      <form id="dlForm" action="https://formspree.io/f/mjgkzzrq" method="POST">
+        <h3>Download PrompterQ v12</h3>
+        <p>Enter your email and the download appears right here.</p>
+        <input type="hidden" name="_subject" value="PrompterQ download">
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required>
+        <label for="f-name">Name (optional)</label>
+        <input id="f-name" name="name" type="text" autocomplete="name">
+        <label for="f-msg">Where you run shows (optional)</label>
+        <textarea id="f-msg" name="message" placeholder="Corporate, broadcast, political, house of worship…"></textarea>
+        <button type="submit" id="dlBtn">Get the download</button>
+        <p class="tiny" id="dlErr" role="alert" style="color:#b00020"></p>
+        <p class="tiny">No spam. Your email goes to the operator who built it.</p>
+      </form>
+      <div id="dlReveal" hidden>
+        <h3>You're in. Thank you.</h3>
+        <p>PrompterQ v12 is one HTML file. Save it, open it in Chrome.</p>
+        <a class="btn solid" id="dlLink" href="#" download style="margin-top:18px;display:block;text-align:center">Download PrompterQ v12</a>
+        <div id="donate" hidden style="margin-top:28px;padding-top:22px;border-top:1px solid var(--rule)">
+          <h3>Chip in if it earns its keep</h3>
+          <p>PrompterQ is free. If it saves a show for you, a donation of any amount helps keep it going. Totally optional.</p>
+          <a class="btn solid" id="donateLink" href="#" target="_blank" rel="noopener" style="margin-top:14px;display:block;text-align:center">Make a donation</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -394,6 +408,28 @@ footer a:hover{color:#fff}
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+})();
+</script>
+<script>
+(function(){
+  // Download file path (not linked anywhere else on the site).
+  var FILE='get/00f92899f4c6b49e/PrompterQ-v12.html';
+  // Payment link for donations (PayPal.me, Stripe Payment Link, etc.). Empty = donation box stays hidden.
+  var DONATE_URL='';
+  var form=document.getElementById('dlForm'), btn=document.getElementById('dlBtn'), err=document.getElementById('dlErr');
+  var reveal=document.getElementById('dlReveal');
+  function show(){
+    form.hidden=true; reveal.hidden=false;
+    document.getElementById('dlLink').setAttribute('href',FILE);
+    if(DONATE_URL){document.getElementById('donateLink').setAttribute('href',DONATE_URL);document.getElementById('donate').hidden=false;}
+  }
+  form.addEventListener('submit',function(e){
+    e.preventDefault(); err.textContent=''; btn.disabled=true; btn.textContent='Sending…';
+    fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}})
+      .then(function(r){ if(!r.ok) throw new Error('bad'); try{localStorage.setItem('pqv12','1');}catch(x){} show(); })
+      .catch(function(){ err.textContent='That did not go through. Check the email and your connection, then try again.'; btn.disabled=false; btn.textContent='Get the download'; });
+  });
+  try{ if(localStorage.getItem('pqv12')==='1') show(); }catch(x){}
 })();
 </script>
 </body>

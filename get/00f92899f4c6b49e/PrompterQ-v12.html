@@ -608,6 +608,18 @@ input[type="range"]::-webkit-slider-thumb:hover { background: #333; }
 /* Find match — native highlight layer, never in the DOM */
 ::highlight(pq-find) { background-color: #F5B84C; color: #000; }
 
+/* ═══════════ LINK (v12) ═══════════ */
+#linkBadge { position: fixed; top: 8px; right: 10px; z-index: 1004; font: 700 13px var(--font-mono, monospace);
+  letter-spacing: 1px; padding: 3px 8px; border-radius: 3px; display: none; pointer-events: none;
+  background: rgba(0,0,0,.55); color: #4cd964; }
+#linkBadge.warn { color: #F5B84C; }
+#linkBadge.bad { color: #fff; background: #c0392b; animation: linkBlink 1s steps(2) infinite; }
+@keyframes linkBlink { 50% { opacity: .55; } }
+.link-box { font: 10px/1.3 var(--font-mono, monospace); width: 100%; height: 64px; box-sizing: border-box; resize: none; }
+.link-sec { border: 1px solid var(--border-light); padding: 8px; margin-bottom: 8px; }
+.link-sec h4 { margin: 0 0 6px; font-size: 12px; }
+.link-row { display: flex; gap: 6px; margin-top: 6px; align-items: center; flex-wrap: wrap; }
+#linkStatusLine { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
 /* ═══════════ MODAL ═══════════ */
 .modal-bg {
   display: none;
@@ -720,6 +732,9 @@ input[type="range"]::-webkit-slider-thumb:hover { background: #333; }
     </button>
     <button class="tb-btn tb-lbl tb-arch" onclick="archiveScript()" title="Archive to your folder — timestamped .txt + .pqs, no dialog (Ctrl+Shift+A)">
       <svg viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archive</span>
+    </button>
+    <button class="tb-btn tb-lbl" onclick="linkOpen()" title="Link two laptops — one scrolls, the other follows">
+      <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg><span id="linkBtnLbl">Link</span>
     </button>
 
     <div class="tb-sep"></div>
@@ -957,6 +972,7 @@ input[type="range"]::-webkit-slider-thumb:hover { background: #333; }
   <div id="progressBar" style="width:0%"></div>
   <div id="speedIndicator">Speed: 3.0</div>
   <div id="scrollStatus">PAUSED</div>
+  <div id="linkBadge"></div>
   <div id="prompterHUD">
     <div style="display:flex;gap:4px">
       <button class="hud-btn exit" onclick="exitPrompter()">✕ EXIT</button>
@@ -973,6 +989,38 @@ input[type="range"]::-webkit-slider-thumb:hover { background: #333; }
 </div>
 
 <!-- Help Modal -->
+<div class="modal-bg" id="linkModal">
+  <div class="modal" style="min-width:620px;max-width:720px">
+    <div class="modal-title">Link — two laptops, one scroll</div>
+    <div id="linkStatusLine">Not linked</div>
+    <div style="font-size:11px;color:#555;margin-bottom:8px">Connect the laptops with one Ethernet cable (or the same router). The LEAD laptop scrolls; the FOLLOW laptop copies it. No internet needed. Pair once per session: LEAD makes a code, FOLLOW answers it, LEAD enters the answer.</div>
+    <div class="link-sec">
+      <h4>1 · On the LEAD laptop</h4>
+      <div class="link-row"><button class="list-btn" onclick="linkMakeOffer()">Create lead code</button>
+        <label style="font-size:11px"><input type="checkbox" id="linkCompat"> Compatibility mode (asks for mic permission once; try this if pairing fails)</label></div>
+      <textarea class="link-box" id="linkOfferOut" readonly placeholder="Lead code appears here"></textarea>
+      <div class="link-row"><button class="list-btn" onclick="linkCopy('linkOfferOut')">Copy</button><button class="list-btn" onclick="linkSaveCode('linkOfferOut','lead')">Save as file</button></div>
+    </div>
+    <div class="link-sec">
+      <h4>2 · On the FOLLOW laptop</h4>
+      <textarea class="link-box" id="linkOfferIn" placeholder="Paste the lead code here"></textarea>
+      <div class="link-row"><button class="list-btn" onclick="linkLoadCode('linkOfferIn')">Load file…</button><button class="list-btn" onclick="linkAcceptOffer()">Make reply code</button></div>
+      <textarea class="link-box" id="linkAnswerOut" readonly placeholder="Reply code appears here" style="margin-top:6px"></textarea>
+      <div class="link-row"><button class="list-btn" onclick="linkCopy('linkAnswerOut')">Copy</button><button class="list-btn" onclick="linkSaveCode('linkAnswerOut','reply')">Save as file</button></div>
+    </div>
+    <div class="link-sec">
+      <h4>3 · Back on the LEAD laptop</h4>
+      <textarea class="link-box" id="linkAnswerIn" placeholder="Paste the reply code here"></textarea>
+      <div class="link-row"><button class="list-btn" onclick="linkLoadCode('linkAnswerIn')">Load file…</button><button class="list-btn" onclick="linkAcceptAnswer()">Connect</button></div>
+    </div>
+    <input type="file" id="linkFileIn" accept=".txt" style="display:none">
+    <div style="display:flex;gap:8px;justify-content:space-between;margin-top:4px">
+      <button class="list-btn" onclick="linkDisconnect()">Disconnect</button>
+      <button class="list-btn" onclick="linkClose()">Close</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="recoverModal">
   <div class="modal" style="min-width:560px">
     <div class="modal-title">Recover Autosave</div>
@@ -994,6 +1042,7 @@ input[type="range"]::-webkit-slider-thumb:hover { background: #333; }
       <div class="shortcut-row"><kbd>↓</kbd> Slow Down / Reverse</div>
       <div class="shortcut-row"><kbd>← →</kbd> Cycle Cues</div>
       <div class="shortcut-row"><kbd>ESC</kbd> Exit Prompter</div>
+      <div class="shortcut-row"><kbd>L</kbd> / <kbd>F9</kbd> Link follower: take control / follow</div>
       <div class="shortcut-row"><kbd>M</kbd> Toggle Mirror</div>
       <div class="shortcut-row"><kbd>Home</kbd> Jump to Start</div>
       <div class="shortcut-row"><kbd>End</kbd> Jump to End</div>
@@ -1041,8 +1090,8 @@ return i=this.parent.children.indexOf(this),removed=this.parent.children.splice(
 <script>
 // ═══════════════ VERSION ═══════════════
 // Whole number = feature added. Decimal = bug fix. Bump on every delivery.
-const APP_VERSION = 'v11';
-const APP_BUILD = '2026-10-17';
+const APP_VERSION = 'v12';
+const APP_BUILD = '2026-11-09';
 
 // ═══════════════ STATE ═══════════════
 const S = {
@@ -2462,6 +2511,7 @@ function startPrompter() {
     S.lastTs = null;
     S.animFrame = requestAnimationFrame(scrollLoop);
     S.timerInt = setInterval(updateTimer, 1000);
+    linkOnStart();
   });
 }
 
@@ -2504,6 +2554,7 @@ function scrollLoop(ts) {
   }
 
   S.animFrame = requestAnimationFrame(scrollLoop);
+  linkTick();
   syncOutput();
 }
 
@@ -2527,6 +2578,7 @@ function exitPrompter() {
   // Read the current prompter line BEFORE hiding it (needs live layout)
   const resumeLine = prompterLineAtCue();
   setTimeout(() => autosaveNow('exit'), 50);
+  linkOnExit();
   S.isPrompting = false;
   cancelAnimationFrame(S.animFrame);
   clearInterval(S.timerInt);
@@ -2559,6 +2611,7 @@ document.addEventListener('webkitfullscreenchange', () => onFullscreenChange(!!d
 function togglePause() {
   S.isPaused = !S.isPaused;
   showStatus(S.isPaused ? 'PAUSED' : '▶');
+  linkSendNow();
 }
 
 // Speed range is SYMMETRIC: forward and reverse both cap at MAX_SPEED. Reverse
@@ -2581,6 +2634,7 @@ function adjustSpeed(d, held) {
   ind.classList.add('show');
   clearTimeout(S.speedTimeout);
   S.speedTimeout = setTimeout(() => ind.classList.remove('show'), 1500);
+  linkSendNow();
 }
 
 function showStatus(t) {
@@ -2649,6 +2703,297 @@ function jumpToCue(idx) {
   document.getElementById('prompterText').style.top = S.scrollPos + 'px';
 }
 
+
+// ═══════════════ LINK (v12) ═══════════════
+// Two laptops, one scroll. LEAD sends where it is (line + fraction), speed and
+// pause ~10x/s; FOLLOW copies it. Display settings (font, mirror, size) stay
+// local. Peer-to-peer over the LAN (WebRTC data channel), no server, no
+// internet. If the link drops the follower FREEZES and says LINK LOST — it
+// never keeps scrolling on its own. L / F9 on the follower = take control.
+const Link = {
+  role: null, pc: null, ctl: null, st: null,
+  up: false, following: false, lost: false, differs: false,
+  lastRx: 0, lastTx: 0, pending: null, loads: {}, loadSeq: 0, hb: null
+};
+const LINK_TICK_MS = 100, LINK_LOST_MS = 1500;
+
+function linkB64(o) { return 'PQL1:' + btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+function linkUnB64(t) {
+  t = (t || '').trim();
+  const i = t.indexOf('PQL1:');
+  if (i < 0) throw new Error('That is not a Link code');
+  return JSON.parse(decodeURIComponent(escape(atob(t.slice(i + 5).replace(/\s+/g, '')))));
+}
+function linkStatus(msg) { const el = document.getElementById('linkStatusLine'); if (el) el.textContent = msg; }
+function linkOpen() { document.getElementById('linkModal').classList.add('open'); }
+function linkClose() { document.getElementById('linkModal').classList.remove('open'); }
+document.getElementById('linkModal').addEventListener('click', e => { if (e.target === e.currentTarget) linkClose(); });
+
+function linkCopy(id) {
+  const el = document.getElementById(id);
+  if (!el.value) return;
+  el.select();
+  try { navigator.clipboard.writeText(el.value).catch(() => document.execCommand('copy')); } catch (e) { document.execCommand('copy'); }
+  flashStatus('Code copied');
+}
+function linkSaveCode(id, what) {
+  const v = document.getElementById(id).value;
+  if (!v) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([v], { type: 'text/plain' }));
+  a.download = 'PrompterQ-link-' + what + '.txt';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+function linkLoadCode(targetId) {
+  const inp = document.getElementById('linkFileIn');
+  inp.value = '';
+  inp.onchange = () => {
+    const f = inp.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => { document.getElementById(targetId).value = String(r.result || '').trim(); };
+    r.readAsText(f);
+  };
+  inp.click();
+}
+
+async function linkNewPC() {
+  linkTeardown();
+  if (document.getElementById('linkCompat') && document.getElementById('linkCompat').checked) {
+    // Chrome hides real LAN addresses behind mDNS names; one mic grant unhides them.
+    try { const m = await navigator.mediaDevices.getUserMedia({ audio: true }); m.getTracks().forEach(t => t.stop()); }
+    catch (e) { linkStatus('Mic permission refused — continuing without compatibility mode'); }
+  }
+  const pc = new RTCPeerConnection({ iceServers: [] });
+  pc.onconnectionstatechange = () => {
+    if (pc !== Link.pc) return;
+    const c = pc.connectionState;
+    if (c === 'failed' || c === 'closed') linkDown();
+    else if (c === 'disconnected') { Link.lost = true; linkBadge(); }
+    else if (c === 'connected') linkStatus('CONNECTED');
+  };
+  Link.pc = pc;
+  return pc;
+}
+function linkWaitIce(pc) {
+  return new Promise(res => {
+    if (pc.iceGatheringState === 'complete') return res();
+    const t = setTimeout(res, 3500);
+    pc.addEventListener('icegatheringstatechange', () => {
+      if (pc.iceGatheringState === 'complete') { clearTimeout(t); res(); }
+    });
+  });
+}
+async function linkMakeOffer() {
+  try {
+    linkStatus('Creating lead code…');
+    const pc = await linkNewPC();
+    Link.role = 'lead';
+    linkBind(pc.createDataChannel('ctl'));
+    linkBind(pc.createDataChannel('st', { ordered: false, maxRetransmits: 0 }));
+    await pc.setLocalDescription(await pc.createOffer());
+    await linkWaitIce(pc);
+    document.getElementById('linkOfferOut').value = linkB64({ t: 'offer', sdp: pc.localDescription.sdp });
+    linkStatus('Lead code ready — give it to the FOLLOW laptop, then paste its reply in step 3');
+  } catch (e) { linkStatus('Could not create code: ' + e.message); }
+}
+async function linkAcceptOffer() {
+  try {
+    const o = linkUnB64(document.getElementById('linkOfferIn').value);
+    if (o.t !== 'offer') throw new Error('That is a reply code, not a lead code');
+    linkStatus('Making reply code…');
+    const pc = await linkNewPC();
+    Link.role = 'follow';
+    pc.ondatachannel = e => linkBind(e.channel);
+    await pc.setRemoteDescription({ type: 'offer', sdp: o.sdp });
+    await pc.setLocalDescription(await pc.createAnswer());
+    await linkWaitIce(pc);
+    document.getElementById('linkAnswerOut').value = linkB64({ t: 'answer', sdp: pc.localDescription.sdp });
+    linkStatus('Reply code ready — take it to the LEAD laptop (step 3). This laptop connects when the lead enters it.');
+  } catch (e) { linkStatus('Could not use that code: ' + e.message); }
+}
+async function linkAcceptAnswer() {
+  try {
+    if (Link.role !== 'lead' || !Link.pc) throw new Error('Create the lead code first (step 1)');
+    const o = linkUnB64(document.getElementById('linkAnswerIn').value);
+    if (o.t !== 'answer') throw new Error('That is a lead code, not a reply code');
+    await Link.pc.setRemoteDescription({ type: 'answer', sdp: o.sdp });
+    linkStatus('Connecting…');
+  } catch (e) { linkStatus('Could not connect: ' + e.message); }
+}
+
+function linkBind(ch) {
+  if (ch.label === 'ctl') Link.ctl = ch; else Link.st = ch;
+  ch.onopen = linkMaybeUp;
+  ch.onclose = () => { if (Link.pc && (ch === Link.ctl || ch === Link.st)) linkDown(); };
+  ch.onmessage = e => linkRx(e.data);
+}
+function linkMaybeUp() {
+  if (Link.up || !Link.ctl || !Link.st || Link.ctl.readyState !== 'open' || Link.st.readyState !== 'open') return;
+  Link.up = true; Link.lost = false;
+  Link.lastRx = performance.now();
+  Link.following = Link.role === 'follow';
+  linkStatus('CONNECTED as ' + (Link.role === 'lead' ? 'LEAD' : 'FOLLOWER'));
+  document.getElementById('linkBtnLbl').textContent = Link.role === 'lead' ? 'Link ●L' : 'Link ●F';
+  clearInterval(Link.hb);
+  Link.hb = setInterval(linkHeartbeat, 500);
+  linkBadge();
+  if (Link.role === 'lead' && S.isPrompting) { linkSendLoad(); linkSendNow(); }
+}
+function linkDown() {
+  Link.up = false; Link.lost = true;
+  if (Link.role === 'follow' && Link.following && S.isPrompting) { S.isPaused = true; showStatus('LINK LOST'); }
+  linkStatus('LINK LOST');
+  document.getElementById('linkBtnLbl').textContent = 'Link';
+  linkBadge();
+}
+function linkTeardown() {
+  clearInterval(Link.hb);
+  try { if (Link.pc) { Link.pc.onconnectionstatechange = null; Link.pc.close(); } } catch (e) {}
+  Link.pc = Link.ctl = Link.st = null; Link.up = false; Link.lost = false; Link.following = false;
+  Link.differs = false; Link.pending = null; Link.loads = {}; Link.role = null;
+}
+function linkDisconnect() {
+  linkTeardown();
+  document.getElementById('linkBtnLbl').textContent = 'Link';
+  document.getElementById('linkOfferOut').value = document.getElementById('linkAnswerOut').value = '';
+  document.getElementById('linkOfferIn').value = document.getElementById('linkAnswerIn').value = '';
+  linkStatus('Not linked');
+  linkBadge();
+}
+
+function linkSend(ch, obj) {
+  try { if (ch && ch.readyState === 'open') { ch.send(JSON.stringify(obj)); return true; } } catch (e) {}
+  return false;
+}
+function linkHeartbeat() {
+  if (!Link.up) return;
+  linkSend(Link.st, { k: 'h' });
+  const stale = performance.now() - Link.lastRx > LINK_LOST_MS;
+  if (stale && !Link.lost) {
+    Link.lost = true;
+    if (Link.role === 'follow' && Link.following && S.isPrompting) { S.isPaused = true; showStatus('LINK LOST'); }
+    linkBadge();
+  }
+}
+
+// Where the cue line is, in script terms: line index + fraction through that line.
+// Same script on both laptops => same place, whatever the screen size or width.
+function linkPosNow() {
+  const lines = prompterLines();
+  if (!lines.length) return null;
+  const y = S.vpH * ((S.cuePos || 33) / 100) - S.scrollPos;
+  let i = 0;
+  while (i < lines.length - 1 && lines[i].offsetTop + lines[i].offsetHeight <= y) i++;
+  const L = lines[i];
+  return { ln: i, fr: (y - L.offsetTop) / Math.max(1, L.offsetHeight), n: lines.length };
+}
+function linkSendNow() {
+  if (Link.role !== 'lead' || !Link.up || !S.isPrompting) return;
+  const p = linkPosNow(); if (!p) return;
+  Link.lastTx = performance.now();
+  linkSend(Link.st, { k: 's', ln: p.ln, fr: p.fr, n: p.n, sp: S.speed, pa: S.isPaused });
+}
+function linkTick() {
+  if (Link.role !== 'lead' || !Link.up) return;
+  if (performance.now() - Link.lastTx >= LINK_TICK_MS) linkSendNow();
+}
+function linkSendLoad() {
+  if (Link.role !== 'lead' || !Link.up) return;
+  const html = document.getElementById('prompterText').innerHTML;
+  const id = ++Link.loadSeq, SZ = 12000, n = Math.ceil(html.length / SZ) || 1;
+  for (let i = 0; i < n; i++) linkSend(Link.ctl, { k: 'ld', id, i, n, d: html.slice(i * SZ, (i + 1) * SZ) });
+}
+function linkOnStart() {
+  if (Link.role === 'lead' && Link.up) { linkSendLoad(); linkSendNow(); }
+  if (Link.role === 'follow') {
+    Link.following = true; linkBadge();
+    if (Link.pending) linkApply(Link.pending);
+  }
+}
+function linkOnExit() {
+  if (Link.role === 'lead' && Link.up) linkSend(Link.ctl, { k: 'x' });
+}
+
+function linkRx(d) {
+  Link.lastRx = performance.now();
+  if (Link.lost && Link.up) { Link.lost = false; if (S.isPrompting) showStatus('LINK RESTORED'); linkBadge(); }
+  let m; try { m = JSON.parse(d); } catch (e) { return; }
+  if (m.k === 's') linkApply(m);
+  else if (m.k === 'ld') linkRxLoad(m);
+  else if (m.k === 'x') { if (Link.role === 'follow' && S.isPrompting && Link.following) { S.isPaused = true; showStatus('LEAD STOPPED'); } }
+}
+function linkRxLoad(m) {
+  if (Link.role !== 'follow') return;
+  const L = Link.loads[m.id] = Link.loads[m.id] || { parts: [], got: 0 };
+  if (L.parts[m.i] === undefined) { L.parts[m.i] = m.d; L.got++; }
+  if (L.got < m.n) return;
+  delete Link.loads[m.id];
+  const html = L.parts.join('');
+  const plain = h => { const t = document.createElement('div'); t.innerHTML = h; return t.textContent; };
+  const pt = document.getElementById('prompterText');
+  const same = plain(html) === plain(S.isPrompting ? pt.innerHTML : editor.innerHTML);
+  if (same) { Link.differs = false; linkBadge(); return; }
+  const clean = normalizeSpaces(sanitizeHTML(html));
+  if (S.isPrompting) {
+    pt.innerHTML = clean;
+    requestAnimationFrame(() => { S.textH = pt.offsetHeight; });
+    showStatus('SCRIPT UPDATED FROM LEAD');
+  } else {
+    snapshotForUndo('Script from Link lead');
+    setEditorHTML(clean);
+    autosaveDirty = true;
+    flashStatus('Script received from the lead laptop — press Go');
+  }
+  Link.differs = false; linkBadge();
+}
+function linkApply(m) {
+  Link.pending = m;
+  if (Link.role !== 'follow' || !Link.following || !S.isPrompting) return;
+  const lines = prompterLines();
+  if (!lines.length) return;
+  Link.differs = m.n !== lines.length;
+  const L = lines[Math.min(m.ln, lines.length - 1)];
+  const target = S.vpH * ((S.cuePos || 33) / 100) - (L.offsetTop + m.fr * L.offsetHeight);
+  S.isPaused = !!m.pa;
+  if (S.speed !== m.sp) {
+    S.speed = m.sp;
+    document.getElementById('hudSpeed').textContent = (S.speed < 0 ? 'REV ' : '') + Math.abs(S.speed).toFixed(1);
+  }
+  const err = target - S.scrollPos;
+  S.scrollPos = (S.isPaused || Math.abs(err) > 60) ? target : S.scrollPos + err * 0.5;
+  document.getElementById('prompterText').style.top = S.scrollPos + 'px';
+  linkBadge();
+}
+function linkToggleFollow() {
+  Link.following = !Link.following;
+  if (Link.following) { showStatus('FOLLOWING LEAD'); if (Link.pending) linkApply(Link.pending); }
+  else showStatus('LOCAL CONTROL — L to follow again');
+  linkBadge();
+}
+const LINK_SCROLL_KEYS = [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown'];
+function linkBlocksKey(e) {
+  if (Link.role !== 'follow' || !Link.following) return false;
+  const k = e.key;
+  const cue = k.length === 1 && /[0-9a-z]/i.test(k) && !'mMtT+-=_'.includes(k) && !e.ctrlKey && !e.metaKey && !e.altKey;
+  if (LINK_SCROLL_KEYS.includes(k) || cue) {
+    showStatus(Link.lost ? 'LINK LOST — press L for local control' : 'FOLLOWING — press L for local control');
+    return true;
+  }
+  return false;
+}
+function linkBadge() {
+  const b = document.getElementById('linkBadge');
+  if (!Link.role) { b.style.display = 'none'; return; }
+  let t, cls = '';
+  if (Link.lost || !Link.up) { t = 'LINK LOST' + (Link.role === 'follow' && Link.following ? ' · L = LOCAL' : ''); cls = 'bad'; }
+  else if (Link.role === 'lead') t = 'LINK ● LEAD';
+  else if (Link.following) t = 'LINK ● FOLLOWING';
+  else { t = 'LINK ○ LOCAL CONTROL'; cls = 'warn'; }
+  if (Link.differs && !cls) { t += ' · SCRIPT DIFFERS'; cls = 'warn'; }
+  b.textContent = t; b.className = cls; b.style.display = 'block';
+}
+
 // ═══════════════ KEYBOARD ═══════════════
 document.addEventListener('keydown', e => {
   if (e.key === 'F8' || e.key === 'F5') {
@@ -2671,6 +3016,10 @@ document.addEventListener('keydown', e => {
     return;
   }
 
+  if (S.isPrompting && Link.role === 'follow' && (e.key === 'F9' || ((e.key === 'l' || e.key === 'L') && !e.ctrlKey && !e.metaKey && !e.altKey))) {
+    e.preventDefault(); linkToggleFollow(); return;
+  }
+  if (S.isPrompting && linkBlocksKey(e)) { e.preventDefault(); return; }
   if (S.isPrompting) {
     switch (e.key) {
       case 'Escape': e.preventDefault(); exitPrompter(); break;
