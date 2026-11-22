@@ -173,14 +173,15 @@ footer a:hover{color:#fff}
     <nav aria-label="Site">
       <a href="#what">About</a>
       <a href="#features">Features</a>
-      <a href="#license">Download</a>
+      <a href="#buy">Buy</a>
+      <a href="#license">Free v12</a>
     </nav>
   </div>
   <div class="wrap">
     <h1>Teleprompter software built on the operator desk.</h1>
     <p class="intro">One HTML file that runs in Chrome and never touches the internet. Autosave, crash recovery, mirror and flip, cue markers, and reverse as fast as forward. Made by a live-show operator for keynotes, galas, awards, broadcast and political events.</p>
     <div class="cta">
-      <a class="btn solid" href="#license">Download PrompterQ v12</a>
+      <a class="btn solid" href="#buy">Get PrompterQ</a>
       <a class="btn ghost" href="#features">See what it does</a>
     </div>
 
@@ -345,11 +346,66 @@ footer a:hover{color:#fff}
   </div>
 </section>
 
+<style>
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:44px}
+@media (max-width:860px){.tiers{grid-template-columns:1fr}}
+.tier{background:#fff;border:1px solid var(--rule);padding:30px;display:flex;flex-direction:column}
+.tier h3{font-size:24px;font-weight:700;letter-spacing:-0.01em}
+.tier .tp{font-weight:800;font-size:56px;letter-spacing:-0.03em;line-height:1;margin:14px 0 4px;color:var(--ink)}
+.tier .tp small{font-size:16px;font-weight:400;letter-spacing:0;color:var(--ink-soft)}
+.tier ul{list-style:none;margin:18px 0 22px}
+.tier li{padding:9px 0;border-bottom:1px solid var(--rule);font-size:16px}
+.tier .btn{margin-top:auto;text-align:center}
+.tier .btn[aria-disabled="true"]{opacity:.55;pointer-events:none}
+.tier input[type=email]{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--rule);font:16px inherit;margin-bottom:10px}
+.soon{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:#fff;padding:3px 8px;margin-left:8px;vertical-align:middle}
+</style>
+<section class="chrome" id="buy">
+  <div class="wrap">
+    <h2>Two ways to run it.</h2>
+    <p class="big">One license is for one operator, on every laptop that operator owns. Offline. No account. Nothing that can stop a show.</p>
+    <div class="tiers">
+      <div class="tier">
+        <h3>PrompterQ</h3>
+        <div class="tp">$149<small> one time</small></div>
+        <ul>
+          <li>The full teleprompter as one HTML file you keep</li>
+          <li>Runs in Chrome on Mac or Windows</li>
+          <li>Autosave, crash recovery, cue arrow, mirror and flip</li>
+          <li>Link: two laptops, one scroll, one Ethernet cable</li>
+          <li>Personalized with your name, emailed to you</li>
+          <li>Bug-fix updates (13.x) are free</li>
+        </ul>
+        <a class="btn solid" id="buyHtml" href="#" aria-disabled="true">Opening soon</a>
+        <p class="caption" style="margin-top:12px">Pay with PayPal or card. Your personalized file is emailed within one business day. <a href="terms.html">Terms &amp; refunds</a></p>
+      </div>
+      <div class="tier">
+        <h3>PrompterQ Pro <span class="soon">In development</span></h3>
+        <div class="tp">$349<small> per year</small></div>
+        <ul>
+          <li>Installable app for Windows, Mac and Linux</li>
+          <li>Output opens fullscreen on the talent display automatically</li>
+          <li>Blackout, sleep blocking, show mode</li>
+          <li>Everything in PrompterQ, in the same file format</li>
+          <li>Windows is the show-certified platform at launch</li>
+        </ul>
+        <form id="wlForm" action="https://formspree.io/f/mjgkzzrq" method="POST">
+          <input type="hidden" name="_subject" value="PrompterQ Pro waitlist">
+          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="email" name="email" placeholder="Your email" required aria-label="Email for the waitlist">
+          <button class="btn solid" id="wlBtn" type="submit" style="width:100%;border:0;cursor:pointer">Join the waitlist</button>
+          <p class="tiny" id="wlMsg" role="status" style="margin-top:10px"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="chrome" id="license">
   <div class="wrap price">
     <div>
-      <h2>Created by a teleprompter operator for the operators who run the room.</h2>
-      <p class="big">PrompterQ is free. Enter your email, download the file, keep it, run it on every laptop you own.</p>
+      <h2>Try PrompterQ v12 free.</h2>
+      <p class="big">v12 stays free. Enter your email, download the file, keep it. The paid PrompterQ adds the cue arrow, ongoing updates and your name on the license.</p>
       <ul class="includes">
         <li>PrompterQ v12, a single HTML file you keep</li>
         <li>New in v12: Link. Two laptops, one scroll, over a single Ethernet cable</li>
@@ -391,7 +447,7 @@ footer a:hover{color:#fff}
 <footer>
   <div class="wrap">
     <div>PrompterQ · Teleprompter software for live production</div>
-    <div><a href="#what">What it is</a> &nbsp;·&nbsp; <a href="#features">Features</a> &nbsp;·&nbsp; <a href="#license">Download</a></div>
+    <div><a href="#what">What it is</a> &nbsp;·&nbsp; <a href="#features">Features</a> &nbsp;·&nbsp; <a href="#buy">Buy</a> &nbsp;·&nbsp; <a href="#license">Free v12</a> &nbsp;·&nbsp; <a href="terms.html">Terms &amp; refunds</a></div>
   </div>
 </footer>
 
@@ -416,6 +472,8 @@ footer a:hover{color:#fff}
   var FILE='get/00f92899f4c6b49e/PrompterQ-v12.html';
   // Payment link for donations (PayPal.me, Stripe Payment Link, etc.). Empty = donation box stays hidden.
   var DONATE_URL='';
+  // PayPal payment link for the $149 PrompterQ. Empty = the buy button stays disabled ("Opening soon").
+  var PAY_URL_HTML='';
   var form=document.getElementById('dlForm'), btn=document.getElementById('dlBtn'), err=document.getElementById('dlErr');
   var reveal=document.getElementById('dlReveal');
   function show(){
@@ -430,6 +488,15 @@ footer a:hover{color:#fff}
       .catch(function(){ err.textContent='That did not go through. Check the email and your connection, then try again.'; btn.disabled=false; btn.textContent='Get the download'; });
   });
   try{ if(localStorage.getItem('pqv12')==='1') show(); }catch(x){}
+  var bh=document.getElementById('buyHtml');
+  if(PAY_URL_HTML){bh.setAttribute('href',PAY_URL_HTML);bh.removeAttribute('aria-disabled');bh.textContent='Buy PrompterQ — $149';}
+  var wl=document.getElementById('wlForm'), wlb=document.getElementById('wlBtn'), wlm=document.getElementById('wlMsg');
+  wl.addEventListener('submit',function(e){
+    e.preventDefault(); wlm.textContent=''; wlb.disabled=true; wlb.textContent='Sending…';
+    fetch(wl.action,{method:'POST',body:new FormData(wl),headers:{'Accept':'application/json'}})
+      .then(function(r){ if(!r.ok) throw new Error('bad'); wlm.textContent='You are on the list. Thank you.'; wlb.textContent='Joined'; })
+      .catch(function(){ wlm.textContent='That did not go through. Try again.'; wlb.disabled=false; wlb.textContent='Join the waitlist'; });
+  });
 })();
 </script>
 </body>
