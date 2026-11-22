@@ -376,7 +376,7 @@ footer a:hover{color:#fff}
           <li>Personalized with your name, emailed to you</li>
           <li>Bug-fix updates (13.x) are free</li>
         </ul>
-        <a class="btn solid" id="buyHtml" href="#" aria-disabled="true">Opening soon</a>
+        <a class="btn solid" id="buyHtml" href="#" target="_blank" rel="noopener" aria-disabled="true">Opening soon</a>
         <p class="caption" style="margin-top:12px">Pay with PayPal or card. Your personalized file is emailed within one business day. <a href="terms.html">Terms &amp; refunds</a></p>
       </div>
       <div class="tier">
@@ -473,7 +473,7 @@ footer a:hover{color:#fff}
   // Payment link for donations (PayPal.me, Stripe Payment Link, etc.). Empty = donation box stays hidden.
   var DONATE_URL='';
   // PayPal payment link for the $149 PrompterQ. Empty = the buy button stays disabled ("Opening soon").
-  var PAY_URL_HTML='';
+  var PAY_URL_HTML='https://www.paypal.com/ncp/payment/8BSZYF7SWLM48';
   var form=document.getElementById('dlForm'), btn=document.getElementById('dlBtn'), err=document.getElementById('dlErr');
   var reveal=document.getElementById('dlReveal');
   function show(){
