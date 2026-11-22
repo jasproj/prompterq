@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms and refunds — PrompterQ</title>
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="PrompterQ — Teleprompter software built for live shows">
+<meta property="og:description" content="One HTML file. Runs in Chrome. Never touches the internet. Built by a live-show operator for keynotes, galas, awards, broadcast and political events. Free download.">
+<meta property="og:url" content="https://prompterq.com/">
+<meta property="og:image" content="https://prompterq.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Crect x='4' y='14' width='24' height='3' fill='%23E2A22A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --glass:#000000;
+  --text:#FFFFFF;
+  --amber:#E2A22A;
+  --amber-dim:#7A5A1E;
+  --chrome:#ECE8DA;
+  --chrome-deep:#D9D4C2;
+  --ink:#141210;
+  --ink-soft:#5C574D;
+  --rule:#C8C2AD;
+  --font:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --prompter:Arial,"Helvetica Neue",Helvetica,sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{font-family:var(--font);font-weight:400;background:var(--glass);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;font-variation-settings:"wdth" 100}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.wrap{width:min(1180px,100% - 48px);margin-inline:auto}
+@media (max-width:640px){.wrap{width:calc(100% - 32px)}}
+
+/* ---------- top bar ---------- */
+.bar{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.mark{font-weight:800;font-size:20px;letter-spacing:-0.02em;text-decoration:none;font-variation-settings:"wdth" 112}
+.mark span{color:var(--amber)}
+.bar nav{display:flex;gap:28px;font-size:15px}
+.bar nav a{text-decoration:none;opacity:.85}
+.bar nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+@media (max-width:640px){.bar nav{gap:18px;font-size:14px}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--glass);padding:110px 0 72px}
+.hero h1{font-weight:700;font-size:clamp(36px,5vw,64px);line-height:1.02;letter-spacing:-0.03em;font-variation-settings:"wdth" 110;max-width:16ch}
+.hero .intro{margin-top:22px;font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:#bdbdbd;max-width:52ch}
+.hero .cta{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:16px;padding:14px 22px;border-radius:2px}
+.btn.solid{background:var(--amber);color:#000}
+.btn.solid:hover{background:#f0b23a}
+.btn.ghost{border:1px solid #3a3a3a;color:#fff}
+.btn.ghost:hover{border-color:#fff}
+.monitor{position:relative;margin-top:56px;aspect-ratio:16/9;max-height:62vh;border:1px solid #2a2a2a;background:#000;overflow:hidden}
+.glass{position:absolute;inset:0;overflow:hidden}
+.roll{position:absolute;left:0;right:0;top:100%;padding:0 5%;font-family:var(--prompter);font-size:clamp(22px,3.4vw,54px);line-height:1.18;color:#fff;will-change:transform;animation:roll 52s linear infinite}
+.roll p{margin:0 0 .8em 0}
+.roll .gap{height:.4em}
+@keyframes roll{from{transform:translateY(0)}to{transform:translateY(-100%) translateY(-62vh)}}
+.fade{position:absolute;left:0;right:0;height:16%;z-index:1;pointer-events:none}
+.fade.top{top:0;background:linear-gradient(#000,rgba(0,0,0,0))}
+.fade.bot{bottom:0;height:26%;background:linear-gradient(rgba(0,0,0,0),#000 70%)}
+.hud{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:26px;z-index:3;font-family:var(--mono)}
+.hud div{text-align:center}
+.hud b{display:block;color:var(--amber);font-size:13px;font-weight:600}
+.hud small{display:block;color:#8a8a8a;font-size:8px;letter-spacing:.18em;margin-top:3px}
+.exit{position:absolute;left:14px;bottom:14px;z-index:3;font-family:var(--mono);font-size:10px;color:#e4514a;border:1px solid #e4514a;padding:4px 8px;border-radius:3px;opacity:.9}
+.hero .note{margin-top:12px;font-size:14px;color:#8a8a8a}
+@media (max-width:640px){.hero{padding-top:96px}.exit{display:none}.hud{gap:16px}.monitor{aspect-ratio:4/3}}
+@media (prefers-reduced-motion:reduce){
+  .roll{animation:none;top:auto;bottom:auto;transform:none;position:relative;padding-top:8%}
+  .fade.top{display:none}
+}
+
+/* ---------- editor sections (beige chrome) ---------- */
+.chrome{background:var(--chrome);color:var(--ink);padding:112px 0}
+.chrome h2,.glassy h2{font-weight:700;font-size:clamp(34px,4.6vw,58px);line-height:1.02;letter-spacing:-0.025em;font-variation-settings:"wdth" 108;max-width:18ch}
+.chrome p.big{font-size:clamp(20px,2.2vw,26px);line-height:1.35;max-width:36ch;margin-top:26px;font-weight:400}
+.chrome p.big+p.big{margin-top:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+@media (max-width:860px){.two{grid-template-columns:1fr;gap:36px}}
+.plain{font-size:17px;line-height:1.55;color:var(--ink);max-width:52ch}
+.plain li{margin:0 0 12px 0;padding-left:22px;position:relative;list-style:none}
+.plain li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:3px;background:var(--amber)}
+
+.window{margin-top:64px;border:1px solid var(--rule);background:#fff;box-shadow:0 30px 60px -30px rgba(20,18,16,.45)}
+.window .title{height:34px;display:flex;align-items:center;padding:0 14px;gap:8px;background:var(--chrome-deep);border-bottom:1px solid var(--rule);font-size:12px;color:var(--ink-soft)}
+.window .title i{width:11px;height:11px;border-radius:50%;background:#c9c2ad;display:inline-block}
+.window .title span{margin-left:8px}
+.caption{font-size:14px;color:var(--ink-soft);margin-top:12px}
+
+/* ---------- glass sections ---------- */
+.glassy{background:var(--glass);color:#fff;padding:112px 0}
+.glassy h2{max-width:20ch}
+.glassy .sub{color:#a9a9a9;font-size:18px;max-width:50ch;margin-top:18px}
+
+/* feature list styled like the app's shortcut list */
+.list{margin-top:56px;border-top:1px solid #2a2a2a}
+.row{display:grid;grid-template-columns:minmax(200px,.9fr) 2fr;gap:40px;padding:26px 0;border-bottom:1px solid #2a2a2a}
+.row h3{font-weight:700;font-size:21px;letter-spacing:-0.01em;font-variation-settings:"wdth" 104;line-height:1.2}
+.row p{color:#c9c9c9;font-size:17px;max-width:58ch}
+.row p em{font-style:normal;color:var(--amber)}
+@media (max-width:720px){.row{grid-template-columns:1fr;gap:8px;padding:22px 0}}
+
+/* screenshots pair */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:56px}
+.pair figure{border:1px solid #2a2a2a;background:#000}
+.pair figcaption{font-size:14px;color:#a9a9a9;padding:12px 14px;border-top:1px solid #2a2a2a}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
+
+/* keyboard map */
+.keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0;margin-top:44px;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.keys div{padding:18px 20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:14px;font-size:15px}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:4px 8px;min-width:40px;text-align:center;color:var(--ink);white-space:nowrap}
+
+/* the statement */
+.statement{padding:140px 0}
+.statement p{font-family:var(--prompter);font-size:clamp(34px,6vw,96px);line-height:1.08;max-width:14ch;color:#fff}
+.statement p+p{margin-top:.5em;color:#8a8a8a;font-family:var(--font);font-size:clamp(17px,1.6vw,20px);line-height:1.5;max-width:46ch}
+
+/* pricing */
+.price{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
+@media (max-width:860px){.price{grid-template-columns:1fr}}
+.amount{font-weight:800;font-size:clamp(72px,11vw,150px);line-height:.9;letter-spacing:-0.045em;font-variation-settings:"wdth" 118;color:var(--ink)}
+.amount small{display:block;font-weight:400;font-size:clamp(17px,1.6vw,20px);letter-spacing:0;margin-top:14px;color:var(--ink-soft);font-variation-settings:"wdth" 100}
+.includes{list-style:none;margin-top:36px}
+.includes li{padding:12px 0;border-bottom:1px solid var(--rule);font-size:17px}
+.includes li:first-child{border-top:1px solid var(--rule)}
+.form{background:#fff;border:1px solid var(--rule);padding:28px}
+.form h3{font-size:22px;font-weight:700;letter-spacing:-0.01em}
+.form p{font-size:15px;color:var(--ink-soft);margin-top:6px}
+.form label{display:block;font-size:13px;color:var(--ink-soft);margin:18px 0 6px}
+.form input,.form textarea{width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid var(--rule);background:#fff;color:var(--ink);border-radius:2px}
+.form textarea{min-height:88px;resize:vertical}
+.form button{margin-top:20px;width:100%;font:inherit;font-weight:700;font-size:17px;padding:16px;border:0;background:var(--ink);color:#fff;cursor:pointer;border-radius:2px}
+.form button:hover{background:#000}
+.form .tiny{font-size:12px;margin-top:12px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* footer */
+footer{background:var(--glass);color:#8a8a8a;padding:48px 0;font-size:14px;border-top:1px solid #1e1e1e}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer a{text-decoration:none}
+footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+<header class="hero" style="padding-bottom:40px"><div class="wrap bar"><a class="mark" href="/">Prompter<span>Q</span></a><nav><a href="/#buy">Buy</a></nav></div></header>
+<section class="chrome" style="padding:72px 0"><div class="wrap" style="max-width:760px">
+<h2>Terms &amp; refunds</h2>
+<h3 style="margin-top:30px">License</h3>
+<p class="plain">One license is for one operator, on every computer that operator owns and uses for their own shows. It is personal: the license carries your name. Do not give or sell your copy to anyone else. Companies that want several operators licensed buy one license per operator.</p>
+<h3 style="margin-top:30px">Updates</h3>
+<p class="plain">Bug-fix updates to the version you bought (for example 13.1, 13.2) are free. A new major version may be offered as a paid upgrade. Your copy keeps working as it is, with no expiry and no internet check.</p>
+<h3 style="margin-top:30px">Refunds</h3>
+<p class="plain">If PrompterQ does not work for you, ask within 14 days of purchase and you get a full refund. No forms, no questions.</p>
+<h3 style="margin-top:30px">Before a show</h3>
+<p class="plain">PrompterQ is built to be reliable, but you are responsible for testing your own script, laptops and display chain before any live event. The software is provided as is, without warranty.</p>
+<h3 style="margin-top:30px">Your email</h3>
+<p class="plain">We use your email only to deliver your license and answer questions. We do not sell it or share it.</p>
+<h3 style="margin-top:30px">Questions</h3>
+<p class="plain">Use the form on the <a href="/#buy">home page</a>. It goes to the operator who built PrompterQ.</p>
+</div></section>
+<footer><div class="wrap"><div>PrompterQ · Teleprompter software for live production</div><div><a href="/">Home</a> &nbsp;·&nbsp; <a href="terms.html">Terms &amp; refunds</a></div></div></footer>
+</body></html>
